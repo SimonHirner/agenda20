@@ -1,0 +1,108 @@
+@startuml
+
+class edu.hm.cs.katz.swt2.agenda.persistence.Status {
+    - id : Long
+    + Status()
+    + Status()
+    + equals()
+    + getId()
+    + getStatus()
+    + getTask()
+    + getUser()
+    + hashCode()
+    + setStatus()
+    + toString()
+}
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.persistence.StatusRepository {
+    {abstract} + findByUserAndTask()
+}
+
+
+
+
+class edu.hm.cs.katz.swt2.agenda.persistence.Task {
+    - id : Long
+    - title : String
+    + Task()
+    + Task()
+    + equals()
+    + getId()
+    + getTitle()
+    + getTopic()
+    + hashCode()
+    + toString()
+}
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.persistence.TaskRepository {
+}
+
+
+
+class edu.hm.cs.katz.swt2.agenda.persistence.Topic {
+    - subscriber : Collection<User>
+    - tasks : Collection<Task>
+    - title : String
+    - uuid : String
+    + Topic()
+    + Topic()
+    + addTask()
+    + equals()
+    + getCreator()
+    + getSubscriber()
+    + getTasks()
+    + getTitle()
+    + getUuid()
+    + hashCode()
+    + register()
+    + toString()
+}
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository {
+    {abstract} + findByCreator()
+}
+
+
+
+class edu.hm.cs.katz.swt2.agenda.persistence.User {
+    - administrator : boolean
+    - login : String
+    - password : String
+    - status : Collection<Status>
+    - subscriptions : Collection<Topic>
+    + User()
+    + User()
+    + addSubscription()
+    + equals()
+    + getLogin()
+    + getPassword()
+    + getStatus()
+    + getSubscriptions()
+    + hashCode()
+    + isAdministrator()
+    + toString()
+}
+
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.persistence.UserRepository {
+    {abstract} + findByAdministrator()
+}
+
+  
+
+  edu.hm.cs.katz.swt2.agenda.persistence.Status o-- edu.hm.cs.katz.swt2.agenda.common.StatusEnum : status
+  edu.hm.cs.katz.swt2.agenda.persistence.Status o-- edu.hm.cs.katz.swt2.agenda.persistence.Task : task
+  edu.hm.cs.katz.swt2.agenda.persistence.Status o-- edu.hm.cs.katz.swt2.agenda.persistence.User : user
+  edu.hm.cs.katz.swt2.agenda.persistence.Task o-- edu.hm.cs.katz.swt2.agenda.persistence.Topic : topic
+  edu.hm.cs.katz.swt2.agenda.persistence.Topic o-- edu.hm.cs.katz.swt2.agenda.persistence.User : creator
+
+
+@enduml

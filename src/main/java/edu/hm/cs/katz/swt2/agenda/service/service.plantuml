@@ -1,0 +1,104 @@
+@startuml
+
+class edu.hm.cs.katz.swt2.agenda.service.DtoMapper {
+    - mapper : ModelMapper
+    + createDto()
+    + createDto()
+    + createDto()
+    + createManagedDto()
+    + createManagedDto()
+    + createReadDto()
+}
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.service.TaskService {
+    {abstract} + checkTask()
+    {abstract} + createTask()
+    {abstract} + getManagedTask()
+    {abstract} + getManagedTasks()
+    {abstract} + getSubscribedTasks()
+    {abstract} + getTask()
+    {abstract} + getTasksForTopic()
+}
+
+
+
+class edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl {
+    {static} - LOG : Logger
+    + checkTask()
+    + createTask()
+    + getManagedTask()
+    + getManagedTasks()
+    + getSubscribedTasks()
+    + getTask()
+    + getTasksForTopic()
+    - extracted()
+    - getOrCreateStatus()
+}
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.service.TopicService {
+    {abstract} + createTopic()
+    {abstract} + getManagedTopic()
+    {abstract} + getManagedTopics()
+    {abstract} + getSubscriptions()
+    {abstract} + getTopic()
+    {abstract} + subscribe()
+}
+
+
+
+class edu.hm.cs.katz.swt2.agenda.service.TopicServiceImpl {
+    {static} - LOG : Logger
+    + createTopic()
+    + getManagedTopic()
+    + getManagedTopics()
+    + getSubscriptions()
+    + getTopic()
+    + subscribe()
+}
+
+
+
+
+interface edu.hm.cs.katz.swt2.agenda.service.UserService {
+    {abstract} + findeAdmins()
+    {abstract} + getAllUsers()
+    {abstract} + getUserInfo()
+    {abstract} + legeAn()
+}
+
+
+
+
+class edu.hm.cs.katz.swt2.agenda.service.UserServiceImpl {
+    {static} - LOG : Logger
+    - mapper : ModelMapper
+    + findeAdmins()
+    + getAllUsers()
+    + getUserInfo()
+    + legeAn()
+    + loadUserByUsername()
+}
+
+  
+
+  edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl .up.|> edu.hm.cs.katz.swt2.agenda.service.TaskService
+  edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.UserRepository : anwenderRepository
+  edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl o-- edu.hm.cs.katz.swt2.agenda.service.DtoMapper : mapper
+  edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.StatusRepository : statusRepository
+  edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.TaskRepository : taskRepository
+  edu.hm.cs.katz.swt2.agenda.service.TaskServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository : topicRepository
+  edu.hm.cs.katz.swt2.agenda.service.TopicServiceImpl .up.|> edu.hm.cs.katz.swt2.agenda.service.TopicService
+  edu.hm.cs.katz.swt2.agenda.service.TopicServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.UserRepository : anwenderRepository
+  edu.hm.cs.katz.swt2.agenda.service.TopicServiceImpl o-- edu.hm.cs.katz.swt2.agenda.service.DtoMapper : mapper
+  edu.hm.cs.katz.swt2.agenda.service.TopicServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository : topicRepository
+  edu.hm.cs.katz.swt2.agenda.service.TopicServiceImpl o-- edu.hm.cs.katz.swt2.agenda.common.UuidProviderImpl : uuidProvider
+  edu.hm.cs.katz.swt2.agenda.service.UserServiceImpl .up.|> edu.hm.cs.katz.swt2.agenda.service.UserService
+  edu.hm.cs.katz.swt2.agenda.service.UserServiceImpl .up.|> org.springframework.security.core.userdetails.UserDetailsService
+  edu.hm.cs.katz.swt2.agenda.service.UserServiceImpl o-- edu.hm.cs.katz.swt2.agenda.persistence.UserRepository : anwenderRepository
+
+
+@enduml

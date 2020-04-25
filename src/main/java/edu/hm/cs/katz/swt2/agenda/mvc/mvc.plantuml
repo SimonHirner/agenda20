@@ -1,0 +1,61 @@
+@startuml
+
+abstract class edu.hm.cs.katz.swt2.agenda.mvc.AbstractController {
+    - isAdministrator()
+    - user()
+}
+
+
+
+class edu.hm.cs.katz.swt2.agenda.mvc.IndexController {
+    + getIndexView()
+}
+
+
+
+
+class edu.hm.cs.katz.swt2.agenda.mvc.TaskController {
+    + getManagerTaskView()
+    + getSubscriberTaskListView()
+    + getSubscriberTaskView()
+    + getTaskCreationView()
+    + handleTaskChecking()
+    + handleTaskCreation()
+}
+
+
+
+
+class edu.hm.cs.katz.swt2.agenda.mvc.TopicController {
+    + createTopicManagementView()
+    + createTopicView()
+    + getTaskRegistrationView()
+    + getTopicCreationView()
+    + getTopicListView()
+    + handleTaskRegistration()
+    + handleTopicCreation()
+}
+
+
+
+class edu.hm.cs.katz.swt2.agenda.mvc.UserController {
+    + getUserCreationView()
+    + getUserListView()
+    + handleUserCreation()
+}
+
+  
+
+  edu.hm.cs.katz.swt2.agenda.mvc.AbstractController o-- edu.hm.cs.katz.swt2.agenda.service.UserService : userService
+  edu.hm.cs.katz.swt2.agenda.mvc.IndexController -up-|> edu.hm.cs.katz.swt2.agenda.mvc.AbstractController
+  edu.hm.cs.katz.swt2.agenda.mvc.TaskController -up-|> edu.hm.cs.katz.swt2.agenda.mvc.AbstractController
+  edu.hm.cs.katz.swt2.agenda.mvc.TaskController o-- edu.hm.cs.katz.swt2.agenda.service.TaskService : taskService
+  edu.hm.cs.katz.swt2.agenda.mvc.TaskController o-- edu.hm.cs.katz.swt2.agenda.service.TopicService : topicService
+  edu.hm.cs.katz.swt2.agenda.mvc.TopicController -up-|> edu.hm.cs.katz.swt2.agenda.mvc.AbstractController
+  edu.hm.cs.katz.swt2.agenda.mvc.TopicController o-- edu.hm.cs.katz.swt2.agenda.service.TaskService : taskService
+  edu.hm.cs.katz.swt2.agenda.mvc.TopicController o-- edu.hm.cs.katz.swt2.agenda.service.TopicService : topicService
+  edu.hm.cs.katz.swt2.agenda.mvc.UserController -up-|> edu.hm.cs.katz.swt2.agenda.mvc.AbstractController
+  edu.hm.cs.katz.swt2.agenda.mvc.UserController o-- edu.hm.cs.katz.swt2.agenda.service.UserService : userService
+
+
+@enduml
