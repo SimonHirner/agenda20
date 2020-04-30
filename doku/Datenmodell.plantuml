@@ -1,0 +1,76 @@
+@startuml
+
+' Layout
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam shadowing false
+skinparam DefaultFontName arial
+skinparam DefaultFontSize 12
+skinparam ClassFontStyle bold
+hide empty fields
+
+' Assoziationen
+User "0..*" -- "0..*" Topic : > abonniert
+User "1" -- "0..*" Topic : > erstellt
+User "1" -- "0..*" Status : > besitzt
+Topic "1" -- "0..*" Task : < gehört zu
+Status "0..*" -- "1" Task : > bezieht sich
+
+' Klassen
+class Status [[java:edu.hm.cs.katz.swt2.agenda.persistence.Status]] {
+	-Long id
+	-User user
+	-Task task
+	-StatusEnum status
+	+Long getId()
+	+User getUser()
+	+StatusEnum getStatus()
+	+void setStatus(StatusEnum status)
+	+Task getTask()
+}
+
+class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
+	-Long id
+	-String title
+	-Topic topic
+	+Long getId()
+	+String getTitle()
+	+Topic getTopic()
+}
+
+class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
+	-String login
+	-String password
+	-boolean administrator
+	-Collection<Topic> subscriptions
+	-Collection<Status> status
+	+void addSubscription(Topic topic)
+	+String getLogin()
+	+String getPassword()
+	+boolean isAdministrator()
+	+Collection<Topic> getSubscriptions()
+	+Collection<Status> getStatus()
+}
+
+class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
+	-String uuid
+	-String title
+	-User creator
+	-Collection<Task> tasks
+	-Collection<User> subscriber
+	+String getUuid()
+	+String getTitle()
+	+User getCreator()
+	+Collection<Task> getTasks()
+	+void addTask(Task t)
+	+void register(User anwender)
+	+Collection<User> getSubscriber()
+}
+
+enum StatusEnum [[java:edu.hm.cs.katz.swt2.agenda.common.StatusEnum]] {
+	NEU
+	OFFEN
+	FERTIG
+}
+
+@enduml
