@@ -9,25 +9,25 @@ skinparam DefaultFontSize 12
 skinparam ClassFontStyle bold
 
 'User
-object fine{
+object "<u>fine:User</u>" as fine{
     login = "fine"
     password = "f"
     admin = false
-    status statusfine
+    status
 }
-object ernie{
+object "<u>ernie:User</u>" as ernie{
     login = "ernie"
     password = "e"
     admin = false
     status 2
 }
-object bert{
+object "<u>bert:User</u>" as bert{
     login = "bert"
     password = "b"
     admin = false
     status 6
 }
-object admin{
+object "<u>admin:User</u>" as admin{
     login = "admin"
     password = "pwd"
     admin = true
@@ -35,54 +35,54 @@ object admin{
 }
 
 'Topics
-object HTMLKurs{
+object "<u>HTMLKurs: Topic</u>" as HTMLKurs{
     title= "HTML für Anfänger"
     UUID=e17ae604-2b50-469a-bba0-b5b4543580b3
     CREATOR_LOGIN= "fine"
 
 }
-object CSSKurs{
+object "<u>CSSKurs: Topic</u>" as CSSKurs{
     title= "CSS für Fortgeschrittene"
     UUID=c3ef0536-dd96-4968-a9b3-4bad0c13d1e0
     CREATOR_LOGIN= "fine"
 }
-object BackKurs{
+object "<u>BackKurs: Topic</u>" as BackKurs{
     title= "Ernies Backkurs"
     UUID= 85b55409-d34d-4985-9da5-8c8acd06fe23
     CREATOR_LOGIN= "ernie"
 }
 
 'Tasks
-object LinkErstellenTask {
+object "<u>LinkErstellen: Task</u>" as LinkErstellen {
     ID = 1
     title = "Link erstellen"
     TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
 }
-object HTMlErstellen {
+object "<u>HTMlErstellen: Task</u>" as HTMlErstellen {
     ID = 3
     title = "Leeres HTML-Template erstellen"
     TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
 }
-object Googlehupf {
+object "<u>Googlehupf: Task</u>" as Googlehupf {
     ID = 4
     title = "Googlehupf backen"
     TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
 }
-object Affenmuffins {
+object "<u>Affenmuffins: Task</u>" as Affenmuffins {
     ID = 5
     title = "Affenmuffins backen"
     TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
 }
 
 'status
-object 2{
+object "<u>2: status</u>" as 2{
 	id = 2
 	user = "ernie"
 	task = 1
 	status = "fertig"
 }
 
-object 6{
+object "<u>6: status</u>" as 6{
 	id = 6
 	user = "bert"
 	task = 5
@@ -100,7 +100,7 @@ bert -- 6 :> bezieht sich
 ernie -- HTMLKurs :> abboniert
 bert -- BackKurs :> abboniert
 
-HTMLKurs -- LinkErstellenTask :< gehört zu
+HTMLKurs -- LinkErstellen :< gehört zu
 HTMLKurs -- HTMlErstellen :< gehört zu
 
 6 -- Affenmuffins :> bezieht sich
