@@ -1,0 +1,113 @@
+@startuml
+
+' Layout
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam shadowing false
+skinparam DefaultFontName arial
+skinparam DefaultFontSize 12
+skinparam ClassFontStyle bold
+
+'User
+object fine{
+    login = "fine"
+    password = "f"
+    admin = false
+    status statusfine
+}
+object ernie{
+    login = "ernie"
+    password = "e"
+    admin = false
+    status 2
+}
+object bert{
+    login = "bert"
+    password = "b"
+    admin = false
+    status 6
+}
+object admin{
+    login = "admin"
+    password = "pwd"
+    admin = true
+    status statusadmin
+}
+
+'Topics
+object HTMLKurs{
+    title= "HTML für Anfänger"
+    UUID=e17ae604-2b50-469a-bba0-b5b4543580b3
+    CREATOR_LOGIN= "fine"
+
+}
+object CSSKurs{
+    title= "CSS für Fortgeschrittene"
+    UUID=c3ef0536-dd96-4968-a9b3-4bad0c13d1e0
+    CREATOR_LOGIN= "fine"
+}
+object BackKurs{
+    title= "Ernies Backkurs"
+    UUID= 85b55409-d34d-4985-9da5-8c8acd06fe23
+    CREATOR_LOGIN= "ernie"
+}
+
+'Tasks
+object LinkErstellenTask {
+    ID = 1
+    title = "Link erstellen"
+    TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
+}
+object HTMlErstellen {
+    ID = 3
+    title = "Leeres HTML-Template erstellen"
+    TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
+}
+object Googlehupf {
+    ID = 4
+    title = "Googlehupf backen"
+    TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
+}
+object Affenmuffins {
+    ID = 5
+    title = "Affenmuffins backen"
+    TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
+}
+
+'status
+object 2{
+	id = 2
+	user = "ernie"
+	task = 1
+	status = "fertig"
+}
+
+object 6{
+	id = 6
+	user = "bert"
+	task = 5
+	status = "fertig"
+}
+
+'Assoziationen
+fine -- HTMLKurs :> erstellt
+fine -- CSSKurs :> erstellt
+ernie -- BackKurs :> erstellt
+
+ernie -- 2 :> bezieht sich
+bert -- 6 :> bezieht sich
+
+ernie -- HTMLKurs :> abboniert
+bert -- BackKurs :> abboniert
+
+HTMLKurs -- LinkErstellenTask :< gehört zu
+HTMLKurs -- HTMlErstellen :< gehört zu
+
+6 -- Affenmuffins :> bezieht sich
+2 -- LinkErstellenTask :> bezieht sich
+
+BackKurs -- Googlehupf :< gehört zu
+BackKurs -- Affenmuffins :< gehört zu
+
+
+@enduml
