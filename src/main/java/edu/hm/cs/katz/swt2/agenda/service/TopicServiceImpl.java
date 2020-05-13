@@ -45,7 +45,10 @@ public class TopicServiceImpl implements TopicService {
     
     //Validierung des Topic Namens
     if (title.length() < 1){
-      throw new ValidationException("Bitte geben sie einen Namen für das Topic an!");
+      throw new ValidationException("Bitte gib einen Namen für das Topic an!");
+    }
+    if (title.length() < 10){
+      throw new ValidationException("Der Name des Topics muss mindestens 10 Zeichen lang sein!");
     }
     if (title.length() > 60){
       throw new ValidationException("Der Name des Topics darf höchstens 60 Zeichen lang sein!");

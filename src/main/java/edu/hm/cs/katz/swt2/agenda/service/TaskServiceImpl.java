@@ -62,7 +62,10 @@ public class TaskServiceImpl implements TaskService {
   
     //Validierung des Task Namens
     if (title.length() < 1){
-      throw new ValidationException("Bitte geben sie einen Namen für das Topic an!");
+      throw new ValidationException("Bitte gib einen Namen für den Task an!");
+    }
+    if (title.length() < 8){
+      throw new ValidationException("Der Name des Tasks muss mindestens 8 Zeichen lang sein!");
     }
     if (title.length() > 32){
       throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein!");
