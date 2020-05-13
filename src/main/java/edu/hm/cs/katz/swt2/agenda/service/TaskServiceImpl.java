@@ -40,7 +40,7 @@ public class TaskServiceImpl implements TaskService {
   private TopicRepository topicRepository;
 
   @Autowired
-  private UserRepository anwenderRepository;
+  private UserRepository userRepository;
 
   @Autowired
   private StatusRepository statusRepository;
@@ -52,6 +52,13 @@ public class TaskServiceImpl implements TaskService {
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public Long createTask(String uuid, String title, String login) {
     Topic t = topicRepository.findById(uuid).get();
+    User user = userRepository.getOne(login);
+    LOG.info("Erstelle neuen Task: " + title);
+    
+    if (!user.equals(t.getCreator())){
+      LOG.debug("Unerlaubter Zugriffsversuch auf Topic"+ t.getTitle() +"durch: "+ login);
+      throw new AccessDeniedException("Kein Zugriff auf dieses Topic möglich!");
+    }
   
     //Validierung des Task Namens
     if (title.length() < 1){
@@ -63,6 +70,7 @@ public class TaskServiceImpl implements TaskService {
     
     Task task = new Task(t, title);
     taskRepository.save(task);
+    LOG.info("Neuer Task erstellt: " + title);
     return task.getId();
   }
 
@@ -71,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
   public SubscriberTaskDto getTask(Long taskId, String login) {
     Task task = taskRepository.getOne(taskId);
     Topic topic = task.getTopic();
-    User user = anwenderRepository.getOne(login);
+    User user = userRepository.getOne(login);
     if (!(topic.getCreator().equals(user) || topic.getSubscriber().contains(user))) {
       throw new AccessDeniedException("Zugriff verweigert.");
     }
@@ -94,7 +102,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public List<SubscriberTaskDto> getSubscribedTasks(String login) {
-    User user = anwenderRepository.getOne(login);
+    User user = userRepository.getOne(login);
     Collection<Topic> topics = user.getSubscriptions();
     return extracted(user, topics);
   }
@@ -123,7 +131,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public List<SubscriberTaskDto> getTasksForTopic(String uuid, String login) {
-    User user = anwenderRepository.getOne(login);
+    User user = userRepository.getOne(login);
     Topic topic = topicRepository.getOne(uuid);
 
     return extracted(user, SetUtils.hashSet(topic));
@@ -151,7 +159,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   private Status getOrCreateStatus(Long taskId, String login) {
-    User user = anwenderRepository.getOne(login);
+    User user = userRepository.getOne(login);
     Task task = taskRepository.getOne(taskId);
     Status status = statusRepository.findByUserAndTask(user, task);
     if (status == null) {
