@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    LOG.info("Rufe Anwender {} auf.", username);
+    
     Optional<User> findeMitspieler =
         anwenderRepository.findById(username);
     if (findeMitspieler.isPresent()) {
@@ -57,6 +59,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
           user.getPassword(),
           user.isAdministrator() ? ADMIN_ROLES : STANDARD_ROLES);
     } else {
+      LOG.debug("Anwender {} konnte nicht gefunden werden.", username);
       throw new UsernameNotFoundException("Anwender konnte nicht gefunden werden.");
     }
   }
@@ -64,6 +67,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
   @Override
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<UserDisplayDto> getAllUsers() {
+    LOG.info("Rufe alle Anwender auf.");
+    
     List<UserDisplayDto> result = new ArrayList<>();
     for (User anwender : anwenderRepository.findAll()) {
       result.add(mapper.map(anwender, UserDisplayDto.class));
@@ -74,6 +79,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
   @Override
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<UserDisplayDto> findeAdmins() {
+    LOG.info("Rufe alle Admins auf.");
 
     // Das Mapping auf DTOs geht eleganter, ist dann aber schwer verständlich.
     List<UserDisplayDto> result = new ArrayList<>();
@@ -94,59 +100,82 @@ public class UserServiceImpl implements UserDetailsService, UserService {
   @Override
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public void legeAn(String login, String password, boolean isAdministrator) {
-    LOG.debug("Erstelle Anwender {}.", login);
+    LOG.info("Erstelle Anwender {}.", login);
+    LOG.debug("Erstelle Anwender mit isAdministrator {}.", isAdministrator);
     
     // Validierung von Login
     if (anwenderRepository.existsById(login)) {
+      LOG.debug("Anwender {} exisitiert bereits und kann nicht angelegt werden.", login);
       throw new ValidationException("Der Benutzername ist bereits vergeben.");
     }
     
+    if (login.length() < 1) {
+      LOG.debug("Benutzername ist leer, Anwender kann nicht angelegt werden.");
+      throw new ValidationException("Bitte gib einen Benutzernamen an.");
+    }
+    
     if (login.length() < 4) {
+      LOG.debug("Benutzername {} ist zu kurz, Anwender kann nicht angelegt werden.", login);
       throw new ValidationException("Der Benutzername muss mindestens vier Zeichen lang sein.");
     }
     
     if (login.length() > 20) {
+      LOG.debug("Benutzername {} ist zu lang, Anwender kann nicht angelegt werden.", login);
       throw new ValidationException("Der Benutzername darf maximal zwanzig Zeichen lang sein.");
     }
     
     for (char c : login.toCharArray()) {
       if (!Character.isLetter(c)) {
+        LOG.debug("Benutzername {} ist nicht gültig, Anwender kann nicht angelegt werden.", login);
         throw new ValidationException("Der Benutzername darf nur aus Kleinbuchstaben bestehen.");
       }
     }
     
     if (!login.toLowerCase().equals(login)) {
+      LOG.debug("Benutzername {} ist nicht gültig, Anwender kann nicht angelegt werden.", login);
       throw new ValidationException("Der Benutzername darf nur aus Kleinbuchstaben bestehen.");
     }
     
     // Validierung von Passwort
+    if (password.length() < 1) {
+      LOG.debug("Passwort ist leer, Anwender kann nicht angelegt werden.");
+      throw new ValidationException("Bitte gib ein Passwort an.");
+    }
+    
     if (password.length() < 8) {
+      LOG.debug("Passwort ist zu kurz, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort muss mindestens acht Zeichen lang sein.");
     }
     
     if (password.length() > 20) {
+      LOG.debug("Passwort ist zu lang, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort darf maximal zwanzig Zeichen lang sein.");
     }
     
     if (password.contains(" ") || password.contains("\t")) {
+      LOG.debug("Passwort ist nicht gültig, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort darf keine Leerzeichen oder Leerräume "
           + "enthalten.");
     }
     
     if (!password.matches(".*\\d.*")) {
+      LOG.debug("Passwort ist nicht gültig, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort muss mindestens eine Zahl enthalten.");
     }
     
     if (!password.matches(".*[A-ZÄÖÜẞ].*")) {
+      LOG.debug("Passwort ist nicht gültig, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort muss mindestens einen Großbuchstaben enthalten.");
     }
     
     if (!password.matches(".*[a-zäöüß].*")) {
+      LOG.debug("Passwort ist nicht gültig, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort muss mindestens einen Kleinbuchstaben "
           + "enthalten.");
     }
     
     if (!password.matches(".*[#§$%&@€µ,.\\-;:_'´`\"!?°^+*/\\\\=~<>|()\\[\\]{}].*")) {
+      LOG.debug("Passwort ist nicht gültig, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort muss mindestens ein Sonderzeichen enhalten.");
     }
     

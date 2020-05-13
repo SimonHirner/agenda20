@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.validation.ValidationException;
 import org.apache.commons.collections4.SetUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.ValidationException;
 
 @Component
 @Transactional(rollbackFor = Exception.class)
@@ -51,39 +50,48 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public Long createTask(String uuid, String title, String login) {
+    LOG.info("Erstelle neuen Task in Topic {}.", uuid);
+    LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
+    
     Topic t = topicRepository.findById(uuid).get();
     User user = userRepository.getOne(login);
-    LOG.info("Erstelle neuen Task: " + title);
     
-    if (!user.equals(t.getCreator())){
-      LOG.debug("Unerlaubter Zugriffsversuch auf Topic"+ t.getTitle() +"durch: "+ login);
-      throw new AccessDeniedException("Kein Zugriff auf dieses Topic möglich!");
+    if (!user.equals(t.getCreator())) {
+      LOG.warn("Anwender {} ist nicht berechtigt einen Task in Topic {} zu erstellen!", 
+          login, t.getTitle());
+      throw new AccessDeniedException("Kein Zugriff auf dieses Topic möglich.");
     }
   
-    //Validierung des Task Namens
-    if (title.length() < 1){
-      throw new ValidationException("Bitte gib einen Namen für den Task an!");
+    // Validierung des Task Namens
+    if (title.length() < 1) {
+      LOG.debug("Der Name ist leer, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Bitte gib einen Namen für den Task an.");
     }
-    if (title.length() < 8){
-      throw new ValidationException("Der Name des Tasks muss mindestens 8 Zeichen lang sein!");
+    if (title.length() < 8) {
+      LOG.debug("Der Name {} ist zu kurz, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Der Name des Tasks muss mindestens 8 Zeichen lang sein.");
     }
-    if (title.length() > 32){
-      throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein!");
+    if (title.length() > 32) {
+      LOG.debug("Der Name {} ist zu lang, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein.");
     }
     
     Task task = new Task(t, title);
     taskRepository.save(task);
-    LOG.info("Neuer Task erstellt: " + title);
     return task.getId();
   }
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public SubscriberTaskDto getTask(Long taskId, String login) {
+    LOG.info("Rufe Task {} auf.", taskId);
+    LOG.debug("Task von {} wird aufgerufen.", login);
+    
     Task task = taskRepository.getOne(taskId);
     Topic topic = task.getTopic();
     User user = userRepository.getOne(login);
     if (!(topic.getCreator().equals(user) || topic.getSubscriber().contains(user))) {
+      LOG.warn("Anwender {} ist nicht berechtigt Task {} einzusehen!", login, taskId);
       throw new AccessDeniedException("Zugriff verweigert.");
     }
     Status status = getOrCreateStatus(taskId, login);
@@ -93,10 +101,14 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public OwnerTaskDto getManagedTask(Long taskId, String login) {
+    LOG.info("Rufe Verwaltung für Task {} auf.", taskId);
+    LOG.debug("Taskverwaltung wird von {} aufgerufen.", login);
+    
     Task task = taskRepository.getOne(taskId);
     Topic topic = task.getTopic();
     User createdBy = topic.getCreator();
     if (!login.equals(createdBy.getLogin())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Task {} zu verwalten!", login, taskId);
       throw new AccessDeniedException("Zugriff verweigert.");
     }
     return mapper.createManagedDto(task);
@@ -105,6 +117,8 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public List<SubscriberTaskDto> getSubscribedTasks(String login) {
+    LOG.info("Rufe abonnierte Tasks von {} auf.", login);
+    
     User user = userRepository.getOne(login);
     Collection<Topic> topics = user.getSubscriptions();
     return extracted(user, topics);
@@ -134,6 +148,9 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public List<SubscriberTaskDto> getTasksForTopic(String uuid, String login) {
+    LOG.info("Rufe Tasks für Topic {} auf.", uuid);
+    LOG.debug("Tasks von {} werden aufgerufen.", login);
+    
     User user = userRepository.getOne(login);
     Topic topic = topicRepository.getOne(uuid);
 
@@ -144,6 +161,9 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public void checkTask(Long taskId, String login) {
+    LOG.info("Ändere Status von Task {}.", taskId);
+    LOG.debug("Status wird von {} geändert.", login);
+    
     Status status = getOrCreateStatus(taskId, login);
     status.setStatus(StatusEnum.FERTIG);
     LOG.debug("Status von Task {} und Anwender {} gesetzt auf {}", status.getTask(),
@@ -153,6 +173,9 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public List<OwnerTaskDto> getManagedTasks(String uuid, String login) {
+    LOG.info("Rufe verwaltete Tasks von Topic {} auf.", uuid);
+    LOG.debug("Tasks werden von {} aufgerufen.", login);
+    
     List<OwnerTaskDto> result = new ArrayList<>();
     Topic topic = topicRepository.getOne(uuid);
     for (Task task : topic.getTasks()) {
