@@ -17,6 +17,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+
 @Component
 @Transactional(rollbackFor = Exception.class)
 public class TopicServiceImpl implements TopicService {
@@ -39,7 +42,15 @@ public class TopicServiceImpl implements TopicService {
   @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")
   public String createTopic(String title, String login) {
     LOG.debug("Erstelle Topic {}.", title);
-    // TODO: Validation
+    
+    //Validierung des Topic Namens
+    if (title.length() < 1){
+      throw new ValidationException("Bitte geben sie einen Namen für das Topic an!");
+    }
+    if (title.length() > 60){
+      throw new ValidationException("Der Name des Topics darf höchstens 60 Zeichen lang sein!");
+    }
+    
     String uuid = uuidProvider.getRandomUuid();
     User creator = anwenderRepository.findById(login).get();
     Topic topic = new Topic(uuid, title, creator);

@@ -25,6 +25,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ValidationException;
+
 @Component
 @Transactional(rollbackFor = Exception.class)
 public class TaskServiceImpl implements TaskService {
@@ -48,9 +50,18 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public Long createTask(String uuid, String titel, String login) {
+  public Long createTask(String uuid, String title, String login) {
     Topic t = topicRepository.findById(uuid).get();
-    Task task = new Task(t, titel);
+  
+    //Validierung des Task Namens
+    if (title.length() < 1){
+      throw new ValidationException("Bitte geben sie einen Namen für das Topic an!");
+    }
+    if (title.length() > 32){
+      throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein!");
+    }
+    
+    Task task = new Task(t, title);
     taskRepository.save(task);
     return task.getId();
   }
