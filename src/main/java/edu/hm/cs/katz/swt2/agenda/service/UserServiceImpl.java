@@ -9,6 +9,7 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.ValidationException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +95,61 @@ public class UserServiceImpl implements UserDetailsService, UserService {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public void legeAn(String login, String password, boolean isAdministrator) {
     LOG.debug("Erstelle Anwender {}.", login);
+    
+    // Validierung von Login
+    if (anwenderRepository.existsById(login)) {
+      throw new ValidationException("Der Benutzername ist bereits vergeben.");
+    }
+    
+    if (login.length() < 4) {
+      throw new ValidationException("Der Benutzername muss mindestens vier Zeichen lang sein.");
+    }
+    
+    if (login.length() > 20) {
+      throw new ValidationException("Der Benutzername darf maximal zwanzig Zeichen lang sein.");
+    }
+    
+    for (char c : login.toCharArray()) {
+      if (!Character.isLetter(c)) {
+        throw new ValidationException("Der Benutzername darf nur aus Kleinbuchstaben bestehen.");
+      }
+    }
+    
+    if (!login.toLowerCase().equals(login)) {
+      throw new ValidationException("Der Benutzername darf nur aus Kleinbuchstaben bestehen.");
+    }
+    
+    // Validierung von Passwort
+    if (password.length() < 8) {
+      throw new ValidationException("Das Passwort muss mindestens acht Zeichen lang sein.");
+    }
+    
+    if (password.length() > 20) {
+      throw new ValidationException("Das Passwort darf maximal zwanzig Zeichen lang sein.");
+    }
+    
+    if (password.contains(" ") || password.contains("\t")) {
+      throw new ValidationException("Das Passwort darf keine Leerzeichen oder Leerräume "
+          + "enthalten.");
+    }
+    
+    if (!password.matches(".*\\d.*")) {
+      throw new ValidationException("Das Passwort muss mindestens eine Zahl enthalten.");
+    }
+    
+    if (!password.matches(".*[A-ZÄÖÜẞ].*")) {
+      throw new ValidationException("Das Passwort muss mindestens einen Großbuchstaben enthalten.");
+    }
+    
+    if (!password.matches(".*[a-zäöüß].*")) {
+      throw new ValidationException("Das Passwort muss mindestens einen Kleinbuchstaben "
+          + "enthalten.");
+    }
+    
+    if (!password.matches(".*[#§$%&@€µ,.\\-;:_'´`\"!?°^+*/\\\\=~<>|()\\[\\]{}].*")) {
+      throw new ValidationException("Das Passwort muss mindestens ein Sonderzeichen enhalten.");
+    }
+    
     // Passwörter müssen Hashverfahren benennen.
     // Wir hashen nicht (noop), d.h. wir haben die
     // Passwörter im Klartext in der Datenbank (böse)

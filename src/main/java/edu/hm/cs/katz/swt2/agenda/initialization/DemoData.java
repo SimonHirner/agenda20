@@ -47,9 +47,9 @@ public class DemoData {
     SecurityHelper.escalate(); // admin rights
     LOG.debug("Erzeuge Demo-Daten.");
 
-    anwenderService.legeAn(LOGIN_FINE, "f", false);
-    anwenderService.legeAn(LOGIN_ERNIE, "e", false);
-    anwenderService.legeAn(LOGIN_BERT, "b", false);
+    anwenderService.legeAn(LOGIN_FINE, "#Fine2020", false);
+    anwenderService.legeAn(LOGIN_ERNIE, "#Ernie2020", false);
+    anwenderService.legeAn(LOGIN_BERT, "#Bert2020", false);
 
     String htmlKursUuid = topicService.createTopic("HTML für Anfänger", LOGIN_FINE);
     topicService.subscribe(htmlKursUuid, LOGIN_ERNIE);
