@@ -3,20 +3,32 @@
 
 <head th:replace="fragments :: head" />
 <body>
-	<nav th:replace="fragments :: navigation"></nav>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+	<div class="row justify-content-center bg-light">
+		<div class="col-12">
+			<h4 class="display-4">
+				Anwender <a href="/users/create" class="btn btn-primary">Neuen Anwender anlegen</a>
+			</h4>
+		</div>
+	</div>
+	<div class="row justify-content-left bg-light">
+		<div class="col-8">
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th scope="col">Login</th>
+				</tr>
 
-	<h2>Anwender</h2>
-	<a href="/users/create" class="btn btn-primary">Anwender anlegen</a>
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">Login</th>
-			</tr>
-		</thead>
-		<tr th:each="user : ${users}">
-			<td th:text="${user.login} " />
-		</tr>
-	</table>
+				</thead>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.login}">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
 
 	<th:block th:replace="fragments :: scripts">
 </body>
