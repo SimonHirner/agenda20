@@ -21,5 +21,12 @@ public interface UserRepository extends JpaRepository<User, String> {
    * @return
    */
   List<User> findByAdministrator(boolean isAdministrator);
+  
+  /**
+   * Ermittelt alle Anwender, die keine Administratoren sind, und sortiert sie nach dem Login.
+   * 
+   * @return
+   */
+  List<User> findAllByAdministratorFalseOrderByLoginAsc();
 
 }

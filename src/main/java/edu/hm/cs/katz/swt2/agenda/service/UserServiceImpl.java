@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     LOG.info("Rufe alle Anwender auf.");
     
     List<UserDisplayDto> result = new ArrayList<>();
-    for (User anwender : anwenderRepository.findAll()) {
+    for (User anwender : anwenderRepository.findAllByAdministratorFalseOrderByLoginAsc()) {
       result.add(mapper.map(anwender, UserDisplayDto.class));
     }
     return result;
