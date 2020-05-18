@@ -40,12 +40,14 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 
 class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
 	-String login
+	-String name
 	-String password
 	-boolean administrator
 	-Collection<Topic> subscriptions
 	-Collection<Status> status
 	+void addSubscription(Topic topic)
 	+String getLogin()
+	+String getName()
 	+String getPassword()
 	+boolean isAdministrator()
 	+Collection<Topic> getSubscriptions()

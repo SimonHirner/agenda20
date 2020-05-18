@@ -11,25 +11,29 @@ skinparam ClassFontStyle bold
 'User
 object "<u>fine:User</u>" as fine{
     login = "fine"
-    password = "f"
+    password = "#Fine2020"
+    name = "Fine"
     admin = false
     status
 }
 object "<u>ernie:User</u>" as ernie{
     login = "ernie"
-    password = "e"
+    name = "Ernie"
+    password = "#Ernie2020"
     admin = false
     status 2
 }
 object "<u>bert:User</u>" as bert{
     login = "bert"
-    password = "b"
+    name = "Bert"
+    password = "#Bert2020"
     admin = false
     status 6
 }
 object "<u>admin:User</u>" as admin{
     login = "admin"
-    password = "pwd"
+    name = "Administrator"
+    password = "#Admin2020"
     admin = true
     status statusadmin
 }
@@ -94,8 +98,8 @@ fine -- HTMLKurs :> erstellt
 fine -- CSSKurs :> erstellt
 ernie -- BackKurs :> erstellt
 
-ernie -- 2 :> bezieht sich
-bert -- 6 :> bezieht sich
+ernie -- 2 :> besitzt
+bert -- 6 :> besitzt
 
 ernie -- HTMLKurs :> abboniert
 bert -- BackKurs :> abboniert
