@@ -22,4 +22,12 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
    */
   List<Topic> findByCreator(User creator);
 
+  /**
+   * Zähle alle Topics, die von einem bestimmten User erstellt wurden.
+   * 
+   * @param user Creator
+   * @return
+   */
+  int countByCreator(User user);
+
 }

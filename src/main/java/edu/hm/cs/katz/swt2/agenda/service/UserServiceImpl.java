@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.ValidationException;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
   private UserRepository anwenderRepository;
 
   @Autowired
-  private ModelMapper mapper;
+  private DtoMapper mapper;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     
     List<UserDisplayDto> result = new ArrayList<>();
     for (User anwender : anwenderRepository.findAllByAdministratorFalseOrderByLoginAsc()) {
-      result.add(mapper.map(anwender, UserDisplayDto.class));
+      result.add(mapper.createDto(anwender));
     }
     return result;
   }
@@ -84,7 +83,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     // Das Mapping auf DTOs geht eleganter, ist dann aber schwer verständlich.
     List<UserDisplayDto> result = new ArrayList<>();
     for (User anwender : anwenderRepository.findByAdministrator(true)) {
-      result.add(mapper.map(anwender, UserDisplayDto.class));
+      result.add(mapper.createDto(anwender));
     }
     return result;
   }
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
   public UserDisplayDto getUserInfo(String login) {
     LOG.debug("Lese Daten für Anwender {}.", login);
     User anwender = anwenderRepository.getOne(login);
-    return new UserDisplayDto(anwender.getLogin());
+    return mapper.createDto(anwender);
   }
 
   @Override
