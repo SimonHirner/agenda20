@@ -18,6 +18,7 @@
 				<thead>
 				<tr>
 					<th scope="col">Login</th>
+					<th scope="col">Name</th>
 					<th scope="col">#Topics</th>
 					<th scope="col">#Abonnements</th>
 				</tr>
@@ -25,6 +26,7 @@
 				</thead>
 				<tr th:each="user : ${users}">
 					<td th:text="${user.login}"/>
+					<td th:text="${user.name}"/>
 					<td th:text="${user.topicCount}"/>
 					<td th:text="${user.subscriptionCount}"/>
 				</tr>

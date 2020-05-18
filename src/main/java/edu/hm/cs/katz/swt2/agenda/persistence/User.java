@@ -26,6 +26,11 @@ public class User {
   @Length(min = 4, max = 32)
   @Column(length = 32)
   private String login;
+  
+  @NotNull
+  @Length(min = 4, max = 32)
+  @Column(length = 32)
+  private String name;
 
   @NotNull
   @Length(min = 7, max = 32) // lenght includes "{noop}"
@@ -52,12 +57,14 @@ public class User {
    * Konstruktor zum Initialisieren eines neuen Anwenders.
    * 
    * @param login login, mindestens 4 Zeichen lang
+   * @param name Name, mindestens 4 Zeichen lang
    * @param password Passwort inklusive Hash "{noop}"
    * @param administrator Flag (true für Administratorrechte)
    */
-  public User(String login, String password, boolean administrator) {
+  public User(String login, String name, String password, boolean administrator) {
     super();
     this.login = login;
+    this.name = name;
     this.password = password;
     this.administrator = administrator;
   }
@@ -73,6 +80,10 @@ public class User {
 
   public String getLogin() {
     return login;
+  }
+  
+  public String getName() {
+    return name;
   }
 
   public String getPassword() {

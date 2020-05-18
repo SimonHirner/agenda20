@@ -14,16 +14,21 @@
 					method="post">
 
 					<div class="form-group col-4">
-						<label>Benutzername</label>
 						<input th:field="*{login}" class="form-control"
 							placeholder="Login" minlength="4" maxlength="20"/>
-						<small class="form-text text-muted">Geben Sie einen neuen Nutzernamen mit mindestens 4 Zeichen an.</small>
+						<small class="form-text text-muted">Geben Sie einen neuen Login mit mindestens 4 Zeichen ein.</small>
+					</div>
+					
+					<div class="form-group col-4">
+						<input th:field="*{name}" class="form-control"
+							placeholder="Name" minlength="4" maxlength="32"/>
+						<small class="form-text text-muted">Geben Sie einen Namen mit mindestens 4 Zeichen ein.</small>
 					</div>
 
 					<div class="form-group col-4">
 						<input th:field="*{password}" class="form-control"
 							placeholder="Password" type="password" minlength="8" maxlength="20"/>
-						<small class="form-text text-muted">Geben Sie ein Passwort mit mindestens 8 Zeichen an.</small>
+						<small class="form-text text-muted">Geben Sie ein Passwort mit mindestens 8 Zeichen ein.</small>
 					</div>
 
 					<!-- TODO Überprüfung der Datenschutzerklärung in späterem Stadium implementieren
