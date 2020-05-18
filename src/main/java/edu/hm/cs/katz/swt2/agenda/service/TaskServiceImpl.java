@@ -21,6 +21,7 @@ import org.apache.commons.collections4.SetUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -133,15 +134,30 @@ public class TaskServiceImpl implements TaskService {
 
     List<SubscriberTaskDto> result = new ArrayList<>();
 
-    for (Topic t : topics) {
-      for (Task task : t.getTasks()) {
-        if (statusForTask.get(task) == null) {
-          Status createdStatus = getOrCreateStatus(task.getId(), user.getLogin());
-          statusForTask.put(task, createdStatus);
-        }
-        result.add(mapper.createReadDto(task, statusForTask.get(task)));
+    for (Task task : taskRepository.findAllByTopicIn(topics,
+        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+      if (statusForTask.get(task) == null) {
+        Status createdStatus = getOrCreateStatus(task.getId(), user.getLogin());
+        statusForTask.put(task, createdStatus);
+      }
+     
+    }
+    
+    for (Task task1 : taskRepository.findAllByTopicIn(topics,
+        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+      if (statusForTask.get(task1).getStatus().equals(StatusEnum.OFFEN)
+          || statusForTask.get(task1).getStatus().equals(StatusEnum.NEU)) {
+        result.add(mapper.createReadDto(task1, statusForTask.get(task1)));
       }
     }
+    
+    for (Task task1 : taskRepository.findAllByTopicIn(topics,
+        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+      if (statusForTask.get(task1).getStatus().equals(StatusEnum.FERTIG)) {
+        result.add(mapper.createReadDto(task1, statusForTask.get(task1)));
+      }
+    }
+      
     return result;
   }
 
@@ -178,7 +194,8 @@ public class TaskServiceImpl implements TaskService {
     
     List<OwnerTaskDto> result = new ArrayList<>();
     Topic topic = topicRepository.getOne(uuid);
-    for (Task task : topic.getTasks()) {
+    for (Task task : taskRepository.findAllByTopic(topic,
+        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
       result.add(mapper.createManagedDto(task));
     }
     return result;
