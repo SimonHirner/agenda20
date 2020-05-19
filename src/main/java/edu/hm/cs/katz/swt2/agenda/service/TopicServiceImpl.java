@@ -38,27 +38,59 @@ public class TopicServiceImpl implements TopicService {
 
   @Override
   @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")
-  public String createTopic(String title, String login) {
+  public String createTopic(String title, String shortDescription, String longDescription,
+      String login) {
     LOG.info("Erstelle neues Topic {}.", title);
     LOG.debug("Topic wird erstellt von {}.", login);
     
-    //Validierung des Topic Namens
+    // Validierung des Topic Namens
     if (title.length() < 1) {
       LOG.debug("Der Name {} ist leer, Topic kann nicht angelegt werden.", title);
       throw new ValidationException("Bitte gib einen Namen für das Topic an!");
     }
+    
     if (title.length() < 10) {
       LOG.debug("Der Name {} ist zu kurz, Topic kann nicht angelegt werden.", title);
       throw new ValidationException("Der Name des Topics muss mindestens 10 Zeichen lang sein!");
     }
+    
     if (title.length() > 60) {
       LOG.debug("Der Name {} ist zu lang, Topic kann nicht angelegt werden.", title);
       throw new ValidationException("Der Name des Topics darf höchstens 60 Zeichen lang sein!");
     }
     
+    // Validierung der Kurzbeschreibung
+    if (shortDescription.length() < 1) {
+      LOG.debug("Die Kurzbeschreibung {} ist leer, Topic kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
+    }
+    
+    if (shortDescription.length() < 20) {
+      LOG.debug("Die Kurzbeschreibung {} ist zu kurz, Topic kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Die Kurzbeschreibung des Topics muss mindestens 20 Zeichen "
+          + "lang sein!");
+    }
+    
+    if (shortDescription.length() > 120) {
+      LOG.debug("Die Kurzbeschreibung {} ist zu lang, Topic kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Die Kurzbeschreibung des Topics darf höchstens 120 Zeichen "
+          + "lang sein!");
+    }
+    
+    // Validierung der Langbeschreibung  
+    if (longDescription.length() > 1500) {
+      LOG.debug("Die Langbeschreibung {} ist zu lang, Topic kann nicht angelegt werden.", 
+          longDescription);
+      throw new ValidationException("Die Langbeschreibung des Topics darf höchstens 1500 Zeichen "
+          + "lang sein!");
+    }    
+    
     String uuid = uuidProvider.getRandomUuid();
     User creator = anwenderRepository.findById(login).get();
-    Topic topic = new Topic(uuid, title, creator);
+    Topic topic = new Topic(uuid, title, shortDescription, longDescription, creator);
     topicRepository.save(topic);
     return uuid;
   }

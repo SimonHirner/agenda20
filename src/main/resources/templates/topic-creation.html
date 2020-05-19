@@ -16,7 +16,17 @@
 					<div class="form-group">
 						<input th:field="*{title}" class="form-control"
 							placeholder="Titel" minlength="10" maxlength="60"/> <small class="form-text text-muted">
-							Verwenden Sie einen aussagekräftigen Titel! </small>
+							Verwenden Sie einen aussagekräftigen Titel. </small>
+					</div>
+					<div class="form-group">
+						<input th:field="*{shortDescription}" class="form-control"
+							placeholder="Kurzbeschreibung" minlength="20" maxlength="120"/> <small class="form-text text-muted">
+							Verwenden Sie eine aussagekräftige Kurzbeschreibung. </small>
+					</div>
+					<div class="form-group">
+						<textarea th:field="*{longDescription}" class="form-control"
+							placeholder="Langbeschreibung" maxlength="1500"/> <small class="form-text text-muted">
+							Verwenden Sie optional eine aussagekräftige Langbeschreibung. </small>
 					</div>
 
 					<button type="submit" class="btn btn-primary">Erstellen!</button>

@@ -26,6 +26,15 @@ public class Topic {
   @Column(length = 60)
   @Length(min = 10, max = 60)
   private String title;
+  
+  @NotNull
+  @Column(length = 120)
+  @Length(min = 20, max = 120)
+  private String shortDescription;
+  
+  @Column(length = 1500)
+  @Length(min = 0, max = 1500)
+  private String longDescription;
 
   @ManyToOne
   @NotNull
@@ -51,9 +60,12 @@ public class Topic {
    * @param title Titel, zwischen 10 und 60 Zeichen.
    * @param createdBy Anwender, dem das Topic zugeordnet ist.
    */
-  public Topic(final String uuid, final String title, final User createdBy) {
+  public Topic(final String uuid, final String title, final String shortDescription, 
+      final String longDescription, final User createdBy) {
     this.uuid = uuid;
     this.title = title;
+    this.shortDescription = shortDescription;
+    this.longDescription = longDescription;
     this.creator = createdBy;
   }
 
@@ -68,6 +80,14 @@ public class Topic {
 
   public String getTitle() {
     return title;
+  }
+  
+  public String getShortDescription() {
+    return shortDescription;
+  }
+  
+  public String getLongDescription() {
+    return longDescription;
   }
 
   public User getCreator() {

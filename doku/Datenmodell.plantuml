@@ -57,11 +57,15 @@ class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
 class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 	-String uuid
 	-String title
+	-String shortDescription
+	-String longDescription
 	-User creator
 	-Collection<Task> tasks
 	-Collection<User> subscriber
 	+String getUuid()
 	+String getTitle()
+	+String getShortDescription()
+	+String getLongDescription()
 	+User getCreator()
 	+Collection<Task> getTasks()
 	+void addTask(Task t)

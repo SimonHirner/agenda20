@@ -51,15 +51,26 @@ public class DemoData {
     anwenderService.legeAn(LOGIN_ERNIE, "Ernie", "#Ernie2020", false);
     anwenderService.legeAn(LOGIN_BERT, "Bert", "#Bert2020", false);
 
-    String htmlKursUuid = topicService.createTopic("HTML für Anfänger", LOGIN_FINE);
+    String htmlKursUuid = topicService.createTopic("HTML für Anfänger",
+        "Dieser Kurs behandelt die Grundlagen von HTML.",
+        "Die Hypertext Markup Language ist eine textbasierte Auszeichnungssprache zur"
+        + " Strukturierung elektronischer Dokumente wie Texte mit Hyperlinks,"
+        + " Bildern und anderen Inhalten.", LOGIN_FINE);
     topicService.subscribe(htmlKursUuid, LOGIN_ERNIE);
     topicService.subscribe(htmlKursUuid, LOGIN_BERT);
     Long linkErstellenTask = taskService.createTask(htmlKursUuid, "Link erstellen", LOGIN_FINE);
     taskService.checkTask(linkErstellenTask, LOGIN_ERNIE);
     taskService.createTask(htmlKursUuid, "Leeres HTML-Template erstellen", LOGIN_FINE);
        
-    String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene", LOGIN_FINE);
-    String erniesKursUuid = topicService.createTopic("Ernies Backkurs", LOGIN_ERNIE);
+    String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene",
+        "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS.",
+        "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
+        + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
+        + " des World Wide Webs.", LOGIN_FINE);
+    String erniesKursUuid = topicService.createTopic("Ernies Backkurs",
+        "Lernen Sie Backen mit Ernie.",
+        "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
+        + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.", LOGIN_ERNIE);
     taskService.createTask(erniesKursUuid, "Googlehupf backen", LOGIN_ERNIE);
     Long affenMuffinTask =
         taskService.createTask(erniesKursUuid, "Affenmuffins backen", LOGIN_ERNIE);
