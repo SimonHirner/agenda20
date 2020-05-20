@@ -34,7 +34,7 @@ public class TaskController extends AbstractController {
       @PathVariable("uuid") String uuid) {
     OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
     model.addAttribute("topic", topic);
-    model.addAttribute("newTask", new TaskDto(null, "", topic));
+    model.addAttribute("newTask", new TaskDto(null, "", "", "", topic));
     return "task-creation";
   }
 
@@ -46,7 +46,7 @@ public class TaskController extends AbstractController {
       @PathVariable("uuid") String uuid, @ModelAttribute("newTask") TaskDto newTask,
       RedirectAttributes redirectAttributes) {
     try {
-      taskService.createTask(uuid, newTask.getTitle(), auth.getName());
+      taskService.createTask(uuid, newTask.getTitle(), newTask.getShortInfo(), newTask.getLongInfo(), auth.getName());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/topics/" + uuid + "/createTask";

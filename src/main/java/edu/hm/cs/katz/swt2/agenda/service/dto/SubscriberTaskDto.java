@@ -14,9 +14,9 @@ public class SubscriberTaskDto extends TaskDto {
 
   private StatusDto status;
 
-  public SubscriberTaskDto(Long taskId, String title, SubscriberTopicDto topicDto,
+  public SubscriberTaskDto(Long taskId, String title, String shortInfo, String longInfo, SubscriberTopicDto topicDto,
       StatusDto status) {
-    super(taskId, title, topicDto);
+    super(taskId, title, shortInfo, longInfo, topicDto);
     this.status = status;
   }
 

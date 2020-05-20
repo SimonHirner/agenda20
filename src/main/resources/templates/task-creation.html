@@ -19,6 +19,18 @@
 							Verwenden Sie einen aussagekräftigen Titel.</small>
 					</div>
 
+					<div class="form-group">
+						<input th:field="*{shortInfo}" class="form-control"
+							   placeholder="Kurzbeschreibung" minlength="8" maxlength="120"/> <small class="form-text text-muted">
+						Beschreiben Sie den Task kurz.</small>
+					</div>
+
+					<div class="form-group">
+						<input th:field="*{longInfo}" class="form-control"
+							   placeholder="Langbeschreibung" minlength="0" maxlength="500"/> <small class="form-text text-muted">
+						Sie können auch eine ausführliche Beschreibung hinzufügen.</small>
+					</div>
+
 					<button type="submit" class="btn btn-primary">Erstellen!</button>
 					<a th:href="'/topics/'+${topic.uuid}+'/manage'" class="btn btn-danger">Abbrechen</a>
 				</form>

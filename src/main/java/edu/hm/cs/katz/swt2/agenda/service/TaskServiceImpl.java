@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public Long createTask(String uuid, String title, String login) {
+  public Long createTask(String uuid, String title, String shortInfo, String longInfo, String login) {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
@@ -76,8 +76,26 @@ public class TaskServiceImpl implements TaskService {
       LOG.debug("Der Name {} ist zu lang, Task kann nicht angelegt werden.", title);
       throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein.");
     }
+  
+    // Validierung der Task Beschreibungen
+    if (shortInfo.length() < 1) {
+      LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Bitte gib eine kurze Beshreibung für den Task an.");
+    }
+    if (shortInfo.length() < 8) {
+      LOG.debug("Der Kurzbeschreibung {} ist zu kurz, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Die Beschreibung muss mindestens 8 Zeichen lang sein.");
+    }
+    if (shortInfo.length() > 120) {
+      LOG.debug("Die Beschhreibung {} ist zu lang, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Die Beschreibung des Tasks darf höchstens 120 Zeichen lang sein.");
+    }
+    if (longInfo.length() > 500) {
+      LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.", title);
+      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen lang sein.");
+    }
     
-    Task task = new Task(t, title);
+    Task task = new Task(t, title, shortInfo, longInfo );
     taskRepository.save(task);
     return task.getId();
   }

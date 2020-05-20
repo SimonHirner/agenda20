@@ -14,13 +14,18 @@ public class TaskDto {
   Long id;
   String title;
   SubscriberTopicDto topic;
+  String shortInfo;
+  String longInfo;
+  
 
   /**
    * Konstruktor.
    */
-  public TaskDto(Long id, String title, SubscriberTopicDto topicDto) {
+  public TaskDto(Long id, String title, String shortInfo, String longInfo, SubscriberTopicDto topicDto) {
     this.id = id;
     this.title = title;
+    this.shortInfo = shortInfo;
+    this.longInfo = longInfo;
     this.topic = topicDto;
   }
 
@@ -35,7 +40,23 @@ public class TaskDto {
   public void setTitle(String title) {
     this.title = title;
   }
-
+  
+  public String getShortInfo() {
+    return shortInfo;
+  }
+  
+  public void setShortInfo(String shortInfo) {
+    this.shortInfo = shortInfo;
+  }
+  
+  public String getLongInfo() {
+    return longInfo;
+  }
+  
+  public void setLongInfo(String longInfo) {
+    this.longInfo = longInfo;
+  }
+  
   public SubscriberTopicDto getTopic() {
     return topic;
   }

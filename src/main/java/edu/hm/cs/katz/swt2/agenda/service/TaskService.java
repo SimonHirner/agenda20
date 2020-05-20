@@ -14,7 +14,7 @@ public interface TaskService {
   /**
    * Erstellt einen neuen Task.
    */
-  Long createTask(String topicUuid, String title, String login);
+  Long createTask(String topicUuid, String title, String shortInfo, String longInfo, String login);
 
   /**
    * Zugriff auf einen Task (priviligierte Sicht für Ersteller des Topics).
