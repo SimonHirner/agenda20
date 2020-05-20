@@ -6,7 +6,7 @@
 <nav th:replace="fragments :: navigation"></nav>
 <div class="container-fluid">
 	<div class="row justify-content-center bg-light">
-		<div class="col-8">
+		<div class="col-12">
 			<h4 class="display-4" th:text="${task.title}"
 				th:classappend="${task.status.status.toString()=='FERTIG'} ? text-secondary : text-primary">Task</h4>
 			<form th:unless="${task.status.status.toString()=='FERTIG'}"

@@ -3,9 +3,29 @@
 
 <head th:replace="fragments :: head" />
 <body>
-	<nav th:replace="fragments :: navigation"></nav>
-
-	<h2>Verwaltungs-Ansicht für Task <i th:text="${task.title}"></i></h2>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+	<div class="row justify-content-center bg-light">
+		<div class="col-12">
+			<h4 class="display-4" th:text="${task.title}"
+				th:classappend="${task.status.status.toString()=='FERTIG'} ? text-secondary : text-primary">Task</h4>
+			<form th:unless="${task.status.status.toString()=='FERTIG'}"
+				  id="formName" th:action="@{/tasks/{id}/check(id=${task.id})}"
+				  th:object="${task}" method="post">
+				<button type="submit" class="btn btn-success">Done!</button>
+			</form>
+		</div>
+	</div>
+	<div class="row row-cols-1 bg-light">
+		<div class="col mb-4">
+			<div class="card">
+				<div class="card-body">
+					<p class="card-text" th:text="${task.shortInfo}">Keine Kurzbeschreibung verfügbar</p>
+					<p class="card-text" th:text="${task.longInfo}">Keine Langeschreibung verfügbar</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<th:block th:replace="fragments :: scripts">
 </body>
