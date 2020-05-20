@@ -7,13 +7,8 @@
 <div class="container-fluid">
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
-			<h4 class="display-4" th:text="${task.title}"
-				th:classappend="${task.status.status.toString()=='FERTIG'} ? text-secondary : text-primary">Task</h4>
-			<form th:unless="${task.status.status.toString()=='FERTIG'}"
-				  id="formName" th:action="@{/tasks/{id}/check(id=${task.id})}"
-				  th:object="${task}" method="post">
-				<button type="submit" class="btn btn-success">Done!</button>
-			</form>
+			<h4 class="display-4" th:text="${task.title}">Task</h4>
+			
 		</div>
 	</div>
 	<div class="row row-cols-1 bg-light">
