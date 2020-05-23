@@ -21,7 +21,8 @@ public class TaskDto {
   /**
    * Konstruktor.
    */
-  public TaskDto(Long id, String title, String shortInfo, String longInfo, SubscriberTopicDto topicDto) {
+  public TaskDto(Long id, String title, String shortInfo, String longInfo,
+      SubscriberTopicDto topicDto) {
     this.id = id;
     this.title = title;
     this.shortInfo = shortInfo;

@@ -47,10 +47,27 @@ public class TaskServiceImpl implements TaskService {
 
   @Autowired
   private DtoMapper mapper;
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void deleteTask(Long id, String login) {
+    LOG.info("Lösche Task {}.", id);
+    LOG.debug("Task wird gelöscht von {}.", login);
+    Task task = taskRepository.getOne(id);
+    
+    User createdBy = task.getTopic().getCreator();
+    if (!login.equals(createdBy.getLogin())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Task {} zu löschen!", login, id);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    taskRepository.delete(task);
+  }
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public Long createTask(String uuid, String title, String shortInfo, String longInfo, String login) {
+  public Long createTask(String uuid, String title, String shortInfo, String longInfo,
+      String login) {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
@@ -88,14 +105,16 @@ public class TaskServiceImpl implements TaskService {
     }
     if (shortInfo.length() > 120) {
       LOG.debug("Die Beschhreibung {} ist zu lang, Task kann nicht angelegt werden.", title);
-      throw new ValidationException("Die Beschreibung des Tasks darf höchstens 120 Zeichen lang sein.");
+      throw new ValidationException("Die Beschreibung des Tasks darf höchstens 120 Zeichen "
+          + "lang sein.");
     }
     if (longInfo.length() > 500) {
       LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.", title);
-      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen lang sein.");
+      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
+          + "lang sein.");
     }
     
-    Task task = new Task(t, title, shortInfo, longInfo );
+    Task task = new Task(t, title, shortInfo, longInfo);
     taskRepository.save(task);
     return task.getId();
   }

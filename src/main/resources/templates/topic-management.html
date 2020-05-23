@@ -43,6 +43,9 @@
 
 						<a th:href="'/tasks/'+${task.id}+'/manage'"
 							class="btn btn-primary">Verwalten</a>
+						<form th:action="'/tasks/'+${task.id}+'/delete'" method="post">
+							<button class="btn btn-danger" type="submit">Löschen</button>
+						</form>
 					</div>
 				</div>
 			</div>

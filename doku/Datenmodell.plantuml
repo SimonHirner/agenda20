@@ -33,6 +33,7 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	-Long id
 	-String title
 	-Topic topic
+	-Collection<Status> status
 	+Long getId()
 	+String getTitle()
 	+Topic getTopic()

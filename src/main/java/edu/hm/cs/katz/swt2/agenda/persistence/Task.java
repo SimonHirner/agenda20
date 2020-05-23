@@ -1,12 +1,15 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
+import java.util.Collection;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
@@ -43,6 +46,9 @@ public class Task {
   @ManyToOne
   private Topic topic;
   
+  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+  private Collection<Status> status;
+  
   /**
    * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
    */
@@ -58,7 +64,8 @@ public class Task {
    * @param shortInfo Kurzbeschreibung, darf nicht null sein.
    * @param longInfo Ausführliche Beschreibung, darf nicht null sein.
    */
-  public Task(final Topic topic, final String title, final String shortInfo, final String longInfo) {
+  public Task(final Topic topic, final String title, final String shortInfo,
+      final String longInfo) {
     this.topic = topic;
     topic.addTask(this);
     this.title = title;

@@ -15,6 +15,14 @@ public interface TaskService {
    * Erstellt einen neuen Task.
    */
   Long createTask(String topicUuid, String title, String shortInfo, String longInfo, String login);
+  
+  /**
+   * Lösche einen Task.
+   * 
+   * @param id ID des Tasks
+   * @param login Login des Anwenders
+   */
+  void deleteTask(Long id, String login);
 
   /**
    * Zugriff auf einen Task (priviligierte Sicht für Ersteller des Topics).

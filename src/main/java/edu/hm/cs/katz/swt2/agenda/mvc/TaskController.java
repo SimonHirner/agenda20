@@ -46,7 +46,8 @@ public class TaskController extends AbstractController {
       @PathVariable("uuid") String uuid, @ModelAttribute("newTask") TaskDto newTask,
       RedirectAttributes redirectAttributes) {
     try {
-      taskService.createTask(uuid, newTask.getTitle(), newTask.getShortInfo(), newTask.getLongInfo(), auth.getName());
+      taskService.createTask(uuid, newTask.getTitle(), newTask.getShortInfo(), 
+          newTask.getLongInfo(), auth.getName());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/topics/" + uuid + "/createTask";
@@ -77,6 +78,25 @@ public class TaskController extends AbstractController {
     return "task-management";
   }
 
+  /**
+   * Verarbeitet die Löschung eines Tasks.
+   */
+  @PostMapping("tasks/{id}/delete")
+  public String handleDeletion(Authentication auth, @PathVariable("id") Long id,
+      RedirectAttributes redirectAttributes) {
+    TaskDto task = taskService.getManagedTask(id, auth.getName());
+    
+    try {
+      taskService.deleteTask(id, auth.getName());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:/topics/" + task.getTopic().getUuid() + "/manage";
+    }
+    redirectAttributes.addFlashAttribute("success",
+        "Task \"" + task.getTitle() + "\" gelöscht.");
+    return "redirect:/topics/" + task.getTopic().getUuid() + "/manage";
+  }
+  
   /**
    * Verarbeitet die Markierung eines Tasks als "Done".
    */
