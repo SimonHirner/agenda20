@@ -32,10 +32,14 @@ class Status [[java:edu.hm.cs.katz.swt2.agenda.persistence.Status]] {
 class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	-Long id
 	-String title
+	-String shortInfo
+	-String longInfo
 	-Topic topic
 	-Collection<Status> status
 	+Long getId()
 	+String getTitle()
+	+String getShortInfo()
+	+String getLongInfo()
 	+Topic getTopic()
 }
 

@@ -66,21 +66,29 @@ object "<u>BackKurs: Topic</u>" as BackKurs{
 object "<u>LinkErstellen: Task</u>" as LinkErstellen {
     ID = 1
     title = "Link erstellen"
+    shortInfo = "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird."
+    longInfo = "Denn HTML Links sind wichtig um auf Websites navigieren zu können"
     TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
 }
 object "<u>HTMlErstellen: Task</u>" as HTMlErstellen {
     ID = 3
     title = "Leeres HTML-Template erstellen"
+    shortInfo ="Diese Einheit behandelt die Erstellung einer neuen HTML Datei."
+    longInfo ="HTML Dateien sind die Basis einer jeden Website"
     TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
 }
 object "<u>Googlehupf: Task</u>" as Googlehupf {
     ID = 4
     title = "Googlehupf backen"
+    shortInfo ="In dieser Einheit wird gezeigt wie man einen Googlehupf backt"
+    longInfo ="Dafür sind folgende Zutaten nötig..."
     TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
 }
 object "<u>Affenmuffins: Task</u>" as Affenmuffins {
     ID = 5
     title = "Affenmuffins backen"
+    shortInfo ="Diese Einheit beinhaltet das Backen von Affenmuffins."
+    longInfo = "Hierfür benötigen wir folgende Zutaten..."
     TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
 }
 
