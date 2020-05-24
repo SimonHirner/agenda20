@@ -7,21 +7,26 @@
 <div class="container-fluid">
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
-			<h4 class="display-4" th:text="${task.title}">Task</h4>
-			
-		</div>
-	</div>
-	<div class="row row-cols-1 bg-light">
-		<div class="col mb-4">
-			<div class="card">
-				<div class="card-body">
-					<p class="card-text" th:text="${task.shortInfo}">Keine Kurzbeschreibung verfügbar</p>
-					<p class="card-text" th:text="${task.longInfo}">Keine Langeschreibung verfügbar</p>
-				</div>
-			</div>
-		</div>
-	</div>
+			<h4 class="display-4">Task ändern für <i th:text="${task.title}">Titel</i></h4>
 
+			<form th:action="@{/tasks/{id}/manage(id=${task.id})}" th:object="${task}"
+					method="post">
+
+				<div class="form-group">
+					<input th:field="*{shortDescription}" class="form-control"
+						   placeholder="Kurzbeschreibung" minlength="8" maxlength="120"/> <small class="form-text text-muted">
+					Beschreiben Sie den Task kurz.</small>
+				</div>
+
+				<div class="form-group">
+					<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung" maxlength="1000"></textarea> 
+					<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung hinzufügen.</small>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Speichern!</button>
+				<a th:href="'/topics/'+${task.topic.uuid}+'/manage'" class="btn btn-danger">Zurück</a>
+			</form>
+		</div>
 	<th:block th:replace="fragments :: scripts">
 </body>
 </html>

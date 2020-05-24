@@ -53,4 +53,9 @@ public interface TaskService {
    * Markiert einen Task für einen Abonnenten als "done".
    */
   void checkTask(Long taskId, String login);
+
+  /**
+   * Aktualisierung der Beschreibungen.
+   */
+  void updateTask(Long id, String login, String shortDescription, String longDescription);
 }

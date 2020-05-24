@@ -30,11 +30,11 @@ public class Topic {
   
   @NotNull
   @Column(length = 120)
-  @Length(min = 20, max = 120)
+  @Length(min = 10, max = 120)
   private String shortDescription;
   
-  @Column(length = 1500)
-  @Length(min = 0, max = 1500)
+  @Column(length = 1000)
+  @Length(min = 0, max = 1000)
   private String longDescription;
 
   @ManyToOne

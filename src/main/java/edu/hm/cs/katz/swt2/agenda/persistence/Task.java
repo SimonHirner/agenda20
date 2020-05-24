@@ -35,12 +35,11 @@ public class Task {
   @NotNull
   @Length(min = 8, max = 120)
   @Column(length = 120)
-  private String shortInfo;
+  private String shortDescription;
   
-  @NotNull
-  @Length(min = 0, max = 500)
-  @Column(length = 500)
-  private String longInfo;
+  @Length(min = 0, max = 1000)
+  @Column(length = 1000)
+  private String longDescription;
   
   @NotNull
   @ManyToOne
@@ -61,16 +60,16 @@ public class Task {
    *
    * @param topic Topic, darf nicht null sein.
    * @param title Titel, darf nicht null sein.
-   * @param shortInfo Kurzbeschreibung, darf nicht null sein.
-   * @param longInfo Ausführliche Beschreibung, darf nicht null sein.
+   * @param shortDescription Kurzbeschreibung, darf nicht null sein.
+   * @param longDescription Ausführliche Beschreibung.
    */
-  public Task(final Topic topic, final String title, final String shortInfo,
-      final String longInfo) {
+  public Task(final Topic topic, final String title, final String shortDescription,
+      final String longDescription) {
     this.topic = topic;
     topic.addTask(this);
     this.title = title;
-    this.shortInfo = shortInfo;
-    this.longInfo = longInfo;
+    this.shortDescription = shortDescription;
+    this.longDescription = longDescription;
   }
   
   @Override
@@ -86,12 +85,12 @@ public class Task {
     return title;
   }
   
-  public String getshortInfo() {
-    return shortInfo;
+  public String getShortDescription() {
+    return shortDescription;
   }
   
-  public String getlongInfo() {
-    return longInfo;
+  public String getLongDescription() {
+    return longDescription;
   }
   
   public Topic getTopic() {
@@ -119,5 +118,13 @@ public class Task {
     }
     Task other = (Task) obj;
     return Objects.equals(getId(), other.getId());
+  }
+
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
+  }
+
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
   }
 }

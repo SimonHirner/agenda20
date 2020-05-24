@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -46,8 +47,8 @@ public class TaskController extends AbstractController {
       @PathVariable("uuid") String uuid, @ModelAttribute("newTask") TaskDto newTask,
       RedirectAttributes redirectAttributes) {
     try {
-      taskService.createTask(uuid, newTask.getTitle(), newTask.getShortInfo(), 
-          newTask.getLongInfo(), auth.getName());
+      taskService.createTask(uuid, newTask.getTitle(), newTask.getShortDescription(), 
+          newTask.getLongDescription(), auth.getName());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/topics/" + uuid + "/createTask";
@@ -76,6 +77,19 @@ public class TaskController extends AbstractController {
     OwnerTaskDto task = taskService.getManagedTask(id, auth.getName());
     model.addAttribute("task", task);
     return "task-management";
+  }
+  
+  /**
+   * Verarbeitet die Aktualisierung eines Tasks.
+   */
+  @PostMapping("tasks/{id}/manage")
+  public String handleUpdate(@ModelAttribute("task") TaskDto task, Authentication auth,
+      @PathVariable("id") Long id,
+      @RequestHeader(value = "referer", required = true) String referer) {
+    taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
+        task.getLongDescription());
+    
+    return "redirect:" + referer;
   }
 
   /**

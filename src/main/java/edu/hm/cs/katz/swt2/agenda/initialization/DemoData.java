@@ -60,11 +60,11 @@ public class DemoData {
     topicService.subscribe(htmlKursUuid, LOGIN_BERT);
     Long linkErstellenTask = taskService.createTask(htmlKursUuid, "Link erstellen",
         "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird.",
-            "Denn HTML Links sind wichtig um auf Websites navigieren zu können ", LOGIN_FINE);
+            "Denn HTML Links sind wichtig um auf Websites navigieren zu können.", LOGIN_FINE);
     taskService.checkTask(linkErstellenTask, LOGIN_ERNIE);
     taskService.createTask(htmlKursUuid, "Leeres HTML-Template erstellen",
         "Diese Einheit behandelt die Erstellung einer neuen HTML Datei.",
-            "HTML Dateien sind die Basis einer jeden Website", LOGIN_FINE);
+            "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE);
   
     String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene",
             "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS.",

@@ -91,7 +91,7 @@ public class TopicServiceImpl implements TopicService {
       throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
     }
     
-    if (shortDescription.length() < 20) {
+    if (shortDescription.length() < 10) {
       LOG.debug("Die Kurzbeschreibung {} ist zu kurz, Topic kann nicht angelegt werden.",
           shortDescription);
       throw new ValidationException("Die Kurzbeschreibung des Topics muss mindestens 20 Zeichen "
@@ -106,7 +106,7 @@ public class TopicServiceImpl implements TopicService {
     }
     
     // Validierung der Langbeschreibung  
-    if (longDescription.length() > 1500) {
+    if (longDescription.length() > 1000) {
       LOG.debug("Die Langbeschreibung {} ist zu lang, Topic kann nicht angelegt werden.", 
           longDescription);
       throw new ValidationException("Die Langbeschreibung des Topics darf höchstens 1500 Zeichen "

@@ -66,8 +66,8 @@ public class DtoMapper {
   public SubscriberTaskDto createReadDto(Task task, Status status) {
     Topic topic = task.getTopic();
     SubscriberTopicDto topicDto = createDto(topic);
-    return new SubscriberTaskDto(task.getId(), task.getTitle(), task.getshortInfo(),
-        task.getlongInfo(), topicDto, createDto(status));
+    return new SubscriberTaskDto(task.getId(), task.getTitle(), task.getShortDescription(),
+        task.getLongDescription(), topicDto, createDto(status));
   }
 
   /**
@@ -82,8 +82,8 @@ public class DtoMapper {
   }
 
   public OwnerTaskDto createManagedDto(Task task) {
-    return new OwnerTaskDto(task.getId(), task.getTitle(), task.getshortInfo(),
-        task.getlongInfo(), createDto(task.getTopic()));
+    return new OwnerTaskDto(task.getId(), task.getTitle(), task.getShortDescription(),
+        task.getLongDescription(), createDto(task.getTopic()));
   }
 
 }

@@ -67,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public Long createTask(String uuid, String title, String shortInfo, String longInfo,
+  public Long createTask(String uuid, String title, String shortDescription, String longDescription,
       String login) {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
@@ -95,29 +95,51 @@ public class TaskServiceImpl implements TaskService {
       throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein.");
     }
   
-    // Validierung der Task Beschreibungen
-    if (shortInfo.length() < 1) {
+    // Validierung der Kurzbeschreibung
+    if (shortDescription.length() < 1) {
       LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.", title);
-      throw new ValidationException("Bitte gib eine kurze Beshreibung für den Task an.");
-    }
-    if (shortInfo.length() < 8) {
-      LOG.debug("Der Kurzbeschreibung {} ist zu kurz, Task kann nicht angelegt werden.", title);
-      throw new ValidationException("Die Beschreibung muss mindestens 8 Zeichen lang sein.");
-    }
-    if (shortInfo.length() > 120) {
-      LOG.debug("Die Beschhreibung {} ist zu lang, Task kann nicht angelegt werden.", title);
-      throw new ValidationException("Die Beschreibung des Tasks darf höchstens 120 Zeichen "
-          + "lang sein.");
-    }
-    if (longInfo.length() > 500) {
-      LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.", title);
-      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
-          + "lang sein.");
+      throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
     }
     
-    Task task = new Task(t, title, shortInfo, longInfo);
+    if (shortDescription.length() < 8) {
+      LOG.debug("Der Kurzbeschreibung {} ist zu kurz, Task kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Die Kurzbeschreibung muss mindestens 8 Zeichen lang sein!");
+    }
+    
+    if (shortDescription.length() > 120) {
+      LOG.debug("Die Kurzbeschhreibung ist zu lang, Task kann nicht angelegt werden.");
+      throw new ValidationException("Die Kurzbeschreibung des Tasks darf höchstens 120 Zeichen "
+          + "lang sein!");
+    }
+    
+    // Validierung der Langbeschreibung
+    if (longDescription.length() > 1000) {
+      LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.");
+      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
+          + "lang sein!");
+    }
+    
+    Task task = new Task(t, title, shortDescription, longDescription);
     taskRepository.save(task);
     return task.getId();
+  }
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void updateTask(Long id, String login, String shortDescription, String longDescription) {
+    LOG.info("Aktualisiere Task {}.", id);
+    LOG.debug("Task wird von {} aktualisiert.", login);
+    
+    Task task = taskRepository.getOne(id);
+    User user = userRepository.getOne(login);
+    if (!user.equals(task.getTopic().getCreator())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Task {} zu aktualisieren!", login, id);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    task.setLongDescription(longDescription);
+    task.setShortDescription(shortDescription);
   }
 
   @Override

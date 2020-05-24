@@ -14,8 +14,8 @@ public class TaskDto {
   Long id;
   String title;
   SubscriberTopicDto topic;
-  String shortInfo;
-  String longInfo;
+  String shortDescription;
+  String longDescription;
   
 
   /**
@@ -25,8 +25,8 @@ public class TaskDto {
       SubscriberTopicDto topicDto) {
     this.id = id;
     this.title = title;
-    this.shortInfo = shortInfo;
-    this.longInfo = longInfo;
+    this.shortDescription = shortInfo;
+    this.longDescription = longInfo;
     this.topic = topicDto;
   }
 
@@ -42,20 +42,20 @@ public class TaskDto {
     this.title = title;
   }
   
-  public String getShortInfo() {
-    return shortInfo;
+  public String getShortDescription() {
+    return shortDescription;
   }
   
-  public void setShortInfo(String shortInfo) {
-    this.shortInfo = shortInfo;
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
   }
   
-  public String getLongInfo() {
-    return longInfo;
+  public String getLongDescription() {
+    return longDescription;
   }
   
-  public void setLongInfo(String longInfo) {
-    this.longInfo = longInfo;
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
   }
   
   public SubscriberTopicDto getTopic() {

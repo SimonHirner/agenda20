@@ -20,13 +20,12 @@
 					</div>
 					<div class="form-group">
 						<input th:field="*{shortDescription}" class="form-control"
-							placeholder="Kurzbeschreibung" minlength="20" maxlength="120"/> <small class="form-text text-muted">
-							Verwenden Sie eine aussagekräftige Kurzbeschreibung. </small>
+							placeholder="Kurzbeschreibung" minlength="10" maxlength="120"/> <small class="form-text text-muted">
+							Beschreiben Sie das Topic kurz. </small>
 					</div>
 					<div class="form-group">
-						<textarea th:field="*{longDescription}" class="form-control"
-							placeholder="Langbeschreibung" maxlength="1500"/> <small class="form-text text-muted">
-							Verwenden Sie optional eine aussagekräftige Langbeschreibung. </small>
+						<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung" maxlength="1000"></textarea>
+						<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung hinzufügen. </small>
 					</div>
 
 					<button type="submit" class="btn btn-primary">Erstellen!</button>

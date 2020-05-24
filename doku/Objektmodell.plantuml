@@ -67,14 +67,14 @@ object "<u>LinkErstellen: Task</u>" as LinkErstellen {
     ID = 1
     title = "Link erstellen"
     shortInfo = "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird."
-    longInfo = "Denn HTML Links sind wichtig um auf Websites navigieren zu können"
+    longInfo = "Denn HTML Links sind wichtig um auf Websites navigieren zu können."
     TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
 }
 object "<u>HTMlErstellen: Task</u>" as HTMlErstellen {
     ID = 3
     title = "Leeres HTML-Template erstellen"
     shortInfo ="Diese Einheit behandelt die Erstellung einer neuen HTML Datei."
-    longInfo ="HTML Dateien sind die Basis einer jeden Website"
+    longInfo ="HTML Dateien sind die Basis einer jeden Website."
     TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
 }
 object "<u>Googlehupf: Task</u>" as Googlehupf {
