@@ -23,11 +23,15 @@
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
 
 						<a th:href="'/topics/'+${t.uuid}+'/manage'"
-							class="btn btn-primary">Verwalten</a> <a
-							th:href="'/topics/'+${t.uuid}+'/register'"
+							class="btn btn-primary">Verwalten</a>
+						
+						<form th:if="${t.subscriberCount==0}" th:action="'/topics/'+${t.uuid}+'/delete'" method="post">
+							<button class="btn btn-danger" type="submit">Löschen</button>
+						</form>		
+							
+						<a th:href="'/topics/'+${t.uuid}+'/register'"
 							class="btn btn-outline-primary">Abo-Link</a>
-							<p><small
-							class="form-text text-muted"> Kopieren Sie den Link zum Abonnieren (Rechtsklick, Link/Adresse kopieren) und geben ihn an Teilnehmer aus!</small></p>
+						<p><small class="form-text text-muted"> Kopieren Sie den Link zum Abonnieren (Rechtsklick, Link/Adresse kopieren) und geben ihn an Teilnehmer aus!</small></p>
 					</div>
 				</div>
 			</div>

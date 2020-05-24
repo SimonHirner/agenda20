@@ -15,6 +15,7 @@ public class SubscriberTopicDto {
   private String title;
   private String shortDescription;
   private String longDescription;
+  private int subscriberCount;
 
   /**
    * Konstruktor.
@@ -58,5 +59,13 @@ public class SubscriberTopicDto {
 
   public void setLongDescription(String longDescription) {
     this.longDescription = longDescription;
+  }
+
+  public int getSubscriberCount() {
+    return subscriberCount;
+  }
+
+  public void setSubscriberCount(int subscriberCount) {
+    this.subscriberCount = subscriberCount;
   }
 }

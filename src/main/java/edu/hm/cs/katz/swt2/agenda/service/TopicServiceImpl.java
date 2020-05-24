@@ -14,6 +14,7 @@ import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,30 @@ public class TopicServiceImpl implements TopicService {
 
   @Autowired
   private DtoMapper mapper;
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void deleteTopic(String topicUuid, String login) {
+    LOG.info("Lösche Topic {}.", topicUuid);
+    LOG.debug("Topic wird gelöscht von {}.", login);
+    
+    Topic topic = topicRepository.getOne(topicUuid);
+    
+    User createdBy = topic.getCreator();
+    if (!login.equals(createdBy.getLogin())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Topic {} zu löschen!", login, topicUuid);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    if (topic.getSubscriber().size() != 0) {
+      LOG.debug("Topic {} wurde bereits abonniert und kann nicht gelöscht werden!", topicUuid);
+      throw new ValidationException("Das Topic kann nicht gelöscht werden, da es bereits "
+          + "abonniert wurde!");
+    }
+    
+    topicRepository.delete(topic);
+  }
+  
 
   @Override
   @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")

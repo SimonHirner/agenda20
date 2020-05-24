@@ -116,4 +116,22 @@ public class TopicController extends AbstractController {
     model.addAttribute("tasks", taskService.getTasksForTopic(uuid, auth.getName()));
     return "topic";
   }
+  
+  /**
+   * Verarbeitet die Löschung eines Topics.
+   */
+  @PostMapping("/topics/{uuid}/delete")
+  public String handleDeletion(Authentication auth, @PathVariable("uuid") String uuid,
+      RedirectAttributes redirectAttributes) {
+    OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
+    
+    try {
+      topicService.deleteTopic(uuid, auth.getName());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:/topics";
+    }
+    redirectAttributes.addFlashAttribute("success", "Topic " + topic.getTitle() + " gelöscht.");
+    return "redirect:/topics";
+  }
 }

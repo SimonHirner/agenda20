@@ -53,6 +53,7 @@ public class TaskServiceImpl implements TaskService {
   public void deleteTask(Long id, String login) {
     LOG.info("Lösche Task {}.", id);
     LOG.debug("Task wird gelöscht von {}.", login);
+    
     Task task = taskRepository.getOne(id);
     
     User createdBy = task.getTopic().getCreator();

@@ -49,6 +49,7 @@ public class DtoMapper {
     SubscriberTopicDto topicDto =
         new SubscriberTopicDto(topic.getUuid(), creatorDto, topic.getTitle(),
             topic.getShortDescription(), topic.getLongDescription());
+    topicDto.setSubscriberCount(topic.getSubscriber().size());
     return topicDto;
   }
 
@@ -73,8 +74,11 @@ public class DtoMapper {
    * Erstellt ein {@link OwnerTopicDto} aus einem {@link Topic}.
    */
   public OwnerTopicDto createManagedDto(Topic topic) {
-    return new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(),
-        topic.getShortDescription(), topic.getLongDescription());
+    OwnerTopicDto topicDto = 
+        new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(),
+            topic.getShortDescription(), topic.getLongDescription());
+    topicDto.setSubscriberCount(topic.getSubscriber().size());
+    return topicDto;
   }
 
   public OwnerTaskDto createManagedDto(Task task) {

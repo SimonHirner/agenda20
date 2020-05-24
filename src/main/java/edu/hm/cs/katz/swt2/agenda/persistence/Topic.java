@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class Topic {
   @NotNull
   private User creator;
 
-  @OneToMany(mappedBy = "topic")
+  @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
   private Collection<Task> tasks = new ArrayList<Task>();
 
   @ManyToMany

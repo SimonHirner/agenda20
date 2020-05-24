@@ -15,6 +15,14 @@ public interface TopicService {
    * Erstellt ein neues Topic.
    */
   String createTopic(String title, String shortDescription, String longDescription, String login);
+  
+  /**
+   * Löscht ein Topic.
+   * 
+   * @param topicUuid UUID des Tasks
+   * @param login Login des Anwenders
+   */
+  void deleteTopic(String topicUuid, String login);
 
   /**
    * Zugriff auf ein eigenes Topic.
