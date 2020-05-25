@@ -97,7 +97,7 @@ public class TaskServiceImpl implements TaskService {
   
     // Validierung der Kurzbeschreibung
     if (shortDescription.length() < 1) {
-      LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.", title);
+      LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.");
       throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
     }
     
@@ -136,6 +136,31 @@ public class TaskServiceImpl implements TaskService {
     if (!user.equals(task.getTopic().getCreator())) {
       LOG.warn("Anwender {} ist nicht berechtigt Task {} zu aktualisieren!", login, id);
       throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    // Validierung der Kurzbeschreibung
+    if (shortDescription.length() < 1) {
+      LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.");
+      throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
+    }
+    
+    if (shortDescription.length() < 8) {
+      LOG.debug("Der Kurzbeschreibung {} ist zu kurz, Task kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Die Kurzbeschreibung muss mindestens 8 Zeichen lang sein!");
+    }
+    
+    if (shortDescription.length() > 120) {
+      LOG.debug("Die Kurzbeschhreibung ist zu lang, Task kann nicht angelegt werden.");
+      throw new ValidationException("Die Kurzbeschreibung des Tasks darf höchstens 120 Zeichen "
+          + "lang sein!");
+    }
+    
+    // Validierung der Langbeschreibung
+    if (longDescription.length() > 1000) {
+      LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.");
+      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
+          + "lang sein!");
     }
     
     task.setLongDescription(longDescription);
