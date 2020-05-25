@@ -38,9 +38,11 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	-Collection<Status> status
 	+Long getId()
 	+String getTitle()
-	+String getShortIfno()
-	+String getLongInfo()
+	+String getShortDescription()
+	+String getLongDescription()
 	+Topic getTopic()
+	+void setShortDescription(String shortDescription)
+	+void setLongDescription(String longDescription)
 }
 
 class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
@@ -76,6 +78,8 @@ class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 	+void addTask(Task t)
 	+void register(User anwender)
 	+Collection<User> getSubscriber()
+	+void setShortDescription(String shortDescription)
+	+void setLongDescription(String longDescription)
 }
 
 enum StatusEnum [[java:edu.hm.cs.katz.swt2.agenda.common.StatusEnum]] {

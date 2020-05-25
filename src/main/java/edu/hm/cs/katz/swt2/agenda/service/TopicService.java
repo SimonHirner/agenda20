@@ -48,4 +48,9 @@ public interface TopicService {
    * Abonnieren eines Topics.
    */
   void subscribe(String topicUuid, String login);
+
+  /**
+   * Aktualisierung der Beschreibungen.
+   */
+  void updateTopic(String uuid, String login, String shortDescription, String longDescription);
 }

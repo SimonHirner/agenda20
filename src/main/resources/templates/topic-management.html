@@ -12,18 +12,24 @@
 				<h4 class="display-4">
 					Beschreibung für Ihr Topic <i th:text="${topic.title}"></i>
 				</h4>
-			</div>
-		</div>
-		<div class="row row-cols-1 bg-light">
-			<div class="col mb-4">
-				<div class="card">
-					<div class="card-body">
-						<p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
-						<p class="card-text" th:text="${topic.longDescription}">Keine Beschreibung</p>
+				<form th:action="@{/topics/{uuid}/manage(uuid=${topic.uuid})}" th:object="${topic}"
+					method="post">
+
+					<div class="form-group">
+						<input th:field="*{shortDescription}" class="form-control"
+							placeholder="Kurzbeschreibung" minlength="10" maxlength="120"/> <small class="form-text text-muted">
+							Beschreiben Sie das Topic kurz. </small>
 					</div>
-				</div>
+					<div class="form-group">
+						<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung" maxlength="1000"></textarea>
+						<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung hinzufügen. </small>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Speichern!</button>
+					<a href="/topics" class="btn btn-danger">Zurück</a>
+				</form>
 			</div>
-		</div>
+		</div>		
 	
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">

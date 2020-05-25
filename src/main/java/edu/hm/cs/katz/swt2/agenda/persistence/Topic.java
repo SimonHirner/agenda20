@@ -135,4 +135,11 @@ public class Topic {
     return Objects.equals(getUuid(), other.getUuid());
   }
 
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
+  }
+
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
+  }
 }

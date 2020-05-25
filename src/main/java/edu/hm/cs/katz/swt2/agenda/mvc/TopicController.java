@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -83,6 +84,18 @@ public class TopicController extends AbstractController {
     return "topic-management";
   }
 
+  /**
+   * Verarbeitet die Aktualisierung eines Topics.
+   */
+  @PostMapping("/topics/{uuid}/manage")
+  public String handleUpdate(@ModelAttribute("topic") OwnerTopicDto topic, Authentication auth,
+      @PathVariable("uuid") String uuid,
+      @RequestHeader(value = "referer", required = true) String referer) {
+    topicService.updateTopic(uuid, auth.getName(), topic.getShortDescription(),
+        topic.getLongDescription());
+    return "redirect:" + referer;
+  }
+  
   /**
    * Erzeugt Anzeige für die Nachfrage beim Abonnieren eines Topics.
    */

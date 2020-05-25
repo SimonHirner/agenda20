@@ -60,6 +60,53 @@ public class TopicServiceImpl implements TopicService {
     topicRepository.delete(topic);
   }
   
+  @Override
+  @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")
+  public void updateTopic(String uuid, String login, String shortDescription,
+      String longDescription) {
+    LOG.info("Aktualisiere Topic {}.", uuid);
+    LOG.debug("Topic wird von {} aktualisiert.", login);
+    
+    Topic topic = topicRepository.getOne(uuid);
+    User user = anwenderRepository.getOne(login);
+    if (!user.equals(topic.getCreator())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Topic {} zu aktualisieren!", login, uuid);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    // Validierung der Kurzbeschreibung
+    if (shortDescription.length() < 1) {
+      LOG.debug("Die Kurzbeschreibung {} ist leer, Topic kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
+    }
+    
+    if (shortDescription.length() < 10) {
+      LOG.debug("Die Kurzbeschreibung {} ist zu kurz, Topic kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Die Kurzbeschreibung des Topics muss mindestens 20 Zeichen "
+          + "lang sein!");
+    }
+    
+    if (shortDescription.length() > 120) {
+      LOG.debug("Die Kurzbeschreibung {} ist zu lang, Topic kann nicht angelegt werden.",
+          shortDescription);
+      throw new ValidationException("Die Kurzbeschreibung des Topics darf höchstens 120 Zeichen "
+          + "lang sein!");
+    }
+    
+    // Validierung der Langbeschreibung  
+    if (longDescription.length() > 1000) {
+      LOG.debug("Die Langbeschreibung {} ist zu lang, Topic kann nicht angelegt werden.", 
+          longDescription);
+      throw new ValidationException("Die Langbeschreibung des Topics darf höchstens 1500 Zeichen "
+          + "lang sein!");
+    }    
+    
+    topic.setLongDescription(longDescription);
+    topic.setShortDescription(shortDescription);
+  }
+  
 
   @Override
   @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")

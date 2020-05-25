@@ -13,98 +13,112 @@ object "<u>fine:User</u>" as fine{
     login = "fine"
     password = "#Fine2020"
     name = "Fine"
-    admin = false
-    status
+    administrator = false
+    subscriptions = 
+    status = 
 }
 object "<u>ernie:User</u>" as ernie{
     login = "ernie"
     name = "Ernie"
     password = "#Ernie2020"
-    admin = false
-    status 2
+    administrator = false
+    subscriptions = HTMLKurs
+    status = 2
 }
 object "<u>bert:User</u>" as bert{
     login = "bert"
     name = "Bert"
     password = "#Bert2020"
-    admin = false
-    status 6
+    administrator = false
+    subscriptions = HTMLKurs, BackKurs
+    status = 6
 }
 object "<u>admin:User</u>" as admin{
     login = "admin"
     name = "Administrator"
     password = "#Admin2020"
-    admin = true
-    status statusadmin
+    administrator = true
+    subscriptions = 
+    status = 
 }
 
 'Topics
 object "<u>HTMLKurs: Topic</u>" as HTMLKurs{
+	uuid = "e17ae604-2b50-469a-bba0-b5b4543580b3"
     title = "HTML für Anfänger"
     shortDescription = "Dieser Kurs behandelt die Grundlagen von HTML."
     longDescription = "Die Hypertext Markup Language ist eine [...]"
-    UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
-    CREATOR_LOGIN= "fine"
+    creator = fine
+    tasks = 1, 3
+    subscriber = bert, ernie
 
 }
 object "<u>CSSKurs: Topic</u>" as CSSKurs{
+	uuid = "c3ef0536-dd96-4968-a9b3-4bad0c13d1e0"
     title = "CSS für Fortgeschrittene"
     shortDescription = "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS."
     longDescription = "Cascading Style Sheets, kurz CSS genannt, ist eine [...]"
-    UUID = c3ef0536-dd96-4968-a9b3-4bad0c13d1e0
-    CREATOR_LOGIN = "fine"
+    creator = fine
+    tasks = 
+    subscriber = 
 }
 object "<u>BackKurs: Topic</u>" as BackKurs{
+	uuid = "85b55409-d34d-4985-9da5-8c8acd06fe23"
     title = "Ernies Backkurs"
     shortDescription = "Lernen Sie Backen mit Ernie."
     longDescription = "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
-    UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
-    CREATOR_LOGIN = "ernie"
+    creator = ernie
+    tasks = 4, 5
+    subscriber = bert
 }
 
 'Tasks
 object "<u>LinkErstellen: Task</u>" as LinkErstellen {
-    ID = 1
+    id = 1
     title = "Link erstellen"
-    shortInfo = "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird."
-    longInfo = "Denn HTML Links sind wichtig um auf Websites navigieren zu können."
-    TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
+    shortDescription = "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird."
+    longDescription = "Denn HTML Links sind wichtig um auf Websites navigieren zu können."
+    topic = HTMLKurs
+    status = 2
 }
-object "<u>HTMlErstellen: Task</u>" as HTMlErstellen {
-    ID = 3
+object "<u>TemplateErstellen: Task</u>" as HTMlErstellen {
+    id = 3
     title = "Leeres HTML-Template erstellen"
-    shortInfo ="Diese Einheit behandelt die Erstellung einer neuen HTML Datei."
-    longInfo ="HTML Dateien sind die Basis einer jeden Website."
-    TOPIC_UUID = e17ae604-2b50-469a-bba0-b5b4543580b3
+    shortDescription = "Diese Einheit behandelt die Erstellung einer neuen HTML Datei."
+    longDescription = "HTML Dateien sind die Basis einer jeden Website."
+    topic = HTMLKurs
+    status =
 }
 object "<u>Googlehupf: Task</u>" as Googlehupf {
-    ID = 4
+    id = 4
     title = "Googlehupf backen"
-    shortInfo ="In dieser Einheit wird gezeigt wie man einen Googlehupf backt"
-    longInfo ="Dafür sind folgende Zutaten nötig..."
-    TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
+    shortDescription = "In dieser Einheit wird gezeigt wie man einen Googlehupf backt"
+    longDescription = "Dafür sind folgende Zutaten nötig..."
+    topic = BackKurs
+    status =
 }
 object "<u>Affenmuffins: Task</u>" as Affenmuffins {
-    ID = 5
+    id = 5
     title = "Affenmuffins backen"
-    shortInfo ="Diese Einheit beinhaltet das Backen von Affenmuffins."
-    longInfo = "Hierfür benötigen wir folgende Zutaten..."
-    TOPIC_UUID = 85b55409-d34d-4985-9da5-8c8acd06fe23
+    shortDescription = "Diese Einheit beinhaltet das Backen von Affenmuffins."
+    longDescription = "Hierfür benötigen wir folgende Zutaten..."
+    topic = BackKurs
+    status = 6
 }
 
 'status
-object "<u>2: status</u>" as 2{
+object "<u>2: Status</u>" as 2{
 	id = 2
-	user = "ernie"
+	user = ernie
 	task = 1
-	status = "fertig"
+	status = StatusEnum.OFFEN
 }
 
-object "<u>6: status</u>" as 6{
+object "<u>6: Status</u>" as 6{
 	id = 6
-	user = "bert"
+	user = bert
 	task = 5
-	status = "fertig"
+	status = StatusEnum.FERTIG
 }
 
 'Assoziationen
@@ -116,6 +130,7 @@ ernie -- 2 :> besitzt
 bert -- 6 :> besitzt
 
 ernie -- HTMLKurs :> abboniert
+bert -- HTMLKurs :> abboniert
 bert -- BackKurs :> abboniert
 
 HTMLKurs -- LinkErstellen :< gehört zu
