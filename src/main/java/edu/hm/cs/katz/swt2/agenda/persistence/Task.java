@@ -127,4 +127,8 @@ public class Task {
   public void setLongDescription(String longDescription) {
     this.longDescription = longDescription;
   }
+
+  public Collection<Status> getStatus() {
+    return status;
+  }
 }

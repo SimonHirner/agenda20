@@ -43,6 +43,7 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	+Topic getTopic()
 	+void setShortDescription(String shortDescription)
 	+void setLongDescription(String longDescription)
+	+Collection<Status> getStatus()
 }
 
 class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {

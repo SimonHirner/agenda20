@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
+import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.persistence.Status;
 import edu.hm.cs.katz.swt2.agenda.persistence.Task;
 import edu.hm.cs.katz.swt2.agenda.persistence.Topic;
@@ -81,9 +82,22 @@ public class DtoMapper {
     return topicDto;
   }
 
+  /**
+   * Erstellt ein {@link OwnerTaskDto} aus einem {@link Task}.
+   */
   public OwnerTaskDto createManagedDto(Task task) {
-    return new OwnerTaskDto(task.getId(), task.getTitle(), task.getShortDescription(),
-        task.getLongDescription(), createDto(task.getTopic()));
+    OwnerTaskDto ownerTaskDto = new OwnerTaskDto(task.getId(), task.getTitle(),
+        task.getShortDescription(), task.getLongDescription(), createDto(task.getTopic()));
+    
+    int doneStatusCount = 0;
+    for (Status status : task.getStatus()) {
+      if (status.getStatus().equals(StatusEnum.FERTIG)) {
+        doneStatusCount++;
+      }
+    }
+    ownerTaskDto.setDoneStatusCount(doneStatusCount);
+    
+    return ownerTaskDto;
   }
 
 }
