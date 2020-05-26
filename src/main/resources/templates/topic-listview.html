@@ -21,7 +21,9 @@
 					<div class="card-body">
 						<h5 class="card-title" th:text="${t.title}">Card title</h5>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
-
+						<p class="card-text" th:if="${t.subscriberCount!=1}" th:text="${t.subscriberCount}+' Abonnenten'">Keine Abonnenten</p>
+						<p class="card-text" th:if="${t.subscriberCount==1}" th:text="${t.subscriberCount}+' Abonnent'">Keine Abonnenten</p>
+						
 						<a th:href="'/topics/'+${t.uuid}+'/manage'"
 							class="btn btn-primary">Verwalten</a>
 						

@@ -111,7 +111,7 @@ object "<u>2: Status</u>" as 2{
 	id = 2
 	user = ernie
 	task = 1
-	status = StatusEnum.OFFEN
+	status = StatusEnum.FERTIG
 }
 
 object "<u>6: Status</u>" as 6{
