@@ -7,17 +7,17 @@ import edu.hm.cs.katz.swt2.agenda.persistence.User;
 import edu.hm.cs.katz.swt2.agenda.persistence.UserRepository;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.ValidationException;
+import java.util.*;
 
 @Component
 @Transactional(rollbackFor = Exception.class)
@@ -171,9 +171,9 @@ public class TopicServiceImpl implements TopicService {
   @PreAuthorize("#login==authentication.name")
   public List<OwnerTopicDto> getManagedTopics(String login) {
     LOG.info("Rufe verwaltete Topics von {} auf.", login);
-    
+  
     User creator = anwenderRepository.findById(login).get();
-    List<Topic> managedTopics = topicRepository.findByCreator(creator);
+    List<Topic> managedTopics = topicRepository.findByCreatorOrderByTitleAsc(creator);
     List<OwnerTopicDto> result = new ArrayList<>();
     for (Topic topic : managedTopics) {
       result.add(mapper.createManagedDto(topic));
@@ -217,13 +217,13 @@ public class TopicServiceImpl implements TopicService {
   public List<SubscriberTopicDto> getSubscriptions(String login) {
     LOG.info("Rufe abonnierte Topics von {} auf.", login);
     
-    User creator = anwenderRepository.findById(login).get();
-    Collection<Topic> subscriptions = creator.getSubscriptions();
+    User subscriber = anwenderRepository.findById(login).get();
+    Collection<Topic> subscriptions = topicRepository.findBySubscriberOrderByTitleAsc(subscriber);
     List<SubscriberTopicDto> result = new ArrayList<>();
     for (Topic topic : subscriptions) {
       result.add(mapper.createDto(topic));
     }
+    
     return result;
   }
-
 }

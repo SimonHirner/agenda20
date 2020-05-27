@@ -1,8 +1,11 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
-import java.util.List;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Repository zum Zugriff auf gespeicherte Topics. Repostory-Interfaces erben eine unglaubliche
@@ -21,13 +24,23 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
    * @return
    */
   List<Topic> findByCreator(User creator);
-
+  
   /**
    * Zähle alle Topics, die von einem bestimmten User erstellt wurden.
-   * 
+   *
    * @param user Creator
    * @return
    */
   int countByCreator(User user);
-
+  
+  /**
+   * Finde alle Topics, die von einem bestimmten User erstellt wurden.
+   * Sortiert nach alphabetischer Reihenfolge.
+   *
+   * @param creator Topic Ersteller
+   * @return
+   */
+  List<Topic> findByCreatorOrderByTitleAsc(User creator);
+  
+  List<Topic> findBySubscriberOrderByTitleAsc (User subscriber);
 }
