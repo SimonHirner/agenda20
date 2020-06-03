@@ -90,7 +90,7 @@ public class DtoMapper {
         task.getShortDescription(), task.getLongDescription(), createDto(task.getTopic()));
     
     int doneStatusCount = 0;
-    for (Status status : task.getStatus()) {
+    for (Status status : task.getStatuses()) {
       if (status.getStatus().equals(StatusEnum.FERTIG)) {
         doneStatusCount++;
       }

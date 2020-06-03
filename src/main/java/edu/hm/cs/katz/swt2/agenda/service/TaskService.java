@@ -42,7 +42,7 @@ public interface TaskService {
   /**
    * Zugriff auf alle Tasks abonnierter Topics.
    */
-  List<SubscriberTaskDto> getSubscribedTasks(String login);
+  List<SubscriberTaskDto> getAllTasksOfSubscribedTopics(String login);
 
   /**
    * Zugriff auf alle Tasks eines abonnierten Topics.

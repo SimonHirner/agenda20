@@ -81,7 +81,16 @@ public class TaskServiceImpl implements TaskService {
       throw new AccessDeniedException("Kein Zugriff auf dieses Topic möglich.");
     }
   
-    // Validierung des Task Namens
+    validateTaskName(title);
+    validateTaskShortDescription(shortDescription);
+    validateTaskLongDescription(longDescription);
+    
+    Task task = new Task(t, title, shortDescription, longDescription);
+    taskRepository.save(task);
+    return task.getId();
+  }
+
+  private void validateTaskName(String title) {
     if (title.length() < 1) {
       LOG.debug("Der Name ist leer, Task kann nicht angelegt werden.", title);
       throw new ValidationException("Bitte gib einen Namen für den Task an.");
@@ -94,35 +103,6 @@ public class TaskServiceImpl implements TaskService {
       LOG.debug("Der Name {} ist zu lang, Task kann nicht angelegt werden.", title);
       throw new ValidationException("Der Name des Tasks darf höchstens 32 Zeichen lang sein.");
     }
-  
-    // Validierung der Kurzbeschreibung
-    if (shortDescription.length() < 1) {
-      LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.");
-      throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
-    }
-    
-    if (shortDescription.length() < 8) {
-      LOG.debug("Der Kurzbeschreibung {} ist zu kurz, Task kann nicht angelegt werden.",
-          shortDescription);
-      throw new ValidationException("Die Kurzbeschreibung muss mindestens 8 Zeichen lang sein!");
-    }
-    
-    if (shortDescription.length() > 120) {
-      LOG.debug("Die Kurzbeschhreibung ist zu lang, Task kann nicht angelegt werden.");
-      throw new ValidationException("Die Kurzbeschreibung des Tasks darf höchstens 120 Zeichen "
-          + "lang sein!");
-    }
-    
-    // Validierung der Langbeschreibung
-    if (longDescription.length() > 1000) {
-      LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.");
-      throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
-          + "lang sein!");
-    }
-    
-    Task task = new Task(t, title, shortDescription, longDescription);
-    taskRepository.save(task);
-    return task.getId();
   }
   
   @Override
@@ -138,7 +118,14 @@ public class TaskServiceImpl implements TaskService {
       throw new AccessDeniedException("Zugriff verweigert.");
     }
     
-    // Validierung der Kurzbeschreibung
+    validateTaskShortDescription(shortDescription);
+    validateTaskLongDescription(longDescription);
+    
+    task.setLongDescription(longDescription);
+    task.setShortDescription(shortDescription);
+  }
+
+  private void validateTaskShortDescription(String shortDescription) {
     if (shortDescription.length() < 1) {
       LOG.debug("Die Kurzbeschreibung ist leer, Task kann nicht angelegt werden.");
       throw new ValidationException("Bitte gib eine Kurzbeschreibung für das Topic an!");
@@ -155,16 +142,14 @@ public class TaskServiceImpl implements TaskService {
       throw new ValidationException("Die Kurzbeschreibung des Tasks darf höchstens 120 Zeichen "
           + "lang sein!");
     }
-    
-    // Validierung der Langbeschreibung
+  }
+
+  private void validateTaskLongDescription(String longDescription) {
     if (longDescription.length() > 1000) {
       LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.");
       throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
           + "lang sein!");
     }
-    
-    task.setLongDescription(longDescription);
-    task.setShortDescription(shortDescription);
   }
 
   @Override
@@ -202,20 +187,17 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getSubscribedTasks(String login) {
+  public List<SubscriberTaskDto> getAllTasksOfSubscribedTopics(String login) {
     LOG.info("Rufe abonnierte Tasks von {} auf.", login);
     
     User user = userRepository.getOne(login);
     Collection<Topic> topics = user.getSubscriptions();
-    return extracted(user, topics);
+    return createTaskDtosWithStatusForTopics(user, topics);
   }
 
-  private List<SubscriberTaskDto> extracted(User user, Collection<Topic> topics) {
-    Collection<Status> status = user.getStatus();
-    Map<Task, Status> statusForTask = new HashMap<>();
-    for (Status currentStatus : status) {
-      statusForTask.put(currentStatus.getTask(), currentStatus);
-    }
+  private List<SubscriberTaskDto> createTaskDtosWithStatusForTopics(User user,
+      Collection<Topic> topics) {
+    Map<Task, Status> statusForTask = createTaskToStatusMapForUsersTasks(user);
 
     List<SubscriberTaskDto> result = new ArrayList<>();
 
@@ -225,7 +207,6 @@ public class TaskServiceImpl implements TaskService {
         Status createdStatus = getOrCreateStatus(task.getId(), user.getLogin());
         statusForTask.put(task, createdStatus);
       }
-     
     }
     
     for (Task task1 : taskRepository.findAllByTopicIn(topics,
@@ -246,16 +227,25 @@ public class TaskServiceImpl implements TaskService {
     return result;
   }
 
+  private Map<Task, Status> createTaskToStatusMapForUsersTasks(User user) {
+    Collection<Status> statuses = user.getStatuses();
+    Map<Task, Status> statusForTask = new HashMap<>();
+    for (Status currentStatus : statuses) {
+      statusForTask.put(currentStatus.getTask(), currentStatus);
+    }
+    return statusForTask;
+  }
+
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getTasksForTopic(String uuid, String login) {
-    LOG.info("Rufe Tasks für Topic {} auf.", uuid);
+  public List<SubscriberTaskDto> getTasksForTopic(String topicUuid, String login) {
+    LOG.info("Rufe Tasks für Topic {} auf.", topicUuid);
     LOG.debug("Tasks von {} werden aufgerufen.", login);
     
     User user = userRepository.getOne(login);
-    Topic topic = topicRepository.getOne(uuid);
+    Topic topic = topicRepository.getOne(topicUuid);
 
-    return extracted(user, SetUtils.hashSet(topic));
+    return createTaskDtosWithStatusForTopics(user, SetUtils.hashSet(topic));
   }
 
 

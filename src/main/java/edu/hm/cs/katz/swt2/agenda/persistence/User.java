@@ -44,7 +44,7 @@ public class User {
   private Collection<Topic> subscriptions = new ArrayList<>();
 
   @OneToMany(mappedBy = "user")
-  private Collection<Status> status = new HashSet<Status>();
+  private Collection<Status> statuses = new HashSet<Status>();
 
   /**
    * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
@@ -98,8 +98,8 @@ public class User {
     return subscriptions;
   }
 
-  public Collection<Status> getStatus() {
-    return status;
+  public Collection<Status> getStatuses() {
+    return statuses;
   }
 
   /*

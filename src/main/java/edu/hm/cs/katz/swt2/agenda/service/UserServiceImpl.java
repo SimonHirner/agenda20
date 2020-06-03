@@ -102,40 +102,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     LOG.info("Erstelle Anwender {}.", login);
     LOG.debug("Erstelle Anwender mit Name {} und isAdministrator {}.", name, isAdministrator);
     
-    // Validierung von Login
-    if (anwenderRepository.existsById(login)) {
-      LOG.debug("Anwender {} exisitiert bereits und kann nicht angelegt werden.", login);
-      throw new ValidationException("Der Login ist bereits vergeben.");
-    }
+    validateUserLogin(login);
+    validateUserName(login, name);
+    validateUserPassword(password);
     
-    if (login.length() < 1) {
-      LOG.debug("Login ist leer, Anwender kann nicht angelegt werden.");
-      throw new ValidationException("Bitte gib einen Login an.");
-    }
-    
-    if (login.length() < 4) {
-      LOG.debug("Login {} ist zu kurz, Anwender kann nicht angelegt werden.", login);
-      throw new ValidationException("Der Login muss mindestens vier Zeichen lang sein.");
-    }
-    
-    if (login.length() > 20) {
-      LOG.debug("Login {} ist zu lang, Anwender kann nicht angelegt werden.", login);
-      throw new ValidationException("Der Login darf maximal zwanzig Zeichen lang sein.");
-    }
-    
-    for (char c : login.toCharArray()) {
-      if (!Character.isLetter(c)) {
-        LOG.debug("Login {} ist nicht gültig, Anwender kann nicht angelegt werden.", login);
-        throw new ValidationException("Der Login darf nur aus Kleinbuchstaben bestehen.");
-      }
-    }
-    
-    if (!login.toLowerCase().equals(login)) {
-      LOG.debug("Login {} ist nicht gültig, Anwender kann nicht angelegt werden.", login);
-      throw new ValidationException("Der Login darf nur aus Kleinbuchstaben bestehen.");
-    }
-    
-    // Validierung von Name
+    // Passwörter müssen Hashverfahren benennen.
+    // Wir hashen nicht (noop), d.h. wir haben die
+    // Passwörter im Klartext in der Datenbank (böse)
+    User anwender = new User(login, name, "{noop}" + password, isAdministrator);
+    anwenderRepository.save(anwender);
+  }
+
+  private void validateUserName(String login, String name) {
     if (login.length() < 1) {
       LOG.debug("Name ist leer, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Bitte gib einen Namen an.");
@@ -150,8 +128,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
       LOG.debug("Name {} ist zu lang, Anwender kann nicht angelegt werden.", name);
       throw new ValidationException("Der Name darf maximal 32 Zeichen lang sein.");
     }
-    
-    // Validierung von Passwort
+  }
+
+  private void validateUserPassword(String password) {
     if (password.length() < 1) {
       LOG.debug("Passwort ist leer, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Bitte gib ein Passwort an.");
@@ -193,11 +172,39 @@ public class UserServiceImpl implements UserDetailsService, UserService {
       LOG.debug("Passwort ist nicht gültig, Anwender kann nicht angelegt werden.");
       throw new ValidationException("Das Passwort muss mindestens ein Sonderzeichen enhalten.");
     }
+  }
+
+  private void validateUserLogin(String login) {
+    if (anwenderRepository.existsById(login)) {
+      LOG.debug("Anwender {} exisitiert bereits und kann nicht angelegt werden.", login);
+      throw new ValidationException("Der Login ist bereits vergeben.");
+    }
     
-    // Passwörter müssen Hashverfahren benennen.
-    // Wir hashen nicht (noop), d.h. wir haben die
-    // Passwörter im Klartext in der Datenbank (böse)
-    User anwender = new User(login, name, "{noop}" + password, isAdministrator);
-    anwenderRepository.save(anwender);
+    if (login.length() < 1) {
+      LOG.debug("Login ist leer, Anwender kann nicht angelegt werden.");
+      throw new ValidationException("Bitte gib einen Login an.");
+    }
+    
+    if (login.length() < 4) {
+      LOG.debug("Login {} ist zu kurz, Anwender kann nicht angelegt werden.", login);
+      throw new ValidationException("Der Login muss mindestens vier Zeichen lang sein.");
+    }
+    
+    if (login.length() > 20) {
+      LOG.debug("Login {} ist zu lang, Anwender kann nicht angelegt werden.", login);
+      throw new ValidationException("Der Login darf maximal zwanzig Zeichen lang sein.");
+    }
+    
+    for (char c : login.toCharArray()) {
+      if (!Character.isLetter(c)) {
+        LOG.debug("Login {} ist nicht gültig, Anwender kann nicht angelegt werden.", login);
+        throw new ValidationException("Der Login darf nur aus Kleinbuchstaben bestehen.");
+      }
+    }
+    
+    if (!login.toLowerCase().equals(login)) {
+      LOG.debug("Login {} ist nicht gültig, Anwender kann nicht angelegt werden.", login);
+      throw new ValidationException("Der Login darf nur aus Kleinbuchstaben bestehen.");
+    }
   }
 }

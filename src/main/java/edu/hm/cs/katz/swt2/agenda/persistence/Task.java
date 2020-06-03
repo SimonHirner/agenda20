@@ -46,7 +46,7 @@ public class Task {
   private Topic topic;
   
   @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-  private Collection<Status> status;
+  private Collection<Status> statuses;
   
   /**
    * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
@@ -128,7 +128,7 @@ public class Task {
     this.longDescription = longDescription;
   }
 
-  public Collection<Status> getStatus() {
-    return status;
+  public Collection<Status> getStatuses() {
+    return statuses;
   }
 }

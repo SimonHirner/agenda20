@@ -1,11 +1,8 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
-import org.springframework.data.domain.Sort;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Repository zum Zugriff auf gespeicherte Topics. Repostory-Interfaces erben eine unglaubliche
@@ -42,5 +39,5 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
    */
   List<Topic> findByCreatorOrderByTitleAsc(User creator);
   
-  List<Topic> findBySubscriberOrderByTitleAsc (User subscriber);
+  List<Topic> findBySubscriberOrderByTitleAsc(User subscriber);
 }

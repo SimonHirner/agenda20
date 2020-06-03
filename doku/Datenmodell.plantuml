@@ -35,7 +35,7 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	-String shortDescription
 	-String longDescription
 	-Topic topic
-	-Collection<Status> status
+	-Collection<Status> statuses
 	+Long getId()
 	+String getTitle()
 	+String getShortDescription()
@@ -43,7 +43,7 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	+Topic getTopic()
 	+void setShortDescription(String shortDescription)
 	+void setLongDescription(String longDescription)
-	+Collection<Status> getStatus()
+	+Collection<Status> getStatuses()
 }
 
 class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
@@ -52,14 +52,14 @@ class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
 	-String password
 	-boolean administrator
 	-Collection<Topic> subscriptions
-	-Collection<Status> status
+	-Collection<Status> statuses
 	+void addSubscription(Topic topic)
 	+String getLogin()
 	+String getName()
 	+String getPassword()
 	+boolean isAdministrator()
 	+Collection<Topic> getSubscriptions()
-	+Collection<Status> getStatus()
+	+Collection<Status> getStatuses()
 }
 
 class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {

@@ -125,7 +125,7 @@ public class TaskController extends AbstractController {
    */
   @GetMapping("tasks")
   public String getSubscriberTaskListView(Model model, Authentication auth) {
-    List<SubscriberTaskDto> tasks = taskService.getSubscribedTasks(auth.getName());
+    List<SubscriberTaskDto> tasks = taskService.getAllTasksOfSubscribedTopics(auth.getName());
     model.addAttribute("tasks", tasks);
     return "task-listview";
   }
