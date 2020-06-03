@@ -161,7 +161,7 @@ public class TaskServiceImpl implements TaskService {
     Task task = taskRepository.getOne(taskId);
     Topic topic = task.getTopic();
     User user = userRepository.getOne(login);
-    if (!(topic.getCreator().equals(user) || topic.getSubscriber().contains(user))) {
+    if (!(topic.getCreator().equals(user) || topic.getSubscribers().contains(user))) {
       LOG.warn("Anwender {} ist nicht berechtigt Task {} einzusehen!", login, taskId);
       throw new AccessDeniedException("Zugriff verweigert.");
     }

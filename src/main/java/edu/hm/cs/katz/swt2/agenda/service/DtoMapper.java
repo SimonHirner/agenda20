@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
+
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.persistence.Status;
 import edu.hm.cs.katz.swt2.agenda.persistence.Task;
@@ -12,6 +13,8 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
+import java.util.ArrayList;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,7 +53,14 @@ public class DtoMapper {
     SubscriberTopicDto topicDto =
         new SubscriberTopicDto(topic.getUuid(), creatorDto, topic.getTitle(),
             topic.getShortDescription(), topic.getLongDescription());
-    topicDto.setSubscriberCount(topic.getSubscriber().size());
+    topicDto.setSubscriberCount(topic.getSubscribers().size());
+    
+    List<UserDisplayDto> subscribers = new ArrayList<UserDisplayDto>();
+    for (User user : topic.getSubscribers()) {
+      subscribers.add(createDto(user));
+    }
+    topicDto.setSubscribers(subscribers);
+    
     return topicDto;
   }
 
@@ -78,7 +88,7 @@ public class DtoMapper {
     OwnerTopicDto topicDto = 
         new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(),
             topic.getShortDescription(), topic.getLongDescription());
-    topicDto.setSubscriberCount(topic.getSubscriber().size());
+    topicDto.setSubscriberCount(topic.getSubscribers().size());
     return topicDto;
   }
 

@@ -39,5 +39,5 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
    */
   List<Topic> findByCreatorOrderByTitleAsc(User creator);
   
-  List<Topic> findBySubscriberOrderByTitleAsc(User subscriber);
+  List<Topic> findBySubscribersOrderByTitleAsc(User subscriber);
 }

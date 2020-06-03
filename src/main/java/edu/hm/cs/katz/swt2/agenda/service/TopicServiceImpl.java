@@ -51,7 +51,7 @@ public class TopicServiceImpl implements TopicService {
       throw new AccessDeniedException("Zugriff verweigert.");
     }
     
-    if (topic.getSubscriber().size() != 0) {
+    if (topic.getSubscribers().size() != 0) {
       LOG.debug("Topic {} wurde bereits abonniert und kann nicht gelöscht werden!", topicUuid);
       throw new ValidationException("Das Topic kann nicht gelöscht werden, da es bereits "
           + "abonniert wurde!");
@@ -199,7 +199,7 @@ public class TopicServiceImpl implements TopicService {
     LOG.info("Rufe abonnierte Topics von {} auf.", login);
     
     User subscriber = anwenderRepository.findById(login).get();
-    Collection<Topic> subscriptions = topicRepository.findBySubscriberOrderByTitleAsc(subscriber);
+    Collection<Topic> subscriptions = topicRepository.findBySubscribersOrderByTitleAsc(subscriber);
     List<SubscriberTopicDto> result = new ArrayList<>();
     for (Topic topic : subscriptions) {
       result.add(mapper.createDto(topic));

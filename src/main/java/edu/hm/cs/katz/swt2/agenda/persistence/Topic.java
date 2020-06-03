@@ -45,7 +45,7 @@ public class Topic {
   private Collection<Task> tasks = new ArrayList<Task>();
 
   @ManyToMany
-  private Collection<User> subscriber = new ArrayList<User>();
+  private Collection<User> subscribers = new ArrayList<User>();
 
   /**
    * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
@@ -104,12 +104,12 @@ public class Topic {
   }
 
   public void register(User anwender) {
-    subscriber.add(anwender);
+    subscribers.add(anwender);
     anwender.addSubscription(this);
   }
 
-  public Collection<User> getSubscriber() {
-    return Collections.unmodifiableCollection(subscriber);
+  public Collection<User> getSubscribers() {
+    return Collections.unmodifiableCollection(subscribers);
   }
 
   /*

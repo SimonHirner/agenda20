@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head" />
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+	<div class="row justify-content-left bg-light">
+		<div class="col-8">
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Erledigte Tasks</th>
+				</tr>
+
+				</thead>
+				<tr th:each="subscriber : ${subscribers}">
+					<td th:text="${subscriber.name}"/>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
+	<th:block th:replace="fragments :: scripts">
+</body>
+</html>

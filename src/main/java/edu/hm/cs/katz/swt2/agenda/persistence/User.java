@@ -40,7 +40,7 @@ public class User {
   @Column(name = "ADMIN")
   private boolean administrator;
 
-  @ManyToMany(mappedBy = "subscriber")
+  @ManyToMany(mappedBy = "subscribers")
   private Collection<Topic> subscriptions = new ArrayList<>();
 
   @OneToMany(mappedBy = "user")

@@ -4,6 +4,8 @@ import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -146,5 +148,18 @@ public class TopicController extends AbstractController {
     }
     redirectAttributes.addFlashAttribute("success", "Topic " + topic.getTitle() + " gelöscht.");
     return "redirect:/topics";
+  }
+  
+  /**
+   * Erstellt Übersicht über die Abonnenten eines Topics.
+   */
+  @GetMapping("/topics/{uuid}/subscribers")
+  public String createSubscriberView(Model model, Authentication auth,
+      @PathVariable("uuid") String uuid) {
+    SubscriberTopicDto topic = topicService.getTopic(uuid, auth.getName());
+    List<UserDisplayDto> subscribers = topic.getSubscribers();
+    model.addAttribute("subscribers", subscribers);
+    return "subscriber-listview";
+    
   }
 }

@@ -69,7 +69,7 @@ class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 	-String longDescription
 	-User creator
 	-Collection<Task> tasks
-	-Collection<User> subscriber
+	-Collection<User> subscribers
 	+String getUuid()
 	+String getTitle()
 	+String getShortDescription()
@@ -78,7 +78,7 @@ class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 	+Collection<Task> getTasks()
 	+void addTask(Task t)
 	+void register(User anwender)
-	+Collection<User> getSubscriber()
+	+Collection<User> getSubscribers()
 	+void setShortDescription(String shortDescription)
 	+void setLongDescription(String longDescription)
 }
