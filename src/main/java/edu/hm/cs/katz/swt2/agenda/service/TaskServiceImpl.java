@@ -1,22 +1,9 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
-import edu.hm.cs.katz.swt2.agenda.persistence.Status;
-import edu.hm.cs.katz.swt2.agenda.persistence.StatusRepository;
-import edu.hm.cs.katz.swt2.agenda.persistence.Task;
-import edu.hm.cs.katz.swt2.agenda.persistence.TaskRepository;
-import edu.hm.cs.katz.swt2.agenda.persistence.Topic;
-import edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository;
-import edu.hm.cs.katz.swt2.agenda.persistence.User;
-import edu.hm.cs.katz.swt2.agenda.persistence.UserRepository;
+import edu.hm.cs.katz.swt2.agenda.persistence.*;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.validation.ValidationException;
 import org.apache.commons.collections4.SetUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +13,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.ValidationException;
+import java.util.*;
 
 @Component
 @Transactional(rollbackFor = Exception.class)
@@ -184,7 +174,7 @@ public class TaskServiceImpl implements TaskService {
     }
     return mapper.createManagedDto(task);
   }
-
+  
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public List<SubscriberTaskDto> getAllTasksOfSubscribedTopics(String login) {
@@ -194,15 +184,25 @@ public class TaskServiceImpl implements TaskService {
     Collection<Topic> topics = user.getSubscriptions();
     return createTaskDtosWithStatusForTopics(user, topics);
   }
-
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status) {
+    LOG.info("Rufe abonnierte Tasks von {} mit Status {} auf.", login, status);
+    
+    User user = userRepository.getOne(login);
+    Collection<Topic> topics = user.getSubscriptions();
+    return createTaskDtosForStatusForTopics(user, topics, status);
+  }
+  
   private List<SubscriberTaskDto> createTaskDtosWithStatusForTopics(User user,
-      Collection<Topic> topics) {
+                                                                    Collection<Topic> topics) {
     Map<Task, Status> statusForTask = createTaskToStatusMapForUsersTasks(user);
-
+    
     List<SubscriberTaskDto> result = new ArrayList<>();
-
+    
     for (Task task : taskRepository.findAllByTopicIn(topics,
-        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+            Sort.by(Sort.Order.asc("title").ignoreCase()))) {
       if (statusForTask.get(task) == null) {
         Status createdStatus = getOrCreateStatus(task.getId(), user.getLogin());
         statusForTask.put(task, createdStatus);
@@ -210,23 +210,45 @@ public class TaskServiceImpl implements TaskService {
     }
     
     for (Task task1 : taskRepository.findAllByTopicIn(topics,
-        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+            Sort.by(Sort.Order.asc("title").ignoreCase()))) {
       if (statusForTask.get(task1).getStatus().equals(StatusEnum.OFFEN)
-          || statusForTask.get(task1).getStatus().equals(StatusEnum.NEU)) {
+              || statusForTask.get(task1).getStatus().equals(StatusEnum.NEU)) {
         result.add(mapper.createReadDto(task1, statusForTask.get(task1)));
       }
     }
-    
     for (Task task1 : taskRepository.findAllByTopicIn(topics,
-        Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+            Sort.by(Sort.Order.asc("title").ignoreCase()))) {
       if (statusForTask.get(task1).getStatus().equals(StatusEnum.FERTIG)) {
         result.add(mapper.createReadDto(task1, statusForTask.get(task1)));
       }
     }
-      
+    
     return result;
   }
-
+  
+  private List<SubscriberTaskDto> createTaskDtosForStatusForTopics(User user,
+                                                                    Collection<Topic> topics, StatusEnum status) {
+    Map<Task, Status> statusForTask = createTaskToStatusMapForUsersTasks(user);
+    
+    List<SubscriberTaskDto> result = new ArrayList<>();
+    
+    for (Task task : taskRepository.findAllByTopicIn(topics,
+            Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+      if (statusForTask.get(task) == null) {
+        Status createdStatus = getOrCreateStatus(task.getId(), user.getLogin());
+        statusForTask.put(task, createdStatus);
+      }
+    }
+    
+    for (Task task : taskRepository.findAllByTopicIn(topics,
+            Sort.by(Sort.Order.asc("title").ignoreCase()))) {
+      if (statusForTask.get(task).getStatus().equals(status)) {
+        result.add(mapper.createReadDto(task, statusForTask.get(task)));
+      }
+    }
+    return result;
+  }
+  
   private Map<Task, Status> createTaskToStatusMapForUsersTasks(User user) {
     Collection<Status> statuses = user.getStatuses();
     Map<Task, Status> statusForTask = new HashMap<>();
@@ -244,10 +266,21 @@ public class TaskServiceImpl implements TaskService {
     
     User user = userRepository.getOne(login);
     Topic topic = topicRepository.getOne(topicUuid);
-
+  
     return createTaskDtosWithStatusForTopics(user, SetUtils.hashSet(topic));
   }
-
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public List<SubscriberTaskDto> getTasksForTopicForStatus(String topicUuid, String login, StatusEnum status) {
+    LOG.info("Rufe Tasks für Topic {} mit Status {} auf.", topicUuid, status);
+    LOG.debug("Tasks von {} werden aufgerufen.", login);
+    
+    User user = userRepository.getOne(login);
+    Topic topic = topicRepository.getOne(topicUuid);
+    
+    return createTaskDtosForStatusForTopics(user, SetUtils.hashSet(topic), status);
+  }
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")

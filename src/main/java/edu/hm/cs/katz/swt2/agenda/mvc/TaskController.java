@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.mvc;
 
+import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static edu.hm.cs.katz.swt2.agenda.common.StatusEnum.FERTIG;
 
 @Controller
 public class TaskController extends AbstractController {
@@ -125,8 +128,11 @@ public class TaskController extends AbstractController {
    */
   @GetMapping("tasks")
   public String getSubscriberTaskListView(Model model, Authentication auth) {
-    List<SubscriberTaskDto> tasks = taskService.getAllTasksOfSubscribedTopics(auth.getName());
-    model.addAttribute("tasks", tasks);
+    List<SubscriberTaskDto> openTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.OFFEN);
+    openTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.NEU));
+    List<SubscriberTaskDto> finishedTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.FERTIG);
+    model.addAttribute("openTasks", openTasks);
+    model.addAttribute("finishedTasks", finishedTasks);
     return "task-listview";
   }
 }

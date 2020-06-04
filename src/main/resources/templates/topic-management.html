@@ -21,16 +21,18 @@
 							Beschreiben Sie das Topic kurz. </small>
 					</div>
 					<div class="form-group">
-						<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung" maxlength="1000"></textarea>
-						<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung hinzufügen. </small>
+						<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung"
+								  maxlength="1000"></textarea>
+						<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung
+							hinzufügen. </small>
 					</div>
 
 					<button type="submit" class="btn btn-primary">Speichern!</button>
 					<a href="/topics" class="btn btn-danger">Zurück</a>
 				</form>
 			</div>
-		</div>		
-	
+		</div>
+
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">
 				<h4 class="display-4">
@@ -40,18 +42,21 @@
 				</h4>
 			</div>
 		</div>
-		<div class="row row-cols-1 bg-light">
-			<div class="col mb-4" th:each="task : ${tasks}">
+		<div class="row row-cols-1 row-cols-md-3 bg-light">
+			<div class="col mb-4" th:each="t : ${tasks}">
 				<div class="card">
-					<div class="card-body">
-						<h5 class="card-title" th:text="${task.title}">Card title</h5>
-						<p class="card-text" th:text="${task.shortDescription}">Keine Beschreibung</p>
-						<p class="card-text" th:if="${task.doneStatusesCount!=1}" th:text="${task.doneStatusesCount}+' Abonnenten haben den Task abgeschlossen'">Keine Abonnenten haben den Task abgeschlossen</p>
-						<p class="card-text" th:if="${task.doneStatusesCount==1}" th:text="${task.doneStatusesCount}+' Abonnent hat den Task abgeschlossen'">Keine Abonnenten haben den Task abgeschlossen</p>
-
-						<a th:href="'/tasks/'+${task.id}+'/manage'"
-							class="btn btn-primary">Verwalten</a>
-						<form th:action="'/tasks/'+${task.id}+'/delete'" method="post">
+					<div class=" card-body">
+						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+						<p class="card-text" th:if="${t.doneStatusesCount!=1}"
+						   th:text="${t.doneStatusesCount}+' Abonnenten haben den Task abgeschlossen'">Keine Abonnenten
+							haben den Task abgeschlossen</p>
+						<p class="card-text" th:if="${t.doneStatusesCount==1}"
+						   th:text="${t.doneStatusesCount}+' Abonnent hat den Task abgeschlossen'">Keine Abonnenten
+							haben den Task abgeschlossen</p>
+						<form th:action="'/tasks/'+${t.id}+'/delete'" method="post">
+							<a th:href="'/tasks/'+${t.id}+'/manage'"
+							   class="btn btn-primary">Verwalten</a>
 							<button class="btn btn-danger" type="submit">Löschen</button>
 						</form>
 					</div>

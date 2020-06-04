@@ -23,27 +23,58 @@
 				</div>
 			</div>
 		</div>
-		
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">
 				<h4 class="display-4">
-					Aufgaben-Übersicht für das Topic <i th:text="${topic.title}"></i>
+					Offene Aufgaben
 				</h4>
+				<span th:if="${#lists.size(openTasks)==0}">
+					Sie haben keine offenen Aufgaben!
+				</span>
 			</div>
 		</div>
-		<div class="row row-cols-1 bg-light">
-			<div class="col mb-4" th:each="task : ${tasks}">
+		<div class="row row-cols-1 row-cols-md-3 bg-light">
+			<div class="col mb-4" th:each="t : ${openTasks}">
 				<div class="card">
-					<div class="card-body">
-						<h5 class="card-title" th:text="${task.title}">Card title</h5>
-						<p class="card-text" th:text="${task.shortDescription}">Keine Beschreibung</p>
+					<div class=" card-body">
+						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h6 class="card-subtitle mb-2 text-muted"
+							th:text="'In '+${t.topic.title}">Card subtitle</h6>
+						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+						<form th:id="formName" th:action="@{/tasks/{id}/check(id=${t.id})}"
+							  th:object="${t}" method="post">
+							<a th:href="'/tasks/'+${t.id}" class="btn btn-primary">Öffnen</a>
+							<button type="submit" class="btn btn-success">Done!</button>
+						</form>
+					</div>
+				</div>
 
-						<a th:href="'/tasks/'+${task.id}" class="btn btn-primary">Öffnen</a>
+			</div>
+		</div>
+
+		<div class="row justify-content-center bg-light">
+			<div class="col-12">
+				<h4 class="display-4">
+					Erledigte Aufgaben
+				</h4>
+				<span th:if="${#lists.size(finishedTasks)==0}">
+					Sie haben keine Aufgaben erledigt!
+				</span>
+			</div>
+		</div>
+		<div class="row row-cols-1 row-cols-md-3 bg-light">
+			<div class="col mb-4" th:each="t : ${finishedTasks}">
+				<div class="card">
+					<div class=" card-body">
+						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h6 class="card-subtitle mb-2 text-muted"
+							th:text="'In '+${t.topic.title}">Card subtitle</h6>
+						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+						<a class="btn btn-primary" th:href="'/tasks/'+${t.id}" role="button">Öffnen</a>
 					</div>
 				</div>
 			</div>
 		</div>
-		
 	</div>
 
 	<th:block th:replace="fragments :: scripts">

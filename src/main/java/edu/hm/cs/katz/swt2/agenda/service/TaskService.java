@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
+import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import java.util.List;
@@ -43,12 +44,22 @@ public interface TaskService {
    * Zugriff auf alle Tasks abonnierter Topics.
    */
   List<SubscriberTaskDto> getAllTasksOfSubscribedTopics(String login);
-
+  
+  /**
+   * Zugriff auf alle Tasks abonnierter Topics mit Status als Filter.
+   */
+  List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status);
+  
   /**
    * Zugriff auf alle Tasks eines abonnierten Topics.
    */
   List<SubscriberTaskDto> getTasksForTopic(String topicUuid, String login);
-
+  
+  /**
+   * Zugriff auf alle Tasks eines abonnierten Topics mit Status als Filter.
+   */
+  List<SubscriberTaskDto> getTasksForTopicForStatus(String topicUuid, String login, StatusEnum status);
+  
   /**
    * Markiert einen Task für einen Abonnenten als "done".
    */
