@@ -1,6 +1,9 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +40,7 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
    * @param creator Topic Ersteller
    * @return
    */
-  List<Topic> findByCreatorOrderByTitleAsc(User creator);
+  Collection<Topic> findAllByCreator(User creator, Sort sort);
   
-  List<Topic> findBySubscribersOrderByTitleAsc(User subscriber);
+  Collection<Topic> findAllBySubscribers(User subscriber, Sort sort);
 }

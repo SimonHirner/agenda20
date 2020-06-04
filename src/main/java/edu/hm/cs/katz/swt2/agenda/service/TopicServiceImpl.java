@@ -14,6 +14,7 @@ import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -154,7 +155,7 @@ public class TopicServiceImpl implements TopicService {
     LOG.info("Rufe verwaltete Topics von {} auf.", login);
   
     User creator = anwenderRepository.findById(login).get();
-    List<Topic> managedTopics = topicRepository.findByCreatorOrderByTitleAsc(creator);
+    Collection<Topic> managedTopics = topicRepository.findAllByCreator(creator, Sort.by(Sort.Order.asc("title").ignoreCase()));
     List<OwnerTopicDto> result = new ArrayList<>();
     for (Topic topic : managedTopics) {
       result.add(mapper.createManagedDto(topic));
@@ -199,7 +200,7 @@ public class TopicServiceImpl implements TopicService {
     LOG.info("Rufe abonnierte Topics von {} auf.", login);
     
     User subscriber = anwenderRepository.findById(login).get();
-    Collection<Topic> subscriptions = topicRepository.findBySubscribersOrderByTitleAsc(subscriber);
+    Collection<Topic> subscriptions = topicRepository.findAllBySubscribers(subscriber, Sort.by(Sort.Order.asc("title").ignoreCase()));
     List<SubscriberTopicDto> result = new ArrayList<>();
     for (Topic topic : subscriptions) {
       result.add(mapper.createDto(topic));
