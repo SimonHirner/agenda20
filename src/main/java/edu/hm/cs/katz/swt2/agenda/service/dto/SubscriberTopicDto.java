@@ -1,7 +1,5 @@
 package edu.hm.cs.katz.swt2.agenda.service.dto;
 
-import java.util.List;
-
 /**
  * Transferobjekt für einfache Anzeigeinformationen von Topics. Transferobjekte sind
  * Schnittstellenobjekte der Geschäftslogik; Sie sind nicht Teil des Modells, so dass Änderungen an
@@ -18,7 +16,6 @@ public class SubscriberTopicDto {
   private String shortDescription;
   private String longDescription;
   private int subscriberCount;
-  private List<UserDisplayDto> subscribers;
 
   /**
    * Konstruktor.
@@ -70,13 +67,5 @@ public class SubscriberTopicDto {
 
   public void setSubscriberCount(int subscriberCount) {
     this.subscriberCount = subscriberCount;
-  }
-  
-  public void setSubscribers(List<UserDisplayDto> subscribers) {
-    this.subscribers = subscribers;
-  }
-
-  public List<UserDisplayDto> getSubscribers() {
-    return subscribers;
   }
 }

@@ -11,13 +11,13 @@ package edu.hm.cs.katz.swt2.agenda.service.dto;
  * @author Bastian Katz (mailto: bastian.katz@hm.edu)
  */
 public class TaskDto {
-  Long id;
-  String title;
-  SubscriberTopicDto topic;
-  String shortDescription;
-  String longDescription;
   
-
+  private Long id;
+  private String title;
+  private SubscriberTopicDto topic;
+  private String shortDescription;
+  private String longDescription;
+  
   /**
    * Konstruktor.
    */

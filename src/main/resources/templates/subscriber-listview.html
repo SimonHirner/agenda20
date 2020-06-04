@@ -17,6 +17,7 @@
 				</thead>
 				<tr th:each="subscriber : ${subscribers}">
 					<td th:text="${subscriber.name}"/>
+					<td th:text="${topic.doneStatusesCountForUser.get(subscriber.login)}"/>
 				</tr>
 			</table>
 		</div>

@@ -156,9 +156,10 @@ public class TopicController extends AbstractController {
   @GetMapping("/topics/{uuid}/subscribers")
   public String createSubscriberView(Model model, Authentication auth,
       @PathVariable("uuid") String uuid) {
-    SubscriberTopicDto topic = topicService.getTopic(uuid, auth.getName());
+    OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
     List<UserDisplayDto> subscribers = topic.getSubscribers();
     model.addAttribute("subscribers", subscribers);
+    model.addAttribute("topic", topic);
     return "subscriber-listview";
     
   }

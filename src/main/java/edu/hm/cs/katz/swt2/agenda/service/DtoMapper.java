@@ -14,7 +14,9 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,7 +43,7 @@ public class DtoMapper {
   public UserDisplayDto createDto(User user) {
     UserDisplayDto dto = mapper.map(user, UserDisplayDto.class);
     dto.setTopicCount(topicRepository.countByCreator(user));
-    dto.setSubscriptionCount(user.getSubscriptions().size());
+    dto.setSubscriptionCount(user.getSubscriptions().size());    
     return dto;
   }
 
@@ -53,14 +55,7 @@ public class DtoMapper {
     SubscriberTopicDto topicDto =
         new SubscriberTopicDto(topic.getUuid(), creatorDto, topic.getTitle(),
             topic.getShortDescription(), topic.getLongDescription());
-    topicDto.setSubscriberCount(topic.getSubscribers().size());
-    
-    List<UserDisplayDto> subscribers = new ArrayList<UserDisplayDto>();
-    for (User user : topic.getSubscribers()) {
-      subscribers.add(createDto(user));
-    }
-    topicDto.setSubscribers(subscribers);
-    
+    topicDto.setSubscriberCount(topic.getSubscribers().size());       
     return topicDto;
   }
 
@@ -88,7 +83,31 @@ public class DtoMapper {
     OwnerTopicDto topicDto = 
         new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(),
             topic.getShortDescription(), topic.getLongDescription());
-    topicDto.setSubscriberCount(topic.getSubscribers().size());
+    topicDto.setSubscriberCount(topic.getSubscribers().size());   
+    
+    List<UserDisplayDto> subscribers = new ArrayList<UserDisplayDto>();
+    for (User user : topic.getSubscribers()) {
+      subscribers.add(createDto(user));
+    }
+    topicDto.setSubscribers(subscribers);
+    
+    Map<String, Integer> doneStatusesCountForUser = new HashMap<String, Integer>();
+    for (Task task : topic.getTasks()) {
+      for (Status status : task.getStatuses()) {
+        if (status.getStatus().equals(StatusEnum.FERTIG)) {
+          if (doneStatusesCountForUser.get(createDto(status.getUser()).getLogin()) != null) {
+            doneStatusesCountForUser.put(createDto(status.getUser()).getLogin(),
+                doneStatusesCountForUser.get(status.getUser().getLogin()) + 1);
+          } else {
+            doneStatusesCountForUser.put(createDto(status.getUser()).getLogin(), 1);
+          }
+        } else {
+          doneStatusesCountForUser.put(createDto(status.getUser()).getLogin(), 0);
+        }
+      }
+    }
+    topicDto.setDoneStatusesCountForUser(doneStatusesCountForUser);
+    
     return topicDto;
   }
 
@@ -99,13 +118,13 @@ public class DtoMapper {
     OwnerTaskDto ownerTaskDto = new OwnerTaskDto(task.getId(), task.getTitle(),
         task.getShortDescription(), task.getLongDescription(), createDto(task.getTopic()));
     
-    int doneStatusCount = 0;
+    int doneStatusesCount = 0;
     for (Status status : task.getStatuses()) {
       if (status.getStatus().equals(StatusEnum.FERTIG)) {
-        doneStatusCount++;
+        doneStatusesCount++;
       }
     }
-    ownerTaskDto.setDoneStatusCount(doneStatusCount);
+    ownerTaskDto.setDoneStatusesCount(doneStatusesCount);
     
     return ownerTaskDto;
   }

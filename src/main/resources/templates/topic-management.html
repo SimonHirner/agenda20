@@ -46,8 +46,8 @@
 					<div class="card-body">
 						<h5 class="card-title" th:text="${task.title}">Card title</h5>
 						<p class="card-text" th:text="${task.shortDescription}">Keine Beschreibung</p>
-						<p class="card-text" th:if="${task.doneStatusCount!=1}" th:text="${task.doneStatusCount}+' Abonnenten haben den Task abgeschlossen'">Keine Abonnenten haben den Task abgeschlossen</p>
-						<p class="card-text" th:if="${task.doneStatusCount==1}" th:text="${task.doneStatusCount}+' Abonnent hat den Task abgeschlossen'">Keine Abonnenten haben den Task abgeschlossen</p>
+						<p class="card-text" th:if="${task.doneStatusesCount!=1}" th:text="${task.doneStatusesCount}+' Abonnenten haben den Task abgeschlossen'">Keine Abonnenten haben den Task abgeschlossen</p>
+						<p class="card-text" th:if="${task.doneStatusesCount==1}" th:text="${task.doneStatusesCount}+' Abonnent hat den Task abgeschlossen'">Keine Abonnenten haben den Task abgeschlossen</p>
 
 						<a th:href="'/tasks/'+${task.id}+'/manage'"
 							class="btn btn-primary">Verwalten</a>

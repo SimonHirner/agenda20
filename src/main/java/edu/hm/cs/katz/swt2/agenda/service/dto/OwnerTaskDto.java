@@ -12,18 +12,18 @@ package edu.hm.cs.katz.swt2.agenda.service.dto;
  */
 public class OwnerTaskDto extends TaskDto {
   
-  private int doneStatusCount;
+  private int doneStatusesCount;
   
   public OwnerTaskDto(Long id, String title, String shortInfo, String longInfo, 
       SubscriberTopicDto topicDto) {
     super(id, title, shortInfo, longInfo, topicDto);
   }
 
-  public int getDoneStatusCount() {
-    return doneStatusCount;
+  public int getDoneStatusesCount() {
+    return doneStatusesCount;
   }
 
-  public void setDoneStatusCount(int doneStatusCount) {
-    this.doneStatusCount = doneStatusCount;
+  public void setDoneStatusesCount(int doneStatusCount) {
+    this.doneStatusesCount = doneStatusCount;
   }
 }
