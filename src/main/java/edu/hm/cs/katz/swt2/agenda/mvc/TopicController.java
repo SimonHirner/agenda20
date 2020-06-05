@@ -165,4 +165,22 @@ public class TopicController extends AbstractController {
     return "subscriber-listview";
     
   }
+  
+  /**
+   * Verarbeitet die Markierung eines Tasks als "Done".
+   */
+  @PostMapping("topics/{uuid}/{id}/check")
+  public String handleTaskChecking(Model model, Authentication auth, @PathVariable("id") Long id) {
+    taskService.checkTask(id, auth.getName());
+    return "redirect:/topics/{uuid}";
+  }
+  
+  /**
+   * Verarbeitet das Zurücksetzen des Status eines Tasks.
+   */
+  @PostMapping("topics/{uuid}/{id}/reset")
+  public String handleTaskReset(Model model, Authentication auth, @PathVariable("id") Long id) {
+    taskService.resetTask(id, auth.getName());
+    return "redirect:/topics/{uuid}";
+  }
 }

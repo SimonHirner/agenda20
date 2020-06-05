@@ -293,6 +293,18 @@ public class TaskServiceImpl implements TaskService {
     LOG.debug("Status von Task {} und Anwender {} gesetzt auf {}", status.getTask(),
         status.getUser(), status.getStatus());
   }
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void resetTask(Long taskId, String login) {
+    LOG.info("Ändere Status von Task {}.", taskId);
+    LOG.debug("Status wird von {} geändert.", login);
+    
+    Status status = getOrCreateStatus(taskId, login);
+    status.setStatus(StatusEnum.OFFEN);
+    LOG.debug("Status von Task {} und Anwender {} gesetzt auf {}", status.getTask(),
+            status.getUser(), status.getStatus());
+  }
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")

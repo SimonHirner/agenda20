@@ -122,6 +122,15 @@ public class TaskController extends AbstractController {
     taskService.checkTask(id, auth.getName());
     return "redirect:/tasks";
   }
+  
+  /**
+   * Verarbeitet das Zurücksetzen des Status eines Tasks.
+   */
+  @PostMapping("tasks/{id}/reset")
+  public String handleTaskReset(Model model, Authentication auth, @PathVariable("id") Long id) {
+    taskService.resetTask(id, auth.getName());
+    return "redirect:/tasks";
+  }
 
   /**
    * Erstellt die Übersicht aller Tasks abonnierter Topics für einen Anwender.

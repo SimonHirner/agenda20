@@ -41,10 +41,11 @@
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
-						<form th:id="formName" th:action="@{/tasks/{id}/check(id=${t.id})}"
-							  th:object="${t}" method="post">
+						<form th:action="@{/topics/{uuid}/{id}/check(id=${t.id}, uuid=${topic.uuid})}"
+							  th:object="${topic}"
+							  method="post">
 							<a th:href="'/tasks/'+${t.id}" class="btn btn-primary">Öffnen</a>
-							<button type="submit" class="btn btn-success">Done!</button>
+							<button type="submit" class="btn btn-success">Erledigt</button>
 						</form>
 					</div>
 				</div>
@@ -70,7 +71,11 @@
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
-						<a class="btn btn-primary" th:href="'/tasks/'+${t.id}" role="button">Öffnen</a>
+						<form th:action="@{/topics/{uuid}/{id}/reset(id=${t.id}, uuid=${topic.uuid})}"
+							  th:object="${topic}" method="post">
+							<a th:href="'/tasks/'+${t.id}" class="btn btn-primary">Öffnen</a>
+							<button type="submit" class="btn btn-secondary">Zurücksetzen</button>
+						</form>
 					</div>
 				</div>
 			</div>

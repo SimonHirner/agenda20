@@ -69,4 +69,9 @@ public interface TaskService {
    * Aktualisierung der Beschreibungen.
    */
   void updateTask(Long id, String login, String shortDescription, String longDescription);
+  
+  /**
+   * Zurücksetzen des Status eines Tasks.
+   */
+  void resetTask(Long id, String name);
 }
