@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.mvc;
 
+import edu.hm.cs.katz.swt2.agenda.persistence.Registration;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
