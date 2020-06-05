@@ -44,5 +44,5 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
   
   Collection<Topic> findAllBySubscribers(User subscriber, Sort sort);
     
-    Topic findByUuidEndingWith(String key);
+  Topic findByUuidEndingWith(String key);
 }

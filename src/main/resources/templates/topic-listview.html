@@ -20,7 +20,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title" th:text="${topic.title}">Card title</h5>
-						<p class="card-subtitle" th:text="'Registrierschlüssel '+${topic.key}">Abo Schlüssel </p>
+
 						<p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
 						<a class="card-text" th:href="'/topics/'+${topic.uuid}+'/subscribers'"
 						   th:if="${topic.subscriberCount!=1}" th:text="${topic.subscriberCount}+' Abonnenten'">Keine
@@ -36,11 +36,7 @@
 							  method="post">
 							<button class="btn btn-danger" type="submit">Löschen</button>
 						</form>
-
-						<a th:href="'/topics/'+${topic.uuid}+'/register'"
-						   class="btn btn-outline-primary">Abo-Link</a>
-						<p><small class="form-text text-muted"> Kopieren Sie den Link zum Abonnieren (Rechtsklick,
-							Link/Adresse kopieren) und geben ihn an Teilnehmer aus!</small></p>
+						<p class="form-text text-muted" th:text="'Abo Code: '+${topic.key}">Abo Schlüssel </p>
 					</div>
 				</div>
 			</div>
@@ -61,6 +57,7 @@
 							th:text="'Von '+${topic.creator.displayName}">Card subtitle</h6>
 						<p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
 						<a th:href="'/topics/'+${topic.uuid}" class="btn btn-primary">Öffnen</a>
+						<p class="form-text text-muted" th:text="'Abo Code: '+${topic.key}">Abo Schlüssel </p>
 					</div>
 				</div>
 			</div>

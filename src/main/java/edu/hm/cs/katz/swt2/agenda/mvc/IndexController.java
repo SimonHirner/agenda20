@@ -35,6 +35,9 @@ public class IndexController extends AbstractController {
     return "index";
   }
   
+  /**
+   * Behandelt die Eingabe eines Aboschlüssels für ein Topic.
+   */
   @PostMapping("/register")
   public String handleRegistrationKey(@ModelAttribute("registration") Registration registration, Authentication auth, RedirectAttributes redirectAttributes) {
     String uuid ="";
