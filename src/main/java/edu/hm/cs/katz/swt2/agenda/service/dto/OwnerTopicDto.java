@@ -39,4 +39,5 @@ public class OwnerTopicDto extends SubscriberTopicDto {
   public List<UserDisplayDto> getSubscribers() {
     return subscribers;
   }
+  
 }

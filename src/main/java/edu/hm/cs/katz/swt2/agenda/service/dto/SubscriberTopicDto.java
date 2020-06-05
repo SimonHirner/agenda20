@@ -9,7 +9,7 @@ package edu.hm.cs.katz.swt2.agenda.service.dto;
  * 
  * @author Bastian Katz (mailto: bastian.katz@hm.edu)
  */
-public class SubscriberTopicDto {
+public class  SubscriberTopicDto {
   private String uuid;
   private UserDisplayDto creator;
   private String title;
@@ -67,5 +67,9 @@ public class SubscriberTopicDto {
 
   public void setSubscriberCount(int subscriberCount) {
     this.subscriberCount = subscriberCount;
+  }
+  
+  public String getKey() {
+    return getUuid().substring(28);
   }
 }

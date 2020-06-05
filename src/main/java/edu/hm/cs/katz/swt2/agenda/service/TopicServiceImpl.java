@@ -208,4 +208,18 @@ public class TopicServiceImpl implements TopicService {
     
     return result;
   }
+  
+  @Override
+  public String getTopicUuid(String key, String login) {
+    LOG.info("Uuid auflösen für Key{}", key);
+    LOG.debug("Key wird von {} eingereicht.", login);
+    if (key.length() < 8){
+      throw new ValidationException("Der eingegebene Schlüssel ist zu kurz!");
+    }
+    Topic topic = topicRepository.findByUuidEndingWith(key);
+    if (topic == null){
+      throw new ValidationException("Der eingegebene Schlüssel ist ungültig!");
+    }
+    return topic.getUuid();
+  }
 }

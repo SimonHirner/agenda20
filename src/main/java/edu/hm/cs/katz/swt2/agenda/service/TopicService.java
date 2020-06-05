@@ -53,4 +53,9 @@ public interface TopicService {
    * Aktualisierung der Beschreibungen.
    */
   void updateTopic(String uuid, String login, String shortDescription, String longDescription);
+  
+  /**
+   * Liefert zu einem gegebenen Registrierungsschlüssel die UUID des Topics zurück.
+   */
+  String getTopicUuid (String key, String login);
 }
