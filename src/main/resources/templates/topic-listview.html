@@ -57,6 +57,7 @@
 							th:text="'Von '+${topic.creator.displayName}">Card subtitle</h6>
 						<p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
 						<a th:href="'/topics/'+${topic.uuid}" class="btn btn-primary">Öffnen</a>
+						<a th:href="'/topics/'+${topic.uuid}+'/unsubscription'" class="btn btn-danger">Teilnahme beenden</a>
 						<p class="form-text text-muted" th:text="'Abo Code: '+${topic.key}">Abo Schlüssel </p>
 					</div>
 				</div>

@@ -58,4 +58,6 @@ public interface TopicService {
    * Liefert zu einem gegebenen Registrierungsschlüssel die UUID des Topics zurück.
    */
   String getTopicUuid (String key, String login);
+  
+  void unsubscribe(String topicUuid, String login);
 }

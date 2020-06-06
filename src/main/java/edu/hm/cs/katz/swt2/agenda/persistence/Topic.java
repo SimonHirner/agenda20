@@ -1,18 +1,13 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Topic {
@@ -134,12 +129,17 @@ public class Topic {
     Topic other = (Topic) obj;
     return Objects.equals(getUuid(), other.getUuid());
   }
-
+  
   public void setShortDescription(String shortDescription) {
     this.shortDescription = shortDescription;
   }
-
+  
   public void setLongDescription(String longDescription) {
     this.longDescription = longDescription;
+  }
+  
+  public void unregister(User anwender) {
+    subscribers.remove(anwender);
+    anwender.removeSubscription(this);
   }
 }

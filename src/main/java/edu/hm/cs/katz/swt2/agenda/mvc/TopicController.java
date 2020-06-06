@@ -1,12 +1,10 @@
 package edu.hm.cs.katz.swt2.agenda.mvc;
 
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
+import edu.hm.cs.katz.swt2.agenda.persistence.Registration;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
-import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
-import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
-import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
-import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.ValidationException;
 import java.util.List;
 
 
@@ -118,7 +117,36 @@ public class TopicController extends AbstractController {
     topicService.subscribe(uuid, auth.getName());
     return "redirect:/topics/" + uuid;
   }
+  
+  /**
+   * Nimmt das Abonnement (d.h. die Bestätigung auf die Nachfrage) entgegen und erstellt ein
+   * Abonnement.
+   */
+  @PostMapping("/topics/{uuid}/unsubscribe")
+  public String handleTopicUnsubscription(Model model, Authentication auth,
+                                       @PathVariable("uuid") String uuid, RedirectAttributes redirectAttributes) {
 
+    try {
+      taskService.resetAllTasks(uuid, auth.getName());
+      topicService.unsubscribe(uuid, auth.getName());
+    } catch (Exception e) {
+  
+    }
+    return "redirect:/topics/";
+  }
+  
+  /**
+   * Erzeugt Anzeige eines Topics mit Informationen für den Ersteller.
+   */
+  @GetMapping("/topics/{uuid}/unsubscription")
+  public String createUnsubscriptionView(Model model, Authentication auth,
+                                          @PathVariable("uuid") String uuid) {
+    OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
+    model.addAttribute("topic", topic);
+    model.addAttribute("tasks", taskService.getManagedTasks(uuid, auth.getName()));
+    return "topic-unsubscription";
+  }
+  
   /**
    * Erstellt Übersicht eines Topics für einen Abonennten.
    */

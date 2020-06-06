@@ -77,6 +77,10 @@ public class User {
   public void addSubscription(Topic topic) {
     subscriptions.add(topic);
   }
+ 
+  public void removeSubscription(Topic topic) {
+    subscriptions.remove(topic);
+  }
 
   public String getLogin() {
     return login;
@@ -124,5 +128,6 @@ public class User {
     User other = (User) obj;
     return Objects.equals(getLogin(), other.getLogin());
   }
+  
 
 }

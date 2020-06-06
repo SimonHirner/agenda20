@@ -193,6 +193,17 @@ public class TopicServiceImpl implements TopicService {
     User anwender = anwenderRepository.getOne(login);
     topic.register(anwender);
   }
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void unsubscribe(String topicUuid, String login) {
+    LOG.info("Entfolge Topic {}.", topicUuid);
+    LOG.debug("Topic wird von {} deabonniert.", login);
+    
+    Topic topic = topicRepository.getOne(topicUuid);
+    User anwender = anwenderRepository.getOne(login);
+    topic.unregister(anwender);
+  }
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")

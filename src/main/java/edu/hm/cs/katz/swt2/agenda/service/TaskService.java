@@ -74,4 +74,6 @@ public interface TaskService {
    * Zurücksetzen des Status eines Tasks.
    */
   void resetTask(Long id, String name);
+  
+  void resetAllTasks(String uuid, String name);
 }
