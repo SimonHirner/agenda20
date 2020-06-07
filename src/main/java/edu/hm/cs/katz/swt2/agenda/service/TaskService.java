@@ -48,7 +48,7 @@ public interface TaskService {
   /**
    * Zugriff auf alle Tasks abonnierter Topics mit Status als Filter.
    */
-  List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status);
+  List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status, String search);
   
   /**
    * Zugriff auf alle Tasks eines abonnierten Topics.

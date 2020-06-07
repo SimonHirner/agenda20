@@ -6,13 +6,21 @@
 	<nav th:replace="fragments :: navigation"></nav>
 	<div class="container-fluid">
 		<div class="row justify-content-center bg-light">
-			<div class="col-12">
+			<div class="col-8">
 				<h4 class="display-4">
 					Offene Aufgaben
 				</h4>
 				<span th:if="${#lists.size(openTasks)==0}">
 					Sie haben keine offenen Aufgaben!
 				</span>
+			</div>
+			<div class="col-4">
+			<form class="form-inline" th:object="${search}" th:action="@{/tasks}" method="get">
+				<div class="form-group">
+					<input th:field="*{search}" class="form-control" placeholder="Suche nach Task"/>
+				</div>
+				<button type="submit" class="btn btn-primary"><i class="material-icons">search</i></button>
+			</form>
 			</div>
 		</div>
 		<div class="row row-cols-1 row-cols-md-3 bg-light">

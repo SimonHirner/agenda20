@@ -1,6 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.mvc;
 
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
+import edu.hm.cs.katz.swt2.agenda.persistence.Search;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
@@ -12,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static edu.hm.cs.katz.swt2.agenda.common.StatusEnum.FERTIG;
@@ -136,10 +133,12 @@ public class TaskController extends AbstractController {
    * Erstellt die Übersicht aller Tasks abonnierter Topics für einen Anwender.
    */
   @GetMapping("tasks")
-  public String getSubscriberTaskListView(Model model, Authentication auth) {
-    List<SubscriberTaskDto> openTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.OFFEN);
-    openTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.NEU));
-    List<SubscriberTaskDto> finishedTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.FERTIG);
+  public String getSubscriberTaskListView(Model model, Authentication auth,
+                                          @RequestParam(name="search", required=false, defaultValue = "") String search) {
+    List<SubscriberTaskDto> openTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.OFFEN, search);
+    openTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.NEU, search));
+    List<SubscriberTaskDto> finishedTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.FERTIG, search);
+    model.addAttribute("search", new Search());
     model.addAttribute("openTasks", openTasks);
     model.addAttribute("finishedTasks", finishedTasks);
     return "task-listview";

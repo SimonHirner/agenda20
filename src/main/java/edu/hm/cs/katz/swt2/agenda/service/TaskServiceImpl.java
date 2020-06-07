@@ -187,12 +187,15 @@ public class TaskServiceImpl implements TaskService {
   
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status) {
+  public List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status, String search) {
     LOG.info("Rufe abonnierte Tasks von {} mit Status {} auf.", login, status);
-    
+  
     User user = userRepository.getOne(login);
     Collection<Topic> topics = user.getSubscriptions();
-    return createTaskDtosForStatusForTopics(user, topics, status);
+    List<SubscriberTaskDto> result = createTaskDtosForStatusForTopics(user, topics, status);
+    result.removeIf(t -> !t.getTitle().toLowerCase().contains(search.toLowerCase())
+            && !t.getShortDescription().toLowerCase().contains(search.toLowerCase()));
+    return result;
   }
   
   private List<SubscriberTaskDto> createTaskDtosWithStatusForTopics(User user,
