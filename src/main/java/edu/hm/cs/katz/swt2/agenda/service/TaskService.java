@@ -2,6 +2,7 @@ package edu.hm.cs.katz.swt2.agenda.service;
 
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import java.util.List;
 
@@ -76,5 +77,18 @@ public interface TaskService {
    */
   void resetTask(Long id, String name);
   
+  /**
+   * Zurücksetzen der Status aller Tasks.
+   */
   void resetAllTasks(String uuid, String name);
+  
+  /**
+   * Aktualisierung eines Kommentars.
+   */
+  void updateComment(Long taskId, String login, String comment);
+
+  /**
+   * Zugriff auf einen Status.
+   */
+  StatusDto getStatus(Long taskId, String login);
 }

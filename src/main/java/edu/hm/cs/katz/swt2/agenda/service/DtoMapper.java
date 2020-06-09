@@ -73,7 +73,7 @@ public class DtoMapper {
    * Erstellt ein {@link StatusDto} aus einem {@link Status}.
    */
   public StatusDto createDto(Status status) {
-    return new StatusDto(status.getStatus());
+    return new StatusDto(status.getStatus(), status.getComment());
   }
 
   /**

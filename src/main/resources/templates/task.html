@@ -26,7 +26,25 @@
 			</div>
 		</div>
 	</div>
-
+	
+	<div class="row justify-content-center bg-light">
+		<div class="col-12">
+			<h4 class="display-4">
+				Kommentar
+			</h4>
+			<form th:action="@{/tasks/{id}(id=${task.id})}" th:object="${status}"
+				method="post">
+				<div class="form-group">
+					<textarea th:field="*{comment}" class="form-control" placeholder="Kommentar"
+							  maxlength="250"></textarea>
+					<small class="form-text text-muted">Sie können dem Aufgabensteller Feedback zum Task geben.</small>
+				</div>
+				<button type="submit" class="btn btn-primary">Senden!</button>
+				<a href="/tasks" class="btn btn-danger">Zurück</a>
+			</form>
+		</div>
+	</div>
+	
 	<th:block th:replace="fragments :: scripts">
 </body>
 </html>
