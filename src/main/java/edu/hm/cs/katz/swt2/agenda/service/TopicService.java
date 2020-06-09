@@ -32,7 +32,7 @@ public interface TopicService {
   /**
    * Zugriff auf alle eigenen Topics.
    */
-  List<OwnerTopicDto> getManagedTopics(String login);
+  List<OwnerTopicDto> getManagedTopics(String login, String search);
 
   /**
    * Zugriff auf ein abonniertes Topic.
@@ -42,7 +42,7 @@ public interface TopicService {
   /**
    * Zugriff auf alle abonnierten Topics.
    */
-  List<SubscriberTopicDto> getSubscriptions(String login);
+  List<SubscriberTopicDto> getSubscriptions(String login, String search);
 
   /**
    * Abonnieren eines Topics.

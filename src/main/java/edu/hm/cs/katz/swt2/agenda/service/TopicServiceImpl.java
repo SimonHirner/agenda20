@@ -151,7 +151,7 @@ public class TopicServiceImpl implements TopicService {
 
   @Override
   @PreAuthorize("#login==authentication.name")
-  public List<OwnerTopicDto> getManagedTopics(String login) {
+  public List<OwnerTopicDto> getManagedTopics(String login, String search) {
     LOG.info("Rufe verwaltete Topics von {} auf.", login);
   
     User creator = anwenderRepository.findById(login).get();
@@ -161,6 +161,8 @@ public class TopicServiceImpl implements TopicService {
     for (Topic topic : managedTopics) {
       result.add(mapper.createManagedDto(topic));
     }
+    result.removeIf(t -> !t.getTitle().toLowerCase().contains(search.toLowerCase())
+            && !t.getShortDescription().toLowerCase().contains(search.toLowerCase()));
     return result;
   }
 
@@ -192,7 +194,11 @@ public class TopicServiceImpl implements TopicService {
     
     Topic topic = topicRepository.getOne(topicUuid);
     User anwender = anwenderRepository.getOne(login);
-    topic.register(anwender);
+    if (topic.getSubscribers().contains(anwender)){
+      throw new ValidationException("Sia haben das Topic bereits abonniert!");
+    } else {
+      topic.register(anwender);
+    }
   }
   
   @Override
@@ -208,7 +214,7 @@ public class TopicServiceImpl implements TopicService {
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTopicDto> getSubscriptions(String login) {
+  public List<SubscriberTopicDto> getSubscriptions(String login, String search) {
     LOG.info("Rufe abonnierte Topics von {} auf.", login);
     
     User subscriber = anwenderRepository.findById(login).get();
@@ -218,7 +224,8 @@ public class TopicServiceImpl implements TopicService {
     for (Topic topic : subscriptions) {
       result.add(mapper.createDto(topic));
     }
-    
+    result.removeIf(t -> !t.getTitle().toLowerCase().contains(search.toLowerCase())
+            && !t.getShortDescription().toLowerCase().contains(search.toLowerCase()));
     return result;
   }
   
