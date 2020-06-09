@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.ValidationException;
+
 /**
  * Controller-Klasse für alle Interaktionen, die die Anzeige und Verwaltung von Topics betrifft.
  * Controller reagieren auf Aufrufe von URLs. Sie benennen ein View-Template (Thymeleaf-Vorlage) und
@@ -118,8 +120,12 @@ public class TopicController extends AbstractController {
    */
   @PostMapping("/topics/{uuid}/register")
   public String handleTaskRegistration(Model model, Authentication auth,
-      @PathVariable("uuid") String uuid) {
-    topicService.subscribe(uuid, auth.getName());
+      @PathVariable("uuid") String uuid, RedirectAttributes redirectAttributes) {
+    try {
+      topicService.subscribe(uuid, auth.getName());
+    } catch (ValidationException e){
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+    }
     return "redirect:/topics/" + uuid;
   }
   
