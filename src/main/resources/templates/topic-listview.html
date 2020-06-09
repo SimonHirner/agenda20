@@ -6,13 +6,22 @@
 	<nav th:replace="fragments :: navigation"></nav>
 	<div class="container-fluid">
 		<div class="row justify-content-center bg-light">
-			<div class="col-12">
+			<div class="col-8">
 				<h4 class="display-4">
 					Eigene Topics <a href="/topics/create" class="btn btn-primary">Topic
-						erstellen</a>
+					erstellen</a>
 				</h4>
-				<span th:if="${#lists.size(managedTopics)==0}">Sie haben
-					keine Topics erstellt!</span>
+				<span th:if="${#lists.size(managedTopics)==0}">Keine eigenen Topics gefunden!</span>
+			</div>
+
+
+			<div class="col-4">
+				<form class="form-inline" th:object="${search}" th:action="@{/topics}" method="get">
+					<div class="form-group">
+						<input th:field="*{search}" class="form-control" placeholder="Suche nach Topic"/>
+					</div>
+					<button type="submit" class="btn btn-primary"><i class="material-icons">search</i></button>
+				</form>
 			</div>
 		</div>
 		<div class="row row-cols-1 row-cols-md-3 bg-light">
@@ -44,8 +53,7 @@
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">
 				<h4 class="display-4">Abonnierte Topics</h4>
-				<span th:if="${#lists.size(topics)==0}">Sie haben keine
-					Topics abonniert!</span>
+				<span th:if="${#lists.size(topics)==0}">Keine abonnierten Topics gefunden!</span>
 			</div>
 		</div>
 		<div class="row row-cols-1 row-cols-md-3 bg-light">

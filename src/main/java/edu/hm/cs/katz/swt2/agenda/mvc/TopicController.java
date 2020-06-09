@@ -14,11 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.ValidationException;
@@ -44,9 +40,10 @@ public class TopicController extends AbstractController {
    * Erstellt die Übersicht über alle Topics des Anwenders, d.h. selbst erzeugte und abonnierte.
    */
   @GetMapping("/topics")
-  public String getTopicListView(Model model, Authentication auth) {
-    model.addAttribute("managedTopics", topicService.getManagedTopics(auth.getName()));
-    model.addAttribute("topics", topicService.getSubscriptions(auth.getName()));
+  public String getTopicListView(Model model, Authentication auth, @RequestParam(name = "search", required = false, defaultValue = "") String search) {
+    model.addAttribute("managedTopics", topicService.getManagedTopics(auth.getName(), search));
+    model.addAttribute("topics", topicService.getSubscriptions(auth.getName(), search));
+    model.addAttribute("search", new Search());
     return "topic-listview";
   }
 
