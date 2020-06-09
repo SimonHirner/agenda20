@@ -155,7 +155,8 @@ public class TopicServiceImpl implements TopicService {
     LOG.info("Rufe verwaltete Topics von {} auf.", login);
   
     User creator = anwenderRepository.findById(login).get();
-    Collection<Topic> managedTopics = topicRepository.findAllByCreator(creator, Sort.by(Sort.Order.asc("title").ignoreCase()));
+    Collection<Topic> managedTopics = topicRepository.findAllByCreator(creator,
+        Sort.by(Sort.Order.asc("title").ignoreCase()));
     List<OwnerTopicDto> result = new ArrayList<>();
     for (Topic topic : managedTopics) {
       result.add(mapper.createManagedDto(topic));
@@ -211,7 +212,8 @@ public class TopicServiceImpl implements TopicService {
     LOG.info("Rufe abonnierte Topics von {} auf.", login);
     
     User subscriber = anwenderRepository.findById(login).get();
-    Collection<Topic> subscriptions = topicRepository.findAllBySubscribers(subscriber, Sort.by(Sort.Order.asc("title").ignoreCase()));
+    Collection<Topic> subscriptions = topicRepository.findAllBySubscribers(subscriber,
+        Sort.by(Sort.Order.asc("title").ignoreCase()));
     List<SubscriberTopicDto> result = new ArrayList<>();
     for (Topic topic : subscriptions) {
       result.add(mapper.createDto(topic));
@@ -224,11 +226,11 @@ public class TopicServiceImpl implements TopicService {
   public String getTopicUuid(String key, String login) {
     LOG.info("Uuid auflösen für Key{}", key);
     LOG.debug("Key wird von {} eingereicht.", login);
-    if (key.length() < 8){
+    if (key.length() < 8) {
       throw new ValidationException("Der eingegebene Schlüssel ist zu kurz!");
     }
     Topic topic = topicRepository.findByUuidEndingWith(key);
-    if (topic == null){
+    if (topic == null) {
       throw new ValidationException("Der eingegebene Schlüssel ist ungültig!");
     }
     return topic.getUuid();

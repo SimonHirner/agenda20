@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  * @author Fabian Rittmeier (mailto: rittmeie@hm.edu)
  */
-
 @Controller
 public class ErrorController extends AbstractController {
     
     
-    /**
-     * Erstellt die Error Seite.
-     */
-    @GetMapping("/error")
-    public String getErrorView(Model model, Authentication auth) {
-        return "error";
-    }
+  /**
+   * Erstellt die Error Seite.
+   */
+  @GetMapping("/error")
+  public String getErrorView(Model model, Authentication auth) {
+    return "error";
+  }
 }

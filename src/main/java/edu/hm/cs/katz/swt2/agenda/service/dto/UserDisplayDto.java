@@ -1,5 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.service.dto;
 
+import java.util.Map;
+
 /**
  * Transferobjekt für einfache Anzeigeinformationen von Anwendern. Transferobjekte sind
  * Schnittstellenobjekte der Geschäftslogik; Sie sind nicht Teil des Modells, so dass Änderungen an
@@ -10,9 +12,14 @@ package edu.hm.cs.katz.swt2.agenda.service.dto;
 public class UserDisplayDto {
   
   private String login = "";
+  
   private String name;
+  
   private int topicCount;
+  
   private int subscriptionCount;
+  
+  private Map<String, Integer> doneTasksCountForTopicUuid;
   
   public String getDisplayName() {
     return name;
@@ -48,5 +55,13 @@ public class UserDisplayDto {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Map<String, Integer> getDoneTasksCountForTopicUuid() {
+    return doneTasksCountForTopicUuid;
+  }
+
+  public void setDoneTasksCountForTopicUuid(Map<String, Integer> doneTasksCountForTopicUuid) {
+    this.doneTasksCountForTopicUuid = doneTasksCountForTopicUuid;
   }
 }

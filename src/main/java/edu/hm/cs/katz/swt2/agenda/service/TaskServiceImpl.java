@@ -1,9 +1,22 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
-import edu.hm.cs.katz.swt2.agenda.persistence.*;
+import edu.hm.cs.katz.swt2.agenda.persistence.Status;
+import edu.hm.cs.katz.swt2.agenda.persistence.StatusRepository;
+import edu.hm.cs.katz.swt2.agenda.persistence.Task;
+import edu.hm.cs.katz.swt2.agenda.persistence.TaskRepository;
+import edu.hm.cs.katz.swt2.agenda.persistence.Topic;
+import edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository;
+import edu.hm.cs.katz.swt2.agenda.persistence.User;
+import edu.hm.cs.katz.swt2.agenda.persistence.UserRepository;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.validation.ValidationException;
 import org.apache.commons.collections4.SetUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +26,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.ValidationException;
-import java.util.*;
 
 @Component
 @Transactional(rollbackFor = Exception.class)
@@ -187,7 +197,8 @@ public class TaskServiceImpl implements TaskService {
   
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status, String search) {
+  public List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status,
+      String search) {
     LOG.info("Rufe abonnierte Tasks von {} mit Status {} auf.", login, status);
   
     User user = userRepository.getOne(login);
@@ -229,8 +240,8 @@ public class TaskServiceImpl implements TaskService {
     return result;
   }
   
-  private List<SubscriberTaskDto> createTaskDtosForStatusForTopics(User user,
-                                                                    Collection<Topic> topics, StatusEnum status) {
+  private List<SubscriberTaskDto> createTaskDtosForStatusForTopics(User user, 
+      Collection<Topic> topics, StatusEnum status) {
     Map<Task, Status> statusForTask = createTaskToStatusMapForUsersTasks(user);
     
     List<SubscriberTaskDto> result = new ArrayList<>();
@@ -275,7 +286,8 @@ public class TaskServiceImpl implements TaskService {
   
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getTasksForTopicForStatus(String topicUuid, String login, StatusEnum status) {
+  public List<SubscriberTaskDto> getTasksForTopicForStatus(String topicUuid, String login,
+      StatusEnum status) {
     LOG.info("Rufe Tasks für Topic {} mit Status {} auf.", topicUuid, status);
     LOG.debug("Tasks von {} werden aufgerufen.", login);
     
@@ -316,8 +328,8 @@ public class TaskServiceImpl implements TaskService {
     LOG.debug("Status der Tasks für ein Topic wird von {} geändert.", login);
     
     List<SubscriberTaskDto> tasks = getTasksForTopic(uuid, login);
-    for (SubscriberTaskDto Task : tasks) {
-      Status status = getOrCreateStatus(Task.getId(), login);
+    for (SubscriberTaskDto task : tasks) {
+      Status status = getOrCreateStatus(task.getId(), login);
       status.setStatus(StatusEnum.OFFEN);
     }
     LOG.debug("Status der Tasks von Topic {} für Anwender {} zurückgesetzt", uuid,

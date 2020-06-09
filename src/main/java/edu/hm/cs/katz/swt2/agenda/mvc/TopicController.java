@@ -1,20 +1,25 @@
 package edu.hm.cs.katz.swt2.agenda.mvc;
 
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
-import edu.hm.cs.katz.swt2.agenda.persistence.Registration;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
-import edu.hm.cs.katz.swt2.agenda.service.dto.*;
+import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.ValidationException;
-import java.util.List;
-
 
 /**
  * Controller-Klasse für alle Interaktionen, die die Anzeige und Verwaltung von Topics betrifft.
@@ -124,14 +129,16 @@ public class TopicController extends AbstractController {
    */
   @PostMapping("/topics/{uuid}/unsubscribe")
   public String handleTopicUnsubscription(Model model, Authentication auth,
-                                       @PathVariable("uuid") String uuid, RedirectAttributes redirectAttributes) {
+      @PathVariable("uuid") String uuid, RedirectAttributes redirectAttributes) {
 
     try {
       taskService.resetAllTasks(uuid, auth.getName());
       topicService.unsubscribe(uuid, auth.getName());
     } catch (Exception e) {
-  
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:/topics";
     }
+    
     return "redirect:/topics/";
   }
   
@@ -154,11 +161,13 @@ public class TopicController extends AbstractController {
   public String createTopicView(Model model, Authentication auth,
       @PathVariable("uuid") String uuid) {
     SubscriberTopicDto topic = topicService.getTopic(uuid, auth.getName());
-    List<SubscriberTaskDto> openTasks = taskService.getTasksForTopicForStatus(uuid, auth.getName(), StatusEnum.OFFEN);
+    List<SubscriberTaskDto> openTasks = taskService.getTasksForTopicForStatus(uuid, auth.getName(),
+        StatusEnum.OFFEN);
     openTasks.addAll(taskService.getTasksForTopicForStatus(uuid, auth.getName(), StatusEnum.NEU));
     model.addAttribute("topic", topic);
     model.addAttribute("openTasks", openTasks);
-    model.addAttribute("finishedTasks", taskService.getTasksForTopicForStatus(uuid, auth.getName(), StatusEnum.FERTIG));
+    model.addAttribute("finishedTasks", taskService.getTasksForTopicForStatus(uuid, auth.getName(),
+        StatusEnum.FERTIG));
     return "topic";
   }
   
@@ -188,8 +197,16 @@ public class TopicController extends AbstractController {
       @PathVariable("uuid") String uuid) {
     OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
     List<UserDisplayDto> subscribers = topic.getSubscribers();
+    
+    Collections.sort(subscribers, new Comparator<UserDisplayDto>() {
+      @Override
+      public int compare(UserDisplayDto o1, UserDisplayDto o2) {
+        return o1.getDoneTasksCountForTopicUuid().get(uuid).compareTo(
+            o2.getDoneTasksCountForTopicUuid().get(uuid));
+      }
+    });
+
     model.addAttribute("subscribers", subscribers);
-    model.addAttribute("topic", topic);
     return "subscriber-listview";
     
   }
