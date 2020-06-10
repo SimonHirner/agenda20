@@ -1,6 +1,5 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
-import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,15 +32,29 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
   int countByCreator(User user);
   
   /**
-   * Finde alle Topics, die von einem bestimmten User erstellt wurden.
-   * Sortiert nach alphabetischer Reihenfolge.
+   * Finde alle Topics, die von einem bestimmten User erstellt wurden und sortiert diese
+   * entsprechend.
    *
    * @param creator Topic Ersteller
+   * @param sort Gewünschte Sortierung
    * @return
    */
-  Collection<Topic> findAllByCreator(User creator, Sort sort);
-  
-  Collection<Topic> findAllBySubscribers(User subscriber, Sort sort);
+  List<Topic> findAllByCreator(User creator, Sort sort);
+
+  /**
+   * Findet alle abonnierten Topics und sortiert diese entsprechend.
+   * 
+   * @param subscriber Abonnent
+   * @param sort Gewünschte Sortierung
+   * @return
+   */
+  List<Topic> findAllBySubscribers(User subscriber, Sort sort);
     
+  /**
+   * Findet Topic zu einer UUID-Endung.
+   * 
+   * @param key UUID-Endung
+   * @return
+   */
   Topic findByUuidEndingWith(String key);
 }
