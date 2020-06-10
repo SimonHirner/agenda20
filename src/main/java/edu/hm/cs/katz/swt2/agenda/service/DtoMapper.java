@@ -73,7 +73,7 @@ public class DtoMapper {
    * Erstellt ein {@link StatusDto} aus einem {@link Status}.
    */
   public StatusDto createDto(Status status) {
-    return new StatusDto(status.getStatus());
+    return new StatusDto(status.getStatus(), createDto(status.getUser()), status.getComment());
   }
 
   /**
@@ -112,12 +112,17 @@ public class DtoMapper {
         task.getShortDescription(), task.getLongDescription(), createDto(task.getTopic()));
     
     int doneStatusesCount = 0;
+    List<StatusDto> statusesWithComment = new ArrayList<StatusDto>();
     for (Status status : task.getStatuses()) {
+      if (status.getComment() != "") {
+        statusesWithComment.add(createDto(status));
+      }
       if (status.getStatus().equals(StatusEnum.FERTIG)) {
         doneStatusesCount++;
       }
     }
     ownerTaskDto.setDoneStatusesCount(doneStatusesCount);
+    ownerTaskDto.setStatusesWithComment(statusesWithComment);
     
     return ownerTaskDto;
   }

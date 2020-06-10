@@ -5,6 +5,7 @@ import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.TaskDto;
 import java.util.List;
@@ -65,10 +66,30 @@ public class TaskController extends AbstractController {
    */
   @GetMapping("tasks/{id}")
   public String getSubscriberTaskView(Model model, Authentication auth,
-      @PathVariable("id") Long id) {
-    TaskDto task = taskService.getTask(id, auth.getName());
+      @PathVariable("id") Long taskId) {
+    TaskDto task = taskService.getTask(taskId, auth.getName());
+    StatusDto status = taskService.getStatus(taskId, auth.getName());
     model.addAttribute("task", task);
+    model.addAttribute("status", status);
     return "task";
+  }
+  
+  /**
+   * Verarbeitet das Kommentieren eines Tasks.
+   */
+  @PostMapping("tasks/{id}")
+  public String handleComment(@ModelAttribute("status") StatusDto status, Authentication auth,
+      @PathVariable("id") Long id,
+      @RequestHeader(value = "referer", required = true) String referer,
+      RedirectAttributes redirectAttributes) {
+    try {
+      taskService.updateComment(id, auth.getName(), status.getComment());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:" + referer;
+    }
+    redirectAttributes.addFlashAttribute("success", "Kommentar aktualisiert.");  
+    return "redirect:" + referer;
   }
 
   /**
@@ -77,7 +98,9 @@ public class TaskController extends AbstractController {
   @GetMapping("tasks/{id}/manage")
   public String getManagerTaskView(Model model, Authentication auth, @PathVariable("id") Long id) {
     OwnerTaskDto task = taskService.getManagedTask(id, auth.getName());
+    List<StatusDto> statusesWithComment = task.getStatusesWithComment();
     model.addAttribute("task", task);
+    model.addAttribute("statusesWithComment", statusesWithComment);
     return "task-management";
   }
   
@@ -87,10 +110,17 @@ public class TaskController extends AbstractController {
   @PostMapping("tasks/{id}/manage")
   public String handleUpdate(@ModelAttribute("task") TaskDto task, Authentication auth,
       @PathVariable("id") Long id,
-      @RequestHeader(value = "referer", required = true) String referer) {
-    taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
-        task.getLongDescription());
+      @RequestHeader(value = "referer", required = true) String referer,
+      RedirectAttributes redirectAttributes) {
     
+    try {
+      taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
+          task.getLongDescription());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:" + referer;
+    }
+    redirectAttributes.addFlashAttribute("success", "Task aktualisiert.");  
     return "redirect:" + referer;
   }
 

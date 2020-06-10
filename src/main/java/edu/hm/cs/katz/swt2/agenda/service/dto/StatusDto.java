@@ -15,9 +15,18 @@ import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 public class StatusDto {
 
   private StatusEnum status;
+  
+  private UserDisplayDto user;
+  
+  private String comment;
 
-  public StatusDto(StatusEnum status) {
+  /**
+   * Konstruktor.
+   */
+  public StatusDto(StatusEnum status, UserDisplayDto user, String comment) {
     this.status = status;
+    this.user = user;
+    this.comment = comment;
   }
 
   public StatusEnum getStatus() {
@@ -26,5 +35,21 @@ public class StatusDto {
 
   public void setStatus(StatusEnum status) {
     this.status = status;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
+  public UserDisplayDto getUser() {
+    return user;
+  }
+
+  public void setUser(UserDisplayDto user) {
+    this.user = user;
   }
 }

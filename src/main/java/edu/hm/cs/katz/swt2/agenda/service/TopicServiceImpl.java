@@ -194,7 +194,7 @@ public class TopicServiceImpl implements TopicService {
     
     Topic topic = topicRepository.getOne(topicUuid);
     User anwender = anwenderRepository.getOne(login);
-    if (topic.getSubscribers().contains(anwender)){
+    if (topic.getSubscribers().contains(anwender)) {
       throw new ValidationException("Sia haben das Topic bereits abonniert!");
     } else {
       topic.register(anwender);

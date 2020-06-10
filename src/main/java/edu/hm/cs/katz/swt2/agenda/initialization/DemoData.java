@@ -85,6 +85,7 @@ public class DemoData {
                     "Hierfür benötigen wir folgende Zutaten...", LOGIN_ERNIE);
     topicService.subscribe(erniesKursUuid, LOGIN_BERT);
     taskService.checkTask(affenMuffinTask, LOGIN_BERT);
+    taskService.updateComment(5L, LOGIN_BERT, "Diese Aufgabe war sehr spannend!");
   }
 
 }

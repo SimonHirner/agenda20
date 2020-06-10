@@ -10,6 +10,7 @@ import edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository;
 import edu.hm.cs.katz.swt2.agenda.persistence.User;
 import edu.hm.cs.katz.swt2.agenda.persistence.UserRepository;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
+import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -360,5 +361,42 @@ public class TaskServiceImpl implements TaskService {
       statusRepository.save(status);
     }
     return status;
+  }
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void updateComment(Long taskId, String login, String comment) {
+    LOG.info("Aktualisiere Kommentar von Task {}.", taskId);
+    LOG.debug("Kommentar wird von {} aktualisiert.", login);
+    
+    Task task = taskRepository.getOne(taskId);
+    User user = userRepository.getOne(login);
+    Status status = statusRepository.findByUserAndTask(user, task);
+    
+    if (!user.equals(status.getUser())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Task {} zu kommentieren!", login, taskId);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    status.setComment(comment);
+  }
+  
+  @Override
+  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public StatusDto getStatus(Long taskId, String login) {
+    LOG.info("Rufe Status von Task {} auf.", taskId);
+    LOG.debug("Status wird von {} aufgerufen.", login);
+    
+    Task task = taskRepository.getOne(taskId);
+    User user = userRepository.getOne(login);
+    Status status = statusRepository.findByUserAndTask(user, task);
+    
+    if (!user.equals(status.getUser()) && !user.equals(status.getTask().getTopic().getCreator())) {
+      LOG.warn("Anwender {} ist nicht berechtigt den Status von Task {} einzusehen!", login,
+          taskId);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    return mapper.createDto(status);
   }
 }
