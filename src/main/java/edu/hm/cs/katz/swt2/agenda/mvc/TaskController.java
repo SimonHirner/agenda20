@@ -80,8 +80,15 @@ public class TaskController extends AbstractController {
   @PostMapping("tasks/{id}")
   public String handleComment(@ModelAttribute("status") StatusDto status, Authentication auth,
       @PathVariable("id") Long id,
-      @RequestHeader(value = "referer", required = true) String referer) {
-    taskService.updateComment(id, auth.getName(), status.getComment());
+      @RequestHeader(value = "referer", required = true) String referer,
+      RedirectAttributes redirectAttributes) {
+    try {
+      taskService.updateComment(id, auth.getName(), status.getComment());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:" + referer;
+    }
+    redirectAttributes.addFlashAttribute("success", "Kommentar aktualisiert.");  
     return "redirect:" + referer;
   }
 
@@ -103,10 +110,17 @@ public class TaskController extends AbstractController {
   @PostMapping("tasks/{id}/manage")
   public String handleUpdate(@ModelAttribute("task") TaskDto task, Authentication auth,
       @PathVariable("id") Long id,
-      @RequestHeader(value = "referer", required = true) String referer) {
-    taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
-        task.getLongDescription());
+      @RequestHeader(value = "referer", required = true) String referer,
+      RedirectAttributes redirectAttributes) {
     
+    try {
+      taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
+          task.getLongDescription());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:" + referer;
+    }
+    redirectAttributes.addFlashAttribute("success", "Task aktualisiert.");  
     return "redirect:" + referer;
   }
 

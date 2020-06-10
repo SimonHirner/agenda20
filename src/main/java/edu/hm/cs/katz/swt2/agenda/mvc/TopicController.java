@@ -99,9 +99,16 @@ public class TopicController extends AbstractController {
   @PostMapping("/topics/{uuid}/manage")
   public String handleUpdate(@ModelAttribute("topic") OwnerTopicDto topic, Authentication auth,
       @PathVariable("uuid") String uuid,
-      @RequestHeader(value = "referer", required = true) String referer) {
-    topicService.updateTopic(uuid, auth.getName(), topic.getShortDescription(),
-        topic.getLongDescription());
+      @RequestHeader(value = "referer", required = true) String referer,
+      RedirectAttributes redirectAttributes) {
+    try {
+      topicService.updateTopic(uuid, auth.getName(), topic.getShortDescription(),
+          topic.getLongDescription());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:" + referer;
+    }
+    redirectAttributes.addFlashAttribute("success", "Topic aktualisiert.");    
     return "redirect:" + referer;
   }
   
