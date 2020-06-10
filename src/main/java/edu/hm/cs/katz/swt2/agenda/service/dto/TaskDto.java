@@ -61,10 +61,4 @@ public class TaskDto {
   public SubscriberTopicDto getTopic() {
     return topic;
   }
-
-  public void setTopic(SubscriberTopicDto topic) {
-    this.topic = topic;
-  }
-
-
 }

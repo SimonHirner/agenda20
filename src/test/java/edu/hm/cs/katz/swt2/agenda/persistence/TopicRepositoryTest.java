@@ -41,8 +41,6 @@ public class TopicRepositoryTest {
     assertEquals(topicA, topics.get(0));
     assertEquals(topicC, topics.get(1));
     assertEquals(topicB, topics.get(2));
-    
-    
   }
   
 }
