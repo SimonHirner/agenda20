@@ -112,6 +112,7 @@ object "<u>2: Status</u>" as 2{
 	user = ernie
 	task = 1
 	status = StatusEnum.FERTIG
+	comment = ""
 }
 
 object "<u>6: Status</u>" as 6{
@@ -119,6 +120,7 @@ object "<u>6: Status</u>" as 6{
 	user = bert
 	task = 5
 	status = StatusEnum.FERTIG
+	comment = "Diese Aufgabe war sehr spannend!"
 }
 
 'Assoziationen

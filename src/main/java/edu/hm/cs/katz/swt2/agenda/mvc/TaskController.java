@@ -91,7 +91,9 @@ public class TaskController extends AbstractController {
   @GetMapping("tasks/{id}/manage")
   public String getManagerTaskView(Model model, Authentication auth, @PathVariable("id") Long id) {
     OwnerTaskDto task = taskService.getManagedTask(id, auth.getName());
+    List<StatusDto> statusesWithComment = task.getStatusesWithComment();
     model.addAttribute("task", task);
+    model.addAttribute("statusesWithComment", statusesWithComment);
     return "task-management";
   }
   

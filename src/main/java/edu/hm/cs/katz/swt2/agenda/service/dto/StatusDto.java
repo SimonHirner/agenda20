@@ -16,10 +16,16 @@ public class StatusDto {
 
   private StatusEnum status;
   
+  private UserDisplayDto user;
+  
   private String comment;
 
-  public StatusDto(StatusEnum status, String comment) {
+  /**
+   * Konstruktor.
+   */
+  public StatusDto(StatusEnum status, UserDisplayDto user, String comment) {
     this.status = status;
+    this.user = user;
     this.comment = comment;
   }
 
@@ -37,5 +43,13 @@ public class StatusDto {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+
+  public UserDisplayDto getUser() {
+    return user;
+  }
+
+  public void setUser(UserDisplayDto user) {
+    this.user = user;
   }
 }

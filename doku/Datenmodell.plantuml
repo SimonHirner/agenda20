@@ -22,11 +22,14 @@ class Status [[java:edu.hm.cs.katz.swt2.agenda.persistence.Status]] {
 	-User user
 	-Task task
 	-StatusEnum status
+	-String comment
 	+Long getId()
 	+User getUser()
 	+StatusEnum getStatus()
 	+void setStatus(StatusEnum status)
 	+Task getTask()
+	+String getComment()
+	+String setComment()
 }
 
 class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {

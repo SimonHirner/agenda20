@@ -42,8 +42,8 @@ public class Status {
   private StatusEnum status = StatusEnum.NEU;
   
   @NotNull
-  @Length(min = 0, max = 250)
-  @Column(length = 250)
+  @Length(min = 0, max = 500)
+  @Column(length = 500)
   private String comment = "";
 
   /**

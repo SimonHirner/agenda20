@@ -10,14 +10,18 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.ValidationException;
 
 /**
  * Controller-Klasse für alle Interaktionen, die die Anzeige und Verwaltung von Topics betrifft.
@@ -40,7 +44,8 @@ public class TopicController extends AbstractController {
    * Erstellt die Übersicht über alle Topics des Anwenders, d.h. selbst erzeugte und abonnierte.
    */
   @GetMapping("/topics")
-  public String getTopicListView(Model model, Authentication auth, @RequestParam(name = "search", required = false, defaultValue = "") String search) {
+  public String getTopicListView(Model model, Authentication auth, @RequestParam(name = "search",
+      required = false, defaultValue = "") String search) {
     model.addAttribute("managedTopics", topicService.getManagedTopics(auth.getName(), search));
     model.addAttribute("topics", topicService.getSubscriptions(auth.getName(), search));
     model.addAttribute("search", new Search());
@@ -120,7 +125,7 @@ public class TopicController extends AbstractController {
       @PathVariable("uuid") String uuid, RedirectAttributes redirectAttributes) {
     try {
       topicService.subscribe(uuid, auth.getName());
-    } catch (ValidationException e){
+    } catch (ValidationException e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
     }
     return "redirect:/topics/" + uuid;
