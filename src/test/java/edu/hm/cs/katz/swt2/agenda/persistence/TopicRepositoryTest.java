@@ -19,7 +19,7 @@ public class TopicRepositoryTest {
   private static final String UUID_BASE = "12345678901234567890123456789012345";
   
   @Test
-  public void topicRepositoryDeliversTopicsOdererd() {
+  public void topicRepositoryDeliversTopicsByCreatorOdered() {
     User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
     userRepository.save(user);
     
@@ -43,4 +43,33 @@ public class TopicRepositoryTest {
     assertEquals(topicB, topics.get(2));
   }
   
+  @Test
+  public void topicRepositoryDefliversTopicByUuidEnding() {
+    User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
+    userRepository.save(user);
+    
+    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", "Beschreibung", "Beschreibung", user);
+    topicRepository.save(topicA);
+    
+    Topic topic = topicRepository.findByUuidEndingWith("90123451");
+    
+    assertEquals(topicA, topic);
+  }  
+  
+  @Test
+  public void topicRepositoryDefliversCountByCreator() {
+    User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
+    userRepository.save(user);
+    
+    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", "Beschreibung", "Beschreibung", user);
+    topicRepository.save(topicA);
+    
+    Topic topicB = new Topic(UUID_BASE + "2", "Xxxxxxxxxxxxx", "Beschreibung", "Beschreibung",
+        user);
+    topicRepository.save(topicB);
+    
+    int topicCount = topicRepository.countByCreator(user);
+    
+    assertEquals(2, topicCount);
+  }  
 }

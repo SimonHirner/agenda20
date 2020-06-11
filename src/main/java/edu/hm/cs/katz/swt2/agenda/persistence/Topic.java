@@ -59,6 +59,8 @@ public class Topic {
    * 
    * @param uuid UUID, muss eindeutig sein.
    * @param title Titel, zwischen 10 und 60 Zeichen.
+   * @param shortDescription Kurzbeschreibung, zwischen 10 und 120 Zeichen.
+   * @param longDescription Langbeschreibung, mit maximal 1000 Zeichen.
    * @param createdBy Anwender, dem das Topic zugeordnet ist.
    */
   public Topic(final String uuid, final String title, final String shortDescription, 

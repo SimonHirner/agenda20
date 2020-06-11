@@ -1,18 +1,17 @@
 package edu.hm.cs.katz.swt2.agenda.integration;
 
-import edu.hm.cs.katz.swt2.agenda.service.UserService;
-import edu.hm.cs.katz.swt2.agenda.service.UserServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.ActiveProfiles;
-
-import javax.transaction.Transactional;
-import javax.validation.ValidationException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import edu.hm.cs.katz.swt2.agenda.service.UserService;
+import edu.hm.cs.katz.swt2.agenda.service.UserServiceImpl;
+import javax.transaction.Transactional;
+import javax.validation.ValidationException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("none ")
@@ -24,7 +23,7 @@ class UserCreationIT {
   
   @Test
   @WithUserDetails("admin")
-  void createdUserContainsAllInformation(){
+  void createdUserContainsAllInformation() {
     userService.legeAn("diddi", "Dieter", "#Diddi0815", false);
     var createdUser = userService.getUserInfo("diddi");
     
@@ -35,9 +34,9 @@ class UserCreationIT {
   
   @Test
   @WithUserDetails("admin")
-  void cannotCreateExistingUser(){
+  void cannotCreateExistingUser() {
     userService.legeAn("diddi", "Dieter", "#Diddi0815", false);
-    assertThrows(ValidationException.class, () ->{
+    assertThrows(ValidationException.class, () -> {
       userService.legeAn("diddi", "Dieter", "#Diddi0815", false);
     });
   }

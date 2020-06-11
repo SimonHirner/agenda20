@@ -59,9 +59,9 @@ public class Task {
    * Konstruktor zum Erstellen eines neuen Tasks.
    *
    * @param topic Topic, darf nicht null sein.
-   * @param title Titel, darf nicht null sein.
-   * @param shortDescription Kurzbeschreibung, darf nicht null sein.
-   * @param longDescription Ausführliche Beschreibung.
+   * @param title Titel, zwischen 8 und 32 Zeichen.
+   * @param shortDescription Kurzbeschreibung, zwischen 8 und 120 Zeichen.
+   * @param longDescription Langbeschreibung, mit maximal 1000 Zeichen.
    */
   public Task(final Topic topic, final String title, final String shortDescription,
       final String longDescription) {
