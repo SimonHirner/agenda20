@@ -30,7 +30,7 @@ public class TopicServiceImpl implements TopicService {
   private UuidProviderImpl uuidProvider;
 
   @Autowired
-  private UserRepository anwenderRepository;
+  private UserRepository userRepository;
 
   @Autowired
   private TopicRepository topicRepository;
@@ -69,7 +69,7 @@ public class TopicServiceImpl implements TopicService {
     LOG.debug("Topic wird von {} aktualisiert.", login);
     
     Topic topic = topicRepository.getOne(uuid);
-    User user = anwenderRepository.getOne(login);
+    User user = userRepository.getOne(login);
     if (!user.equals(topic.getCreator())) {
       LOG.warn("Anwender {} ist nicht berechtigt Topic {} zu aktualisieren!", login, uuid);
       throw new AccessDeniedException("Zugriff verweigert.");
@@ -126,7 +126,7 @@ public class TopicServiceImpl implements TopicService {
     validateTopicLongDescription(longDescription); 
     
     String uuid = uuidProvider.getRandomUuid();
-    User creator = anwenderRepository.findById(login).get();
+    User creator = userRepository.findById(login).orElse(null);
     Topic topic = new Topic(uuid, title, shortDescription, longDescription, creator);
     topicRepository.save(topic);
     return uuid;
@@ -154,7 +154,7 @@ public class TopicServiceImpl implements TopicService {
   public List<OwnerTopicDto> getManagedTopics(String login, String search) {
     LOG.info("Rufe verwaltete Topics von {} auf.", login);
   
-    User creator = anwenderRepository.findById(login).get();
+    User creator = userRepository.findById(login).orElse(null);
     Collection<Topic> managedTopics = topicRepository.findAllByCreator(creator,
         Sort.by(Sort.Order.asc("title").ignoreCase()));
     List<OwnerTopicDto> result = new ArrayList<>();
@@ -193,7 +193,7 @@ public class TopicServiceImpl implements TopicService {
     LOG.debug("Topic wird von {} abonniert.", login);
     
     Topic topic = topicRepository.getOne(topicUuid);
-    User anwender = anwenderRepository.getOne(login);
+    User anwender = userRepository.getOne(login);
     if (topic.getSubscribers().contains(anwender)) {
       throw new ValidationException("Sia haben das Topic bereits abonniert!");
     } else {
@@ -208,7 +208,7 @@ public class TopicServiceImpl implements TopicService {
     LOG.debug("Topic wird von {} deabonniert.", login);
     
     Topic topic = topicRepository.getOne(topicUuid);
-    User anwender = anwenderRepository.getOne(login);
+    User anwender = userRepository.getOne(login);
     topic.unregister(anwender);
   }
 
@@ -217,7 +217,7 @@ public class TopicServiceImpl implements TopicService {
   public List<SubscriberTopicDto> getSubscriptions(String login, String search) {
     LOG.info("Rufe abonnierte Topics von {} auf.", login);
     
-    User subscriber = anwenderRepository.findById(login).get();
+    User subscriber = userRepository.findById(login).orElse(null);
     Collection<Topic> subscriptions = topicRepository.findAllBySubscribers(subscriber,
         Sort.by(Sort.Order.asc("title").ignoreCase()));
     List<SubscriberTopicDto> result = new ArrayList<>();

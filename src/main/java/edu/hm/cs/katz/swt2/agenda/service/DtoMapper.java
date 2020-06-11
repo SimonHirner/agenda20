@@ -114,7 +114,7 @@ public class DtoMapper {
     int doneStatusesCount = 0;
     List<StatusDto> statusesWithComment = new ArrayList<StatusDto>();
     for (Status status : task.getStatuses()) {
-      if (status.getComment() != "") {
+      if (status.getComment().equals("")) {
         statusesWithComment.add(createDto(status));
       }
       if (status.getStatus().equals(StatusEnum.FERTIG)) {

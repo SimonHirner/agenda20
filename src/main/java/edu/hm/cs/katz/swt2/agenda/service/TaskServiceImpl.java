@@ -73,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
-    Topic t = topicRepository.findById(uuid).get();
+    Topic t = topicRepository.findById(uuid).orElse(null);
     User user = userRepository.getOne(login);
     
     if (!user.equals(t.getCreator())) {
@@ -147,7 +147,7 @@ public class TaskServiceImpl implements TaskService {
 
   private void validateTaskLongDescription(String longDescription) {
     if (longDescription.length() > 1000) {
-      LOG.debug("Die Langbeschhreibung {} ist zu lang, Task kann nicht angelegt werden.");
+      LOG.debug("Die Langbeschhreibung ist zu lang, Task kann nicht angelegt werden.");
       throw new ValidationException("Die Langbeschreibung des Tasks darf höchstens 500 Zeichen "
           + "lang sein!");
     }
