@@ -74,11 +74,11 @@ public class TaskServiceImpl implements TaskService {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
-    if (topicRepository.findById(uuid).get() == null) {
+    Topic t = topicRepository.findById(uuid).orElse(null);
+    if (t == null) {
       LOG.warn("Topic {} konnte nicht gefunden werden!", uuid);
       throw new NoSuchElementException("Topic konnte nicht gefunden werden.");
     }
-    Topic t = topicRepository.findById(uuid).get();
     User user = userRepository.getOne(login);
     
     if (!user.equals(t.getCreator())) {
