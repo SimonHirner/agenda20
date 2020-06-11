@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import javax.validation.ValidationException;
 import org.apache.commons.collections4.SetUtils;
 import org.slf4j.Logger;
@@ -73,7 +74,11 @@ public class TaskServiceImpl implements TaskService {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
-    Topic t = topicRepository.findById(uuid).orElse(null);
+    if (topicRepository.findById(uuid).get() == null) {
+      LOG.warn("Topic {} konnte nicht gefunden werden!", uuid);
+      throw new NoSuchElementException("Topic konnte nicht gefunden werden.");
+    }
+    Topic t = topicRepository.findById(uuid).get();
     User user = userRepository.getOne(login);
     
     if (!user.equals(t.getCreator())) {
