@@ -170,7 +170,7 @@ public class TopicServiceImpl implements TopicService {
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public OwnerTopicDto getManagedTopic(String topicUuid, String login) {
     LOG.info("Rufe verwaltetes Topic {} auf.", topicUuid);
-    LOG.debug("Topicverwaltung wird aufgerufen von {}.", login);
+    LOG.debug("Verwaltetes Topic wird aufgerufen von {}.", login);
     
     Topic topic = topicRepository.getOne(topicUuid);
     return mapper.createManagedDto(topic);
