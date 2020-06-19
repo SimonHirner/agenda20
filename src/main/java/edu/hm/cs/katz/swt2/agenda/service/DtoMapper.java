@@ -63,7 +63,7 @@ public class DtoMapper {
   public SubscriberTopicDto createDto(Topic topic) {
     UserDisplayDto creatorDto = mapper.map(topic.getCreator(), UserDisplayDto.class);
     SubscriberTopicDto topicDto =
-        new SubscriberTopicDto(topic.getUuid(), creatorDto, topic.getTitle(),
+        new SubscriberTopicDto(topic.getUuid(), creatorDto, topic.getTitle(), topic.getVisibility(),
             topic.getShortDescription(), topic.getLongDescription());
     topicDto.setSubscriberCount(topic.getSubscribers().size());       
     return topicDto;
@@ -91,7 +91,7 @@ public class DtoMapper {
    */
   public OwnerTopicDto createManagedDto(Topic topic) {
     OwnerTopicDto topicDto = 
-        new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(),
+        new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(), topic. getVisibility(),
             topic.getShortDescription(), topic.getLongDescription());
     topicDto.setSubscriberCount(topic.getSubscribers().size());   
     

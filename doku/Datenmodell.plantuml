@@ -68,6 +68,7 @@ class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
 class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 	-String uuid
 	-String title
+	-VisibilityEnum visibility
 	-String shortDescription
 	-String longDescription
 	-User creator
@@ -75,6 +76,7 @@ class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 	-Collection<User> subscribers
 	+String getUuid()
 	+String getTitle()
+	+VisibilityEnum getVisibility()
 	+String getShortDescription()
 	+String getLongDescription()
 	+User getCreator()

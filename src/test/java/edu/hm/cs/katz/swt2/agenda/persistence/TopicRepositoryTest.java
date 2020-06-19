@@ -3,6 +3,8 @@ package edu.hm.cs.katz.swt2.agenda.persistence;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,14 +25,14 @@ public class TopicRepositoryTest {
     User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
     userRepository.save(user);
     
-    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", "Beschreibung", "Beschreibung", user);
+    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", VisibilityEnum.PUBLIC, "Beschreibung", "Beschreibung", user);
     topicRepository.save(topicA);
     
-    Topic topicB = new Topic(UUID_BASE + "2", "Xxxxxxxxxxxxx", "Beschreibung", "Beschreibung",
+    Topic topicB = new Topic(UUID_BASE + "2", "Xxxxxxxxxxxxx",VisibilityEnum.PUBLIC, "Beschreibung", "Beschreibung",
         user);
     topicRepository.save(topicB);
     
-    Topic topicC = new Topic(UUID_BASE + "3", "Uuuuuuuuuuuuu", "Beschreibung", "Beschreibung",
+    Topic topicC = new Topic(UUID_BASE + "3", "Uuuuuuuuuuuuu",VisibilityEnum.PUBLIC, "Beschreibung", "Beschreibung",
         user);
     topicRepository.save(topicC);
     
@@ -48,7 +50,7 @@ public class TopicRepositoryTest {
     User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
     userRepository.save(user);
     
-    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", "Beschreibung", "Beschreibung", user);
+    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", VisibilityEnum.PUBLIC, "Beschreibung", "Beschreibung", user);
     topicRepository.save(topicA);
     
     Topic topic = topicRepository.findByUuidEndingWith("90123451");
@@ -61,10 +63,10 @@ public class TopicRepositoryTest {
     User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
     userRepository.save(user);
     
-    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", "Beschreibung", "Beschreibung", user);
+    Topic topicA = new Topic(UUID_BASE + "1", "Ttttttttttt", VisibilityEnum.PUBLIC, "Beschreibung", "Beschreibung", user);
     topicRepository.save(topicA);
     
-    Topic topicB = new Topic(UUID_BASE + "2", "Xxxxxxxxxxxxx", "Beschreibung", "Beschreibung",
+    Topic topicB = new Topic(UUID_BASE + "2", "Xxxxxxxxxxxxx", VisibilityEnum.PUBLIC, "Beschreibung", "Beschreibung",
         user);
     topicRepository.save(topicB);
     

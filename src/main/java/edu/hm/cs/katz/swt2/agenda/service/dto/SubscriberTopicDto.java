@@ -1,5 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.service.dto;
 
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
+
 /**
  * Transferobjekt für einfache Anzeigeinformationen von Topics. Transferobjekte sind
  * Schnittstellenobjekte der Geschäftslogik; Sie sind nicht Teil des Modells, so dass Änderungen an
@@ -13,6 +15,7 @@ public class  SubscriberTopicDto {
   private String uuid;
   private UserDisplayDto creator;
   private String title;
+  private VisibilityEnum visibility;
   private String shortDescription;
   private String longDescription;
   private int subscriberCount;
@@ -20,11 +23,12 @@ public class  SubscriberTopicDto {
   /**
    * Konstruktor.
    */
-  public SubscriberTopicDto(String uuid, UserDisplayDto creator, String title,
+  public SubscriberTopicDto(String uuid, UserDisplayDto creator, String title, VisibilityEnum visibility,
       String shortDescription, String longDescription) {
     this.uuid = uuid;
     this.creator = creator;
     this.title = title;
+    this.visibility = visibility;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
   }
@@ -43,6 +47,14 @@ public class  SubscriberTopicDto {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public VisibilityEnum getVisibility() {
+    return visibility;
+  }
+
+  public void setVisibility(VisibilityEnum visibility) {
+    this.visibility = visibility;
   }
 
   public String getShortDescription() {

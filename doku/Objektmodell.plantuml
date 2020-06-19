@@ -46,6 +46,7 @@ object "<u>admin:User</u>" as admin{
 object "<u>HTMLKurs: Topic</u>" as HTMLKurs{
 	uuid = "e17ae604-2b50-469a-bba0-b5b4543580b3"
     title = "HTML für Anfänger"
+    visibility = PUBLIC
     shortDescription = "Dieser Kurs behandelt die Grundlagen von HTML."
     longDescription = "Die Hypertext Markup Language ist eine [...]"
     creator = fine
@@ -56,6 +57,7 @@ object "<u>HTMLKurs: Topic</u>" as HTMLKurs{
 object "<u>CSSKurs: Topic</u>" as CSSKurs{
 	uuid = "c3ef0536-dd96-4968-a9b3-4bad0c13d1e0"
     title = "CSS für Fortgeschrittene"
+    visibility = PUBLIC
     shortDescription = "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS."
     longDescription = "Cascading Style Sheets, kurz CSS genannt, ist eine [...]"
     creator = fine
@@ -65,6 +67,7 @@ object "<u>CSSKurs: Topic</u>" as CSSKurs{
 object "<u>BackKurs: Topic</u>" as BackKurs{
 	uuid = "85b55409-d34d-4985-9da5-8c8acd06fe23"
     title = "Ernies Backkurs"
+    visibility = PUBLIC
     shortDescription = "Lernen Sie Backen mit Ernie."
     longDescription = "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
     creator = ernie

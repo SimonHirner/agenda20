@@ -1,6 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
 import edu.hm.cs.katz.swt2.agenda.common.UuidProviderImpl;
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import edu.hm.cs.katz.swt2.agenda.persistence.Topic;
 import edu.hm.cs.katz.swt2.agenda.persistence.TopicRepository;
 import edu.hm.cs.katz.swt2.agenda.persistence.User;
@@ -116,8 +117,8 @@ public class TopicServiceImpl implements TopicService {
 
   @Override
   @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")
-  public String createTopic(String title, String shortDescription, String longDescription,
-      String login) {
+  public String createTopic(String title, VisibilityEnum visibility, String shortDescription, String longDescription,
+                            String login) {
     LOG.info("Erstelle neues Topic {}.", title);
     LOG.debug("Topic wird erstellt von {}.", login);
     
@@ -127,7 +128,7 @@ public class TopicServiceImpl implements TopicService {
     
     String uuid = uuidProvider.getRandomUuid();
     User creator = userRepository.findById(login).orElse(null);
-    Topic topic = new Topic(uuid, title, shortDescription, longDescription, creator);
+    Topic topic = new Topic(uuid, title, visibility, shortDescription, longDescription, creator);
     topicRepository.save(topic);
     return uuid;
   }

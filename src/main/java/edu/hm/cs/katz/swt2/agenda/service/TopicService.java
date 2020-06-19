@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface TopicService {
   /**
    * Erstellt ein neues Topic.
    */
-  String createTopic(String title, String shortDescription, String longDescription, String login);
+  String createTopic(String title, VisibilityEnum visibility, String shortDescription, String longDescription, String login);
   
   /**
    * Löscht ein Topic.

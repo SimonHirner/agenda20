@@ -1,6 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.initialization;
 
 import edu.hm.cs.katz.swt2.agenda.common.SecurityHelper;
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.UserService;
@@ -51,7 +52,7 @@ public class DemoData {
     anwenderService.legeAn(LOGIN_ERNIE, "Ernie", "#Ernie2020", false);
     anwenderService.legeAn(LOGIN_BERT, "Bert", "#Bert2020", false);
   
-    String htmlKursUuid = topicService.createTopic("HTML für Anfänger",
+    String htmlKursUuid = topicService.createTopic("HTML für Anfänger", VisibilityEnum.PUBLIC,
             "Dieser Kurs behandelt die Grundlagen von HTML.",
             "Die Hypertext Markup Language ist eine textbasierte Auszeichnungssprache zur"
                     + " Strukturierung elektronischer Dokumente wie Texte mit Hyperlinks,"
@@ -66,12 +67,12 @@ public class DemoData {
         "Diese Einheit behandelt die Erstellung einer neuen HTML Datei.",
             "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE);
   
-    String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene",
+    String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene", VisibilityEnum.PUBLIC,
             "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS.",
             "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
                     + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
                     + " des World Wide Webs.", LOGIN_FINE);
-    String erniesKursUuid = topicService.createTopic("Ernies Backkurs",
+    String erniesKursUuid = topicService.createTopic("Ernies Backkurs", VisibilityEnum.PUBLIC,
             "Lernen Sie Backen mit Ernie.",
             "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
                     + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.",

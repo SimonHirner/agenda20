@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -27,6 +29,9 @@ public class Topic {
   @Column(length = 60)
   @Length(min = 10, max = 60)
   private String title;
+
+  @Column(name = "VISIBILITY")
+  private VisibilityEnum visibility;
   
   @NotNull
   @Column(length = 120)
@@ -56,17 +61,18 @@ public class Topic {
 
   /**
    * Konstruktor zur Erzeugung eines neuen Topics.
-   * 
    * @param uuid UUID, muss eindeutig sein.
    * @param title Titel, zwischen 10 und 60 Zeichen.
+   * @param hide
    * @param shortDescription Kurzbeschreibung, zwischen 10 und 120 Zeichen.
    * @param longDescription Langbeschreibung, mit maximal 1000 Zeichen.
    * @param createdBy Anwender, dem das Topic zugeordnet ist.
    */
-  public Topic(final String uuid, final String title, final String shortDescription, 
-      final String longDescription, final User createdBy) {
+  public Topic(final String uuid, final String title, final VisibilityEnum visibility, final String shortDescription,
+               final String longDescription, final User createdBy) {
     this.uuid = uuid;
     this.title = title;
+    this.visibility = visibility;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
     this.creator = createdBy;
@@ -84,7 +90,11 @@ public class Topic {
   public String getTitle() {
     return title;
   }
-  
+
+  public VisibilityEnum getVisibility() {
+    return visibility;
+  }
+
   public String getShortDescription() {
     return shortDescription;
   }
