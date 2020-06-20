@@ -21,13 +21,19 @@
 
 					<div class="form-group">
 						<input th:field="*{shortDescription}" class="form-control"
-							   placeholder="Kurzbeschreibung" minlength="8" maxlength="120"/> <small class="form-text text-muted">
-						Beschreiben Sie den Task kurz.</small>
+							   placeholder="Kurzbeschreibung" minlength="8" maxlength="120"/>
+						<small class="form-text text-muted">Beschreiben Sie den Task kurz.</small>
 					</div>
 
 					<div class="form-group">
 						<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung" maxlength="1000"></textarea> 
 						<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung hinzufügen.</small>
+					</div>
+					
+					<div class="form-group">
+						<input type="date" th:field="*{deadline}" class="form-control"
+							   placeholder="jjjj-mm-tt"/>
+						<small class="form-text text-muted">Sie können einen letztmöglichen Abgabetermin festlegen.</small>
 					</div>
 
 					<button type="submit" class="btn btn-primary">Erstellen!</button>

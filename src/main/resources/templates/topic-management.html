@@ -48,6 +48,8 @@
 					<div class=" card-body">
 						<h5 class="card-title" th:text="${t.title}">Card title</h5>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+						<p class="card-text" th:if="${t.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(t.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin</p>
+						<p class="card-text" th:if="${t.deadline==null}">Kein Abgabetermin</p>
 						<p class="card-text" th:if="${t.doneStatusesCount!=1}"
 						   th:text="${t.doneStatusesCount}+' Abonnenten haben den Task abgeschlossen'">Keine Abonnenten
 							haben den Task abgeschlossen</p>

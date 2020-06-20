@@ -13,7 +13,9 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public Long createTask(String uuid, String title, String shortDescription, String longDescription,
-      String login) {
+      String login, Date deadline) {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
@@ -90,10 +92,25 @@ public class TaskServiceImpl implements TaskService {
     validateTaskName(title);
     validateTaskShortDescription(shortDescription);
     validateTaskLongDescription(longDescription);
+    validateDeadline(deadline);
     
-    Task task = new Task(t, title, shortDescription, longDescription);
+    Task task = new Task(t, title, shortDescription, longDescription, deadline);
     taskRepository.save(task);
     return task.getId();
+  }
+
+  private void validateDeadline(Date deadline) {
+    Calendar currentDate = Calendar.getInstance();
+    currentDate.set(Calendar.HOUR_OF_DAY, 0);
+    currentDate.set(Calendar.MINUTE, 0);
+    currentDate.set(Calendar.SECOND, 0);
+    currentDate.set(Calendar.MILLISECOND, 0);
+    
+    if (deadline != null && deadline.before(currentDate.getTime())) {
+      LOG.debug("Der Abgabetermin {} liegt in der Vergangenheit, Task kann nicht angelegt werden.",
+          deadline);
+      throw new ValidationException("Der Abgabetermin darf nicht in der Vergangenheit liegen.");
+    }
   }
 
   private void validateTaskName(String title) {
@@ -113,7 +130,8 @@ public class TaskServiceImpl implements TaskService {
   
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public void updateTask(Long id, String login, String shortDescription, String longDescription) {
+  public void updateTask(Long id, String login, String shortDescription, String longDescription,
+      Date deadline) {
     LOG.info("Aktualisiere Task {}.", id);
     LOG.debug("Task wird von {} aktualisiert.", login);
     
@@ -126,9 +144,11 @@ public class TaskServiceImpl implements TaskService {
     
     validateTaskShortDescription(shortDescription);
     validateTaskLongDescription(longDescription);
+    validateDeadline(deadline);
     
     task.setLongDescription(longDescription);
     task.setShortDescription(shortDescription);
+    task.setDeadline(deadline);
   }
 
   private void validateTaskShortDescription(String shortDescription) {
@@ -164,6 +184,8 @@ public class TaskServiceImpl implements TaskService {
     LOG.info("Rufe Task {} auf.", taskId);
     LOG.debug("Task von {} wird aufgerufen.", login);
     
+    changeStatusIfDeadlineExpired(login);
+    
     Task task = taskRepository.getOne(taskId);
     Topic topic = task.getTopic();
     User user = userRepository.getOne(login);
@@ -196,6 +218,8 @@ public class TaskServiceImpl implements TaskService {
   public List<SubscriberTaskDto> getAllTasksOfSubscribedTopics(String login) {
     LOG.info("Rufe abonnierte Tasks von {} auf.", login);
     
+    changeStatusIfDeadlineExpired(login);
+    
     User user = userRepository.getOne(login);
     Collection<Topic> topics = user.getSubscriptions();
     return createTaskDtosWithStatusForTopics(user, topics);
@@ -206,17 +230,19 @@ public class TaskServiceImpl implements TaskService {
   public List<SubscriberTaskDto> getAllTasksForStatus(String login, StatusEnum status,
       String search) {
     LOG.info("Rufe abonnierte Tasks von {} mit Status {} auf.", login, status);
+    
+    changeStatusIfDeadlineExpired(login);
   
     User user = userRepository.getOne(login);
     Collection<Topic> topics = user.getSubscriptions();
-    List<SubscriberTaskDto> result = createTaskDtosForStatusForTopics(user, topics, status);
+    List<SubscriberTaskDto> result = createTaskDtosForStatusForTopics(user, topics, status);    
     result.removeIf(t -> !t.getTitle().toLowerCase().contains(search.toLowerCase())
             && !t.getShortDescription().toLowerCase().contains(search.toLowerCase()));
     return result;
   }
   
   private List<SubscriberTaskDto> createTaskDtosWithStatusForTopics(User user,
-                                                                    Collection<Topic> topics) {
+      Collection<Topic> topics) {
     Map<Task, Status> statusForTask = createTaskToStatusMapForUsersTasks(user);
     
     List<SubscriberTaskDto> result = new ArrayList<>();
@@ -238,7 +264,8 @@ public class TaskServiceImpl implements TaskService {
     }
     for (Task task1 : taskRepository.findAllByTopicIn(topics,
             Sort.by(Sort.Order.asc("title").ignoreCase()))) {
-      if (statusForTask.get(task1).getStatus().equals(StatusEnum.FERTIG)) {
+      if (statusForTask.get(task1).getStatus().equals(StatusEnum.FERTIG)
+          || statusForTask.get(task1).getStatus().equals(StatusEnum.ABGELAUFEN)) {
         result.add(mapper.createReadDto(task1, statusForTask.get(task1)));
       }
     }
@@ -284,6 +311,8 @@ public class TaskServiceImpl implements TaskService {
     LOG.info("Rufe Tasks für Topic {} auf.", topicUuid);
     LOG.debug("Tasks von {} werden aufgerufen.", login);
     
+    changeStatusIfDeadlineExpired(login);
+    
     User user = userRepository.getOne(login);
     Topic topic = topicRepository.getOne(topicUuid);
   
@@ -296,6 +325,8 @@ public class TaskServiceImpl implements TaskService {
       StatusEnum status) {
     LOG.info("Rufe Tasks für Topic {} mit Status {} auf.", topicUuid, status);
     LOG.debug("Tasks von {} werden aufgerufen.", login);
+    
+    changeStatusIfDeadlineExpired(login);
     
     User user = userRepository.getOne(login);
     Topic topic = topicRepository.getOne(topicUuid);
@@ -357,7 +388,7 @@ public class TaskServiceImpl implements TaskService {
     return result;
   }
 
-  private Status getOrCreateStatus(Long taskId, String login) {
+  private Status getOrCreateStatus(Long taskId, String login) { 
     User user = userRepository.getOne(login);
     Task task = taskRepository.getOne(taskId);
     Status status = statusRepository.findByUserAndTask(user, task);
@@ -403,5 +434,24 @@ public class TaskServiceImpl implements TaskService {
     }
     
     return mapper.createDto(status);
+  }
+  
+  private void changeStatusIfDeadlineExpired(String login) {
+    Calendar currentDate = Calendar.getInstance();
+    currentDate.set(Calendar.HOUR_OF_DAY, 0);
+    currentDate.set(Calendar.MINUTE, 0);
+    currentDate.set(Calendar.SECOND, 0);
+    currentDate.set(Calendar.MILLISECOND, 0);
+    
+    User user = userRepository.getOne(login);
+    
+    for (Status status : user.getStatuses()) {
+      if (status.getTask().getDeadline() != null 
+          && status.getTask().getDeadline().before(currentDate.getTime())
+          && (status.getStatus().equals(StatusEnum.NEU)
+              || status.getStatus().equals(StatusEnum.OFFEN))) {
+        status.setStatus(StatusEnum.ABGELAUFEN);
+      }
+    }
   }
 }

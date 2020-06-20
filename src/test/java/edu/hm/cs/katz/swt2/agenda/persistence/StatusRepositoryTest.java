@@ -28,11 +28,12 @@ public class StatusRepositoryTest {
     User user = new User("tiffy", "Tiffy", "#Tiffy2020", false);
     userRepository.save(user);
     
-    Topic topic = new Topic(UUID_BASE + "1", "Ttttttttttt", VisibilityEnum.PUBLIC,  "Beschreibung", "Beschreibung", user);
+    Topic topic = new Topic(UUID_BASE + "1", "Ttttttttttt", VisibilityEnum.PUBLIC,  "Beschreibung",
+        "Beschreibung", user);
     topicRepository.save(topic);
     
     Task task = new Task(topicRepository.getOne(UUID_BASE + "1"), "Ttttttttttt", "Beschreibung",
-        "Beschreibung");
+        "Beschreibung", null);
     taskRepository.save(task);
     
     Status status = new Status(taskRepository.findAll().get(0), userRepository.getOne("tiffy"));

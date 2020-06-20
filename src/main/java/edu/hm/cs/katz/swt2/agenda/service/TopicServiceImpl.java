@@ -117,8 +117,8 @@ public class TopicServiceImpl implements TopicService {
 
   @Override
   @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")
-  public String createTopic(String title, VisibilityEnum visibility, String shortDescription, String longDescription,
-                            String login) {
+  public String createTopic(String title, VisibilityEnum visibility, String shortDescription,
+      String longDescription, String login) {
     LOG.info("Erstelle neues Topic {}.", title);
     LOG.debug("Topic wird erstellt von {}.", login);
     

@@ -38,7 +38,7 @@ public class TaskController extends AbstractController {
       @PathVariable("uuid") String uuid) {
     OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
     model.addAttribute("topic", topic);
-    model.addAttribute("newTask", new TaskDto(null, "", "", "", topic));
+    model.addAttribute("newTask", new TaskDto(null, "", "", "", null, topic));
     return "task-creation";
   }
 
@@ -51,7 +51,7 @@ public class TaskController extends AbstractController {
       RedirectAttributes redirectAttributes) {
     try {
       taskService.createTask(uuid, newTask.getTitle(), newTask.getShortDescription(), 
-          newTask.getLongDescription(), auth.getName());
+          newTask.getLongDescription(), auth.getName(), newTask.getDeadline());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/topics/" + uuid + "/createTask";
@@ -115,7 +115,7 @@ public class TaskController extends AbstractController {
     
     try {
       taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
-          task.getLongDescription());
+          task.getLongDescription(), task.getDeadline());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:" + referer;
@@ -172,6 +172,8 @@ public class TaskController extends AbstractController {
     openTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.NEU, search));
     List<SubscriberTaskDto> finishedTasks = taskService.getAllTasksForStatus(auth.getName(),
         StatusEnum.FERTIG, search);
+    finishedTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.ABGELAUFEN,
+        search));
     model.addAttribute("search", new Search());
     model.addAttribute("openTasks", openTasks);
     model.addAttribute("finishedTasks", finishedTasks);

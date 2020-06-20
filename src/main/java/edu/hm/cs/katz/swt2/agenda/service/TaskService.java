@@ -4,6 +4,7 @@ import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +17,8 @@ public interface TaskService {
   /**
    * Erstellt einen neuen Task.
    */
-  Long createTask(String topicUuid, String title, String shortInfo, String longInfo, String login);
+  Long createTask(String topicUuid, String title, String shortInfo, String longInfo, String login,
+      Date deadline);
   
   /**
    * Lösche einen Task.
@@ -70,7 +72,8 @@ public interface TaskService {
   /**
    * Aktualisierung der Beschreibungen.
    */
-  void updateTask(Long id, String login, String shortDescription, String longDescription);
+  void updateTask(Long id, String login, String shortDescription, String longDescription,
+      Date deadline);
   
   /**
    * Zurücksetzen des Status eines Tasks.

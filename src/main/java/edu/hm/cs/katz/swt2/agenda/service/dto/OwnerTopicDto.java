@@ -1,7 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service.dto;
 
 import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
-
 import java.util.List;
 
 /**
@@ -18,9 +17,9 @@ public class OwnerTopicDto extends SubscriberTopicDto {
   
   private List<UserDisplayDto> subscribers;
   
-  public OwnerTopicDto(String uuid, UserDisplayDto user, String title, VisibilityEnum Visibility,  String shortDescription,
-                       String longDescription) {
-    super(uuid, user, title, Visibility, shortDescription, longDescription);
+  public OwnerTopicDto(String uuid, UserDisplayDto user, String title, VisibilityEnum visibility,
+      String shortDescription, String longDescription) {
+    super(uuid, user, title, visibility, shortDescription, longDescription);
   }
   
   public void setSubscribers(List<UserDisplayDto> subscribers) {

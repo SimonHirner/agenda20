@@ -8,8 +8,8 @@
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
 			<h4 class="display-4" th:text="${task.title}"
-				th:classappend="${task.status.status.toString()=='FERTIG'} ? text-secondary : text-primary">Task</h4>
-			<form th:unless="${task.status.status.toString()=='FERTIG'}"
+				th:classappend="${task.status.status.toString()=='FERTIG' or task.status.status.toString()=='ABGELAUFEN'} ? text-secondary : text-primary">Task</h4>
+			<form th:unless="${task.status.status.toString()=='FERTIG' or task.status.status.toString()=='ABGELAUFEN'}"
 				  id="formName" th:action="@{/tasks/{id}/check(id=${task.id})}"
 				  th:object="${task}" method="post">
 				<button type="submit" class="btn btn-success">Done!</button>
@@ -21,6 +21,8 @@
 			<div class="card">
 				<div class="card-body">
 					<p class="card-text" th:text="${task.shortDescription}">Keine Kurzbeschreibung verfügbar</p>
+					<p class="card-text" th:if="${task.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(task.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin</p>
+					<p class="card-text" th:if="${task.deadline==null}">Kein Abgabetermin</p>
 					<p class="card-text" th:text="${task.longDescription}">Keine Langeschreibung verfügbar</p>
 				</div>
 			</div>
