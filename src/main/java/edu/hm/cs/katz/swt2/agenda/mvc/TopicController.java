@@ -8,6 +8,7 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -183,11 +184,19 @@ public class TopicController extends AbstractController {
     openTasks.addAll(taskService.getTasksForTopicForStatus(uuid, auth.getName(), StatusEnum.NEU));
     List<SubscriberTaskDto> finishedTasks = taskService.getTasksForTopicForStatus(uuid,
         auth.getName(), StatusEnum.FERTIG);
-    finishedTasks.addAll(taskService.getTasksForTopicForStatus(uuid, auth.getName(),
-        StatusEnum.ABGELAUFEN));
+    List<SubscriberTaskDto> expiredTasks = taskService.getTasksForTopicForStatus(uuid,
+        auth.getName(), StatusEnum.ABGELAUFEN);
     model.addAttribute("topic", topic);
     model.addAttribute("openTasks", openTasks);
     model.addAttribute("finishedTasks", finishedTasks);
+    model.addAttribute("expiredTasks", expiredTasks);
+    
+    Calendar currentDate = Calendar.getInstance();
+    currentDate.set(Calendar.HOUR_OF_DAY, 0);
+    currentDate.set(Calendar.MINUTE, 0);
+    currentDate.set(Calendar.SECOND, 0);
+    currentDate.set(Calendar.MILLISECOND, 0);
+    model.addAttribute("currentDate", currentDate.getTime());
     return "topic";
   }
 

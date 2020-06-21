@@ -8,6 +8,7 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.TaskDto;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -51,7 +52,8 @@ public class TaskController extends AbstractController {
       RedirectAttributes redirectAttributes) {
     try {
       taskService.createTask(uuid, newTask.getTitle(), newTask.getShortDescription(), 
-          newTask.getLongDescription(), auth.getName(), newTask.getDeadline());
+          newTask.getLongDescription(), auth.getName(), newTask.getDeadline(),
+          Calendar.getInstance());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/topics/" + uuid + "/createTask";
@@ -71,6 +73,12 @@ public class TaskController extends AbstractController {
     StatusDto status = taskService.getStatus(taskId, auth.getName());
     model.addAttribute("task", task);
     model.addAttribute("status", status);
+    Calendar currentDate = Calendar.getInstance();
+    currentDate.set(Calendar.HOUR_OF_DAY, 0);
+    currentDate.set(Calendar.MINUTE, 0);
+    currentDate.set(Calendar.SECOND, 0);
+    currentDate.set(Calendar.MILLISECOND, 0);
+    model.addAttribute("currentDate", currentDate.getTime());
     return "task";
   }
   
@@ -115,7 +123,7 @@ public class TaskController extends AbstractController {
     
     try {
       taskService.updateTask(id, auth.getName(), task.getShortDescription(), 
-          task.getLongDescription(), task.getDeadline());
+          task.getLongDescription(), task.getDeadline(), Calendar.getInstance());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:" + referer;
@@ -172,11 +180,19 @@ public class TaskController extends AbstractController {
     openTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.NEU, search));
     List<SubscriberTaskDto> finishedTasks = taskService.getAllTasksForStatus(auth.getName(),
         StatusEnum.FERTIG, search);
-    finishedTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.ABGELAUFEN,
-        search));
+    List<SubscriberTaskDto> expiredTasks = taskService.getAllTasksForStatus(auth.getName(),
+        StatusEnum.ABGELAUFEN, search);
     model.addAttribute("search", new Search());
     model.addAttribute("openTasks", openTasks);
     model.addAttribute("finishedTasks", finishedTasks);
+    model.addAttribute("expiredTasks", expiredTasks);
+    
+    Calendar currentDate = Calendar.getInstance();
+    currentDate.set(Calendar.HOUR_OF_DAY, 0);
+    currentDate.set(Calendar.MINUTE, 0);
+    currentDate.set(Calendar.SECOND, 0);
+    currentDate.set(Calendar.MILLISECOND, 0);
+    model.addAttribute("currentDate", currentDate.getTime());
     return "task-listview";
   }
 }

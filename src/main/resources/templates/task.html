@@ -14,6 +14,11 @@
 				  th:object="${task}" method="post">
 				<button type="submit" class="btn btn-success">Done!</button>
 			</form>
+			<form th:unless="${task.status.status.toString()!='FERTIG' or task.status.status.toString()=='ABGELAUFEN'}"
+				  id="formName" th:action="@{/tasks/{id}/reset(id=${task.id})}"
+				  th:object="${task}" method="post">
+				<button type="submit" th:unless="${task.deadline != null and task.deadline.before(currentDate)}" class="btn btn-secondary">Zurücksetzen</button>
+			</form>
 		</div>
 	</div>
 	<div class="row row-cols-1 bg-light">
@@ -46,7 +51,7 @@
 			</form>
 		</div>
 	</div>
-	
+</div>	
 	<th:block th:replace="fragments :: scripts">
 </body>
 </html>

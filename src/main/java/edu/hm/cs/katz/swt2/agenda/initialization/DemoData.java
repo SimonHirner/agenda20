@@ -62,7 +62,8 @@ public class DemoData {
     topicService.subscribe(htmlKursUuid, LOGIN_BERT);
     Long linkErstellenTask = taskService.createTask(htmlKursUuid, "Link erstellen",
         "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird.",
-            "Denn HTML Links sind wichtig um auf Websites navigieren zu können.", LOGIN_FINE, null);
+            "Denn HTML Links sind wichtig um auf Websites navigieren zu können.", LOGIN_FINE, null,
+              Calendar.getInstance());
     taskService.checkTask(linkErstellenTask, LOGIN_ERNIE);
     Calendar deadlineHtmlKurs = Calendar.getInstance();
     deadlineHtmlKurs.set(Calendar.DAY_OF_MONTH, 25);
@@ -71,28 +72,30 @@ public class DemoData {
     taskService.createTask(htmlKursUuid, "Leeres HTML-Template erstellen",
         "Diese Einheit behandelt die Erstellung einer neuen HTML Datei.",
             "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE,
-            deadlineHtmlKurs.getTime());
+              deadlineHtmlKurs.getTime(), Calendar.getInstance());
     String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene", VisibilityEnum.PUBLIC,
             "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS.",
-            "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
-                    + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
+              "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
+                  + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
                     + " des World Wide Webs.", LOGIN_FINE);
     Calendar deadlineErniesKurs = Calendar.getInstance();
-    deadlineErniesKurs.set(Calendar.DAY_OF_MONTH, 02);
-    deadlineErniesKurs.set(Calendar.MONTH, 11);
+    deadlineErniesKurs.set(Calendar.DAY_OF_MONTH, 15);
+    deadlineErniesKurs.set(Calendar.MONTH, 05);
     deadlineErniesKurs.set(Calendar.YEAR, 2020);
     String erniesKursUuid = topicService.createTopic("Ernies Backkurs", VisibilityEnum.PUBLIC,
             "Lernen Sie Backen mit Ernie.",
-            "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
-                    + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.",
+              "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
+                  + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.",
                     LOGIN_ERNIE);    
     taskService.createTask(erniesKursUuid, "Googlehupf backen",
         "In dieser Einheit wird gezeigt wie man einen Googlehupf backt",
-            "Dafür sind folgende Zutaten nötig...", LOGIN_ERNIE, deadlineErniesKurs.getTime());
+            "Dafür sind folgende Zutaten nötig...", LOGIN_ERNIE, deadlineErniesKurs.getTime(),
+            deadlineErniesKurs);
     Long affenMuffinTask =
             taskService.createTask(erniesKursUuid, "Affenmuffins backen",
                 "Diese Einheit beinhaltet das Backen von Affenmuffins.",
-                    "Hierfür benötigen wir folgende Zutaten...", LOGIN_ERNIE, null);
+                    "Hierfür benötigen wir folgende Zutaten...", LOGIN_ERNIE, null,
+                      Calendar.getInstance());
     topicService.subscribe(erniesKursUuid, LOGIN_BERT);
     taskService.checkTask(affenMuffinTask, LOGIN_BERT);
     taskService.updateComment(5L, LOGIN_BERT, "Diese Aufgabe war sehr spannend!");
