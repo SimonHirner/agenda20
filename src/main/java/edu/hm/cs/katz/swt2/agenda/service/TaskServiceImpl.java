@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service;
 
+import edu.hm.cs.katz.swt2.agenda.common.DateUtilities;
 import edu.hm.cs.katz.swt2.agenda.common.StatusEnum;
 import edu.hm.cs.katz.swt2.agenda.persistence.Status;
 import edu.hm.cs.katz.swt2.agenda.persistence.StatusRepository;
@@ -13,7 +14,6 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public Long createTask(String uuid, String title, String shortDescription, String longDescription,
-      String login, Date deadline, Calendar currentDate) {
+      String login, Date deadline, Date creationDate) {
     LOG.info("Erstelle neuen Task in Topic {}.", uuid);
     LOG.debug("Task mit Titel {} wird erstellt von {}.", title, login);
     
@@ -92,7 +92,7 @@ public class TaskServiceImpl implements TaskService {
     validateTaskName(title);
     validateTaskShortDescription(shortDescription);
     validateTaskLongDescription(longDescription);
-    validateDeadline(deadline, currentDate);
+    validateDeadline(deadline, creationDate);
     
     Task task = new Task(t, title, shortDescription, longDescription, deadline);
     taskRepository.save(task);
@@ -100,13 +100,8 @@ public class TaskServiceImpl implements TaskService {
     return task.getId();
   }
 
-  private void validateDeadline(Date deadline, Calendar currentDate) {
-    currentDate.set(Calendar.HOUR_OF_DAY, 0);
-    currentDate.set(Calendar.MINUTE, 0);
-    currentDate.set(Calendar.SECOND, 0);
-    currentDate.set(Calendar.MILLISECOND, 0);
-    
-    if (deadline != null && deadline.before(currentDate.getTime())) {
+  private void validateDeadline(Date deadline, Date creationDate) {    
+    if (deadline != null && deadline.before(creationDate)) {
       LOG.debug("Der Abgabetermin {} liegt in der Vergangenheit, Task kann nicht angelegt werden.",
           deadline);
       throw new ValidationException("Der Abgabetermin darf nicht in der Vergangenheit liegen.");
@@ -131,7 +126,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
   public void updateTask(Long id, String login, String shortDescription, String longDescription,
-      Date deadline, Calendar currentDate) {
+      Date deadline, Date updateDate) {
     LOG.info("Aktualisiere Task {}.", id);
     LOG.debug("Task wird von {} aktualisiert.", login);
     
@@ -144,7 +139,7 @@ public class TaskServiceImpl implements TaskService {
     
     validateTaskShortDescription(shortDescription);
     validateTaskLongDescription(longDescription);
-    validateDeadline(deadline, currentDate);
+    validateDeadline(deadline, updateDate);
     
     task.setLongDescription(longDescription);
     task.setShortDescription(shortDescription);
@@ -414,21 +409,17 @@ public class TaskServiceImpl implements TaskService {
   }
 
   private void checkIfDeadlineExpiredOrChanged(Status status) {
-    Calendar currentDate = Calendar.getInstance();
-    currentDate.set(Calendar.HOUR_OF_DAY, 0);
-    currentDate.set(Calendar.MINUTE, 0);
-    currentDate.set(Calendar.SECOND, 0);
-    currentDate.set(Calendar.MILLISECOND, 0);
+    Date currentDate = DateUtilities.getCurrentDate();
     
     if (status.getTask().getDeadline() != null 
-        && status.getTask().getDeadline().before(currentDate.getTime())
+        && status.getTask().getDeadline().before(currentDate)
         && (status.getStatus().equals(StatusEnum.NEU)
             || status.getStatus().equals(StatusEnum.OFFEN))) {
       status.setStatus(StatusEnum.ABGELAUFEN);
     }
     
     if (status.getTask().getDeadline() != null 
-        && !status.getTask().getDeadline().before(currentDate.getTime())
+        && !status.getTask().getDeadline().before(currentDate)
         && (status.getStatus().equals(StatusEnum.ABGELAUFEN))) {
       status.setStatus(StatusEnum.OFFEN);
     }

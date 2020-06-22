@@ -38,6 +38,7 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	-String shortDescription
 	-String longDescription
 	-Topic topic
+	-Date deadline
 	-Collection<Status> statuses
 	+Long getId()
 	+String getTitle()
@@ -47,6 +48,8 @@ class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
 	+void setShortDescription(String shortDescription)
 	+void setLongDescription(String longDescription)
 	+Collection<Status> getStatuses()
+	+Date getDeadline()
+	+void setDeadline(Date deadline)
 }
 
 class User [[java:edu.hm.cs.katz.swt2.agenda.persistence.User]] {
@@ -92,6 +95,7 @@ enum StatusEnum [[java:edu.hm.cs.katz.swt2.agenda.common.StatusEnum]] {
 	NEU
 	OFFEN
 	FERTIG
+	ABGELAUFEN
 }
 
 @enduml

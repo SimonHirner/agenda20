@@ -83,6 +83,7 @@ object "<u>LinkErstellen: Task</u>" as LinkErstellen {
     longDescription = "Denn HTML Links sind wichtig um auf Websites navigieren zu können."
     topic = HTMLKurs
     status = 2
+    deadline = 2020-04-15
 }
 object "<u>TemplateErstellen: Task</u>" as HTMlErstellen {
     id = 3
@@ -91,6 +92,7 @@ object "<u>TemplateErstellen: Task</u>" as HTMlErstellen {
     longDescription = "HTML Dateien sind die Basis einer jeden Website."
     topic = HTMLKurs
     status =
+    deadline = 2020-10-25
 }
 object "<u>Googlehupf: Task</u>" as Googlehupf {
     id = 4
@@ -99,6 +101,7 @@ object "<u>Googlehupf: Task</u>" as Googlehupf {
     longDescription = "Dafür sind folgende Zutaten nötig..."
     topic = BackKurs
     status =
+    deadline =
 }
 object "<u>Affenmuffins: Task</u>" as Affenmuffins {
     id = 5
@@ -107,6 +110,7 @@ object "<u>Affenmuffins: Task</u>" as Affenmuffins {
     longDescription = "Hierfür benötigen wir folgende Zutaten..."
     topic = BackKurs
     status = 6
+    deadline = 
 }
 
 'status
