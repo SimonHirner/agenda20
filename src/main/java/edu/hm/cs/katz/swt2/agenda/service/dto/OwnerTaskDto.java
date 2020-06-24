@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.service.dto;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,9 +19,9 @@ public class OwnerTaskDto extends TaskDto {
   
   private List<StatusDto> statusesWithComment;
   
-  public OwnerTaskDto(Long id, String title, String shortInfo, String longInfo, 
-      SubscriberTopicDto topicDto) {
-    super(id, title, shortInfo, longInfo, topicDto);
+  public OwnerTaskDto(Long id, String title, String shortDescription, String longDescription,
+      Date deadline, SubscriberTopicDto topicDto) {
+    super(id, title, shortDescription, longDescription, deadline, topicDto);
   }
 
   public int getDoneStatusesCount() {

@@ -1,5 +1,6 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
+import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,8 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -63,13 +62,13 @@ public class Topic {
    * Konstruktor zur Erzeugung eines neuen Topics.
    * @param uuid UUID, muss eindeutig sein.
    * @param title Titel, zwischen 10 und 60 Zeichen.
-   * @param hide
+   * @param visibility Sichtbarkeit.
    * @param shortDescription Kurzbeschreibung, zwischen 10 und 120 Zeichen.
    * @param longDescription Langbeschreibung, mit maximal 1000 Zeichen.
    * @param createdBy Anwender, dem das Topic zugeordnet ist.
    */
-  public Topic(final String uuid, final String title, final VisibilityEnum visibility, final String shortDescription,
-               final String longDescription, final User createdBy) {
+  public Topic(final String uuid, final String title, final VisibilityEnum visibility,
+      final String shortDescription, final String longDescription, final User createdBy) {
     this.uuid = uuid;
     this.title = title;
     this.visibility = visibility;

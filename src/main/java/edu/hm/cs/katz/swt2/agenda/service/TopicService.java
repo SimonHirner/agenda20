@@ -15,7 +15,8 @@ public interface TopicService {
   /**
    * Erstellt ein neues Topic.
    */
-  String createTopic(String title, VisibilityEnum visibility, String shortDescription, String longDescription, String login);
+  String createTopic(String title, VisibilityEnum visibility, String shortDescription,
+      String longDescription, String login);
   
   /**
    * Löscht ein Topic.

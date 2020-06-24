@@ -23,8 +23,8 @@ public class  SubscriberTopicDto {
   /**
    * Konstruktor.
    */
-  public SubscriberTopicDto(String uuid, UserDisplayDto creator, String title, VisibilityEnum visibility,
-      String shortDescription, String longDescription) {
+  public SubscriberTopicDto(String uuid, UserDisplayDto creator, String title,
+      VisibilityEnum visibility, String shortDescription, String longDescription) {
     this.uuid = uuid;
     this.creator = creator;
     this.title = title;

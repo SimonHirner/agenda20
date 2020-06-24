@@ -1,10 +1,12 @@
 package edu.hm.cs.katz.swt2.agenda.initialization;
 
+import edu.hm.cs.katz.swt2.agenda.common.DateUtilities;
 import edu.hm.cs.katz.swt2.agenda.common.SecurityHelper;
 import edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.UserService;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,31 +61,36 @@ public class DemoData {
                     + " Bildern und anderen Inhalten.", LOGIN_FINE);
     topicService.subscribe(htmlKursUuid, LOGIN_ERNIE);
     topicService.subscribe(htmlKursUuid, LOGIN_BERT);
+    Date deadlineLinkErstellen = DateUtilities.getDate(15, 4, 2020);
     Long linkErstellenTask = taskService.createTask(htmlKursUuid, "Link erstellen",
         "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird.",
-            "Denn HTML Links sind wichtig um auf Websites navigieren zu können.", LOGIN_FINE);
+            "Denn HTML Links sind wichtig um auf Websites navigieren zu können.", LOGIN_FINE,
+              deadlineLinkErstellen, deadlineLinkErstellen);
     taskService.checkTask(linkErstellenTask, LOGIN_ERNIE);
+    Date deadlineHtmlKurs = DateUtilities.getDate(25, 10, 2020);
     taskService.createTask(htmlKursUuid, "Leeres HTML-Template erstellen",
         "Diese Einheit behandelt die Erstellung einer neuen HTML Datei.",
-            "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE);
-  
+            "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE,
+              deadlineHtmlKurs, DateUtilities.getCurrentDate());
     String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene", VisibilityEnum.PUBLIC,
             "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS.",
-            "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
-                    + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
+              "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
+                  + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
                     + " des World Wide Webs.", LOGIN_FINE);
     String erniesKursUuid = topicService.createTopic("Ernies Backkurs", VisibilityEnum.PUBLIC,
             "Lernen Sie Backen mit Ernie.",
-            "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
-                    + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.",
-                    LOGIN_ERNIE);
+              "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
+                  + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.",
+                    LOGIN_ERNIE);    
     taskService.createTask(erniesKursUuid, "Googlehupf backen",
         "In dieser Einheit wird gezeigt wie man einen Googlehupf backt",
-            "Dafür sind folgende Zutaten nötig...", LOGIN_ERNIE);
+            "Dafür sind folgende Zutaten nötig...", LOGIN_ERNIE, null,
+            DateUtilities.getCurrentDate());
     Long affenMuffinTask =
             taskService.createTask(erniesKursUuid, "Affenmuffins backen",
                 "Diese Einheit beinhaltet das Backen von Affenmuffins.",
-                    "Hierfür benötigen wir folgende Zutaten...", LOGIN_ERNIE);
+                    "Hierfür benötigen wir folgende Zutaten...", LOGIN_ERNIE, null,
+                      DateUtilities.getCurrentDate());
     topicService.subscribe(erniesKursUuid, LOGIN_BERT);
     taskService.checkTask(affenMuffinTask, LOGIN_BERT);
     taskService.updateComment(5L, LOGIN_BERT, "Diese Aufgabe war sehr spannend!");

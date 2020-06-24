@@ -1,5 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.service.dto;
 
+import java.util.Date;
+
 /**
  * Transferobjekt für Tasks mit StatusInformationen, die spezifisch für Abonnenten des Topics
  * sindsind. Transferobjekte sind Schnittstellenobjekte der Geschäftslogik; Sie sind nicht Teil des
@@ -14,10 +16,10 @@ public class SubscriberTaskDto extends TaskDto {
 
   private StatusDto status;
 
-  public SubscriberTaskDto(Long taskId, String title, String shortInfo, String longInfo,
-      SubscriberTopicDto topicDto,
+  public SubscriberTaskDto(Long taskId, String title, String shortDescription,
+      String longDescription, SubscriberTopicDto topicDto, Date deadline,
       StatusDto status) {
-    super(taskId, title, shortInfo, longInfo, topicDto);
+    super(taskId, title, shortDescription, longDescription, deadline, topicDto);
     this.status = status;
   }
 

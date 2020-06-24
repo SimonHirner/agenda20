@@ -5,6 +5,7 @@
 <body>
 	<nav th:replace="fragments :: navigation"></nav>
 	<div class="container-fluid">
+	
 		<div class="row justify-content-center bg-light">
 			<div class="col-8">
 				<h4 class="display-4">
@@ -32,6 +33,8 @@
 							<h6 class="card-subtitle mb-2 text-muted"
 								th:text="'In '+${t.topic.title}">Card subtitle</h6>
 							<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+							<p class="card-text" th:if="${t.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(t.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin.</p>
+							<p class="card-text" th:if="${t.deadline==null}">Kein Abgabetermin</p>
 							<form th:id="formName" th:action="@{/tasks/{id}/check(id=${t.id})}"
 								  th:object="${t}" method="post">
 							<a th:href="'/tasks/'+${t.id}" class="btn btn-primary">Öffnen</a>
@@ -61,15 +64,47 @@
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+						<p class="card-text" th:if="${t.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(t.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin.</p>
+						<p class="card-text" th:if="${t.deadline==null}">Kein Abgabetermin</p>
 						<form th:id="formName" th:action="@{/tasks/{id}/reset(id=${t.id})}"
 							  th:object="${t}" method="post">
 							<a th:href="'/tasks/'+${t.id}" class="btn btn-primary">Öffnen</a>
-							<button type="submit" class="btn btn-secondary">Zurücksetzen</button>
+							<button type="submit" th:unless="${t.deadline != null and t.deadline.before(currentDate)}" class="btn btn-secondary">Zurücksetzen</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		<div class="row justify-content-center bg-light">
+			<div class="col-12">
+				<h4 class="display-4">
+					Abgelaufene Aufgaben
+				</h4>
+				<span th:if="${#lists.size(expiredTasks)==0}">
+					Keine abgelaufenen Aufgaben gefunden!
+				</span>
+			</div>
+		</div>
+		<div class="row row-cols-1 row-cols-md-3 bg-light">
+			<div class="col mb-4" th:each="t : ${expiredTasks}">
+				<div class="card">
+					<div class=" card-body">
+						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h6 class="card-subtitle mb-2 text-muted"
+							th:text="'In '+${t.topic.title}">Card subtitle</h6>
+						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
+						<p class="card-text" th:if="${t.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(t.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin.</p>
+						<p class="card-text" th:if="${t.deadline==null}">Kein Abgabetermin</p>
+						<form th:id="formName" th:action="@{/tasks/{id}/reset(id=${t.id})}"
+							  th:object="${t}" method="post">
+							<a th:href="'/tasks/'+${t.id}" class="btn btn-primary">Öffnen</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 	<th:block th:replace="fragments :: scripts">
 </body>

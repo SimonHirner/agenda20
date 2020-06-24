@@ -1,6 +1,7 @@
 package edu.hm.cs.katz.swt2.agenda.persistence;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,8 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Modellklasse für die Speicherung der Aufgaben. Enthält die Abbildung auf eine Datenbanktabelle in
@@ -45,6 +49,10 @@ public class Task {
   @ManyToOne
   private Topic topic;
   
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Temporal(TemporalType.DATE)
+  private Date deadline;
+  
   @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
   private Collection<Status> statuses;
   
@@ -62,14 +70,16 @@ public class Task {
    * @param title Titel, zwischen 8 und 32 Zeichen.
    * @param shortDescription Kurzbeschreibung, zwischen 8 und 120 Zeichen.
    * @param longDescription Langbeschreibung, mit maximal 1000 Zeichen.
+   * @param deadline Deadline in Form eines Datums.
    */
   public Task(final Topic topic, final String title, final String shortDescription,
-      final String longDescription) {
+      final String longDescription, Date deadline) {
     this.topic = topic;
     topic.addTask(this);
     this.title = title;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
+    this.deadline = deadline;
   }
   
   @Override
@@ -130,5 +140,13 @@ public class Task {
 
   public Collection<Status> getStatuses() {
     return statuses;
+  }
+
+  public void setDeadline(Date deadline) {
+    this.deadline = deadline;
+  }
+
+  public Date getDeadline() {
+    return deadline;
   }
 }

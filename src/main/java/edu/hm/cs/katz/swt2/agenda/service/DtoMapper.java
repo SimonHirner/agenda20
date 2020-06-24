@@ -83,7 +83,7 @@ public class DtoMapper {
     Topic topic = task.getTopic();
     SubscriberTopicDto topicDto = createDto(topic);
     return new SubscriberTaskDto(task.getId(), task.getTitle(), task.getShortDescription(),
-        task.getLongDescription(), topicDto, createDto(status));
+        task.getLongDescription(), topicDto, task.getDeadline(), createDto(status));
   }
 
   /**
@@ -91,8 +91,8 @@ public class DtoMapper {
    */
   public OwnerTopicDto createManagedDto(Topic topic) {
     OwnerTopicDto topicDto = 
-        new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(), topic. getVisibility(),
-            topic.getShortDescription(), topic.getLongDescription());
+        new OwnerTopicDto(topic.getUuid(), createDto(topic.getCreator()), topic.getTitle(), 
+            topic.getVisibility(), topic.getShortDescription(), topic.getLongDescription());
     topicDto.setSubscriberCount(topic.getSubscribers().size());   
     
     List<UserDisplayDto> subscribers = new ArrayList<UserDisplayDto>();
@@ -109,12 +109,13 @@ public class DtoMapper {
    */
   public OwnerTaskDto createManagedDto(Task task) {
     OwnerTaskDto ownerTaskDto = new OwnerTaskDto(task.getId(), task.getTitle(),
-        task.getShortDescription(), task.getLongDescription(), createDto(task.getTopic()));
+        task.getShortDescription(), task.getLongDescription(), task.getDeadline(), 
+        createDto(task.getTopic()));
     
     int doneStatusesCount = 0;
     List<StatusDto> statusesWithComment = new ArrayList<StatusDto>();
     for (Status status : task.getStatuses()) {
-      if (status.getComment().equals("")) {
+      if (!status.getComment().equals("")) {
         statusesWithComment.add(createDto(status));
       }
       if (status.getStatus().equals(StatusEnum.FERTIG)) {
