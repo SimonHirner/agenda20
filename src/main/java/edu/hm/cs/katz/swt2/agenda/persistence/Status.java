@@ -45,6 +45,11 @@ public class Status {
   @Length(min = 0, max = 500)
   @Column(length = 500)
   private String comment = "";
+  
+  @NotNull
+  @Length(min = 0, max = 500)
+  @Column(length = 500)
+  private String rating = "";
 
   /**
    * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
@@ -95,6 +100,14 @@ public class Status {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+  
+  public String getRating() {
+    return rating;
+  }
+
+  public void setRating(String rating) {
+    this.rating = rating;
   }
 
   /*

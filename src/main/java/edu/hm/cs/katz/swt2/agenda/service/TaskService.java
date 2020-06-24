@@ -6,6 +6,7 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.StatusDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Serviceklasse für Verarbeitung von Tasks.
@@ -53,12 +54,12 @@ public interface TaskService {
   /**
    * Zugriff auf alle Tasks eines abonnierten Topics.
    */
-  List<SubscriberTaskDto> getTasksForTopic(String topicUuid, String login);
+  List<SubscriberTaskDto> getTasksOfTopic(String topicUuid, String login);
   
   /**
    * Zugriff auf alle Tasks eines abonnierten Topics mit Status als Filter.
    */
-  List<SubscriberTaskDto> getTasksForTopicForStatus(String topicUuid, String login,
+  List<SubscriberTaskDto> getTasksOfTopicWithStatus(String topicUuid, String login,
       StatusEnum status);
   
   /**
@@ -91,4 +92,19 @@ public interface TaskService {
    * Zugriff auf einen Status.
    */
   StatusDto getStatus(Long taskId, String login);
+  
+  /**
+   * Aktualisierung der Bewertung.
+   */
+  void updateRating(Long taskId, String loginTopicOwner, String loginSubscriber, String rating);
+  
+  /**
+   * Zugriff auf alle Status eines Tasks.
+   */
+  List<StatusDto> getStatuses(Long taskId, String login);
+  
+  /**
+   * Zugriff auf alle erledigten Status eines Topics für alle Abonnenten.
+   */
+  Map<String, Integer> getDoneStatusesCountForUser(String uuid, String login);
 }

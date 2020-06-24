@@ -94,6 +94,8 @@ public class DemoData {
     topicService.subscribe(erniesKursUuid, LOGIN_BERT);
     taskService.checkTask(affenMuffinTask, LOGIN_BERT);
     taskService.updateComment(5L, LOGIN_BERT, "Diese Aufgabe war sehr spannend!");
+    taskService.updateRating(1L, LOGIN_FINE, LOGIN_ERNIE, "Sie haben diese Aufgabe fehlerfrei"
+        + " bestanden.");
   }
 
 }

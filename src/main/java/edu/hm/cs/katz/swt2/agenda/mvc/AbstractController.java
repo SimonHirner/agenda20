@@ -15,29 +15,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  */
 public abstract class AbstractController {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @ModelAttribute("administration")
-    private boolean isAdministrator(Authentication auth) {
-        return SecurityHelper.isAdmin(auth);
-    }
+  @ModelAttribute("administration")
+  private boolean isAdministrator(Authentication auth) {
+    return SecurityHelper.isAdmin(auth);
+  }
 
-    @ModelAttribute("user")
-    private UserDisplayDto user(Authentication auth) {
-        if (auth != null) {
-            UserDisplayDto anwenderInfo = userService.getUserInfo(auth.getName());
-            return anwenderInfo;
-        }
-        return null;
+  @ModelAttribute("user")
+  private UserDisplayDto user(Authentication auth) {
+    if (auth != null) {
+      UserDisplayDto anwenderInfo = userService.getUserInfo(auth.getName());
+      return anwenderInfo;
     }
+    return null;
+  }
 
-    @ModelAttribute("search")
-    private Search search(Authentication auth) {
-        if (auth != null) {
-            Search s = new Search();
-            return s;
-        }
-        return null;
+  @ModelAttribute("search")
+  private Search search(Authentication auth) {
+    if (auth != null) {
+      Search s = new Search();
+      return s;
     }
+    return null;
+  }
 }

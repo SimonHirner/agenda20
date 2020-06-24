@@ -12,6 +12,7 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -179,12 +180,12 @@ public class TopicController extends AbstractController {
   public String createTopicView(Model model, Authentication auth, 
       @PathVariable("uuid") String uuid) {
     SubscriberTopicDto topic = topicService.getTopic(uuid, auth.getName());
-    List<SubscriberTaskDto> openTasks = taskService.getTasksForTopicForStatus(uuid, auth.getName(),
+    List<SubscriberTaskDto> openTasks = taskService.getTasksOfTopicWithStatus(uuid, auth.getName(),
             StatusEnum.OFFEN);
-    openTasks.addAll(taskService.getTasksForTopicForStatus(uuid, auth.getName(), StatusEnum.NEU));
-    List<SubscriberTaskDto> finishedTasks = taskService.getTasksForTopicForStatus(uuid,
+    openTasks.addAll(taskService.getTasksOfTopicWithStatus(uuid, auth.getName(), StatusEnum.NEU));
+    List<SubscriberTaskDto> finishedTasks = taskService.getTasksOfTopicWithStatus(uuid,
         auth.getName(), StatusEnum.FERTIG);
-    List<SubscriberTaskDto> expiredTasks = taskService.getTasksForTopicForStatus(uuid,
+    List<SubscriberTaskDto> expiredTasks = taskService.getTasksOfTopicWithStatus(uuid,
         auth.getName(), StatusEnum.ABGELAUFEN);
     model.addAttribute("topic", topic);
     model.addAttribute("openTasks", openTasks);
@@ -220,18 +221,20 @@ public class TopicController extends AbstractController {
       @PathVariable("uuid") String uuid) {
     OwnerTopicDto topic = topicService.getManagedTopic(uuid, auth.getName());
     List<UserDisplayDto> subscribers = topic.getSubscribers();
-
+    Map<String, Integer> doneStatusesCountForSubscriber = taskService.getDoneStatusesCountForUser(
+        uuid, auth.getName());
+    
     Collections.sort(subscribers, new Comparator<UserDisplayDto>() {
-        @Override
-        public int compare(UserDisplayDto o1, UserDisplayDto o2) {
-            return o1.getDoneTasksCountForTopicUuid().get(uuid).compareTo(
-                    o2.getDoneTasksCountForTopicUuid().get(uuid));
-        }
-    });
+      @Override
+      public int compare(UserDisplayDto o1, UserDisplayDto o2) {
+          return doneStatusesCountForSubscriber.get(o1.getLogin()).compareTo(
+              doneStatusesCountForSubscriber.get(o2.getLogin()));
+          }
+      });
 
+    model.addAttribute("doneStatusesCountForSubscriber", doneStatusesCountForSubscriber);
     model.addAttribute("subscribers", subscribers);
     return "subscriber-listview";
-
   }
 
   /**
