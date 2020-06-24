@@ -63,6 +63,6 @@ public interface TopicRepository extends JpaRepository<Topic, String> {
     /**
      * Findet alle öffentlichen Topics.
      */
-    @Query(value = "SELECT * FROM Topic WHERE Visibility = 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Topic WHERE Visibility = 1 ORDER BY TITLE", nativeQuery = true)
     List<Topic> findAllByVisibilityPublic();
 }

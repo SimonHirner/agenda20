@@ -30,7 +30,6 @@ public class IndexController extends AbstractController {
    */
   @GetMapping("/")
   public String getIndexView(Model model, Authentication auth) {
-    model.addAttribute("registration", new Registration());
     return "index";
   }
 }
