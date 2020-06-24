@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">
+                Öffentliche Topics
+            </h4>
+            <span th:if="${#lists.size(publicQuery)==0}">Keine Treffer!</span>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 bg-light">
+        <div class="col mb-4" th:each="topic : ${publicQuery}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${topic.title}">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-muted"
+                        th:text="'Von '+${topic.creator.displayName}">Card subtitle</h6>
+                    <p class="card-text" th:if="${topic.subscriberCount!=1}" th:text="${topic.subscriberCount}+' Abonnenten'">Keine
+                        Abonnenten</p>
+                    <p class="card-text" th:if="${topic.subscriberCount==1}" th:text="${topic.subscriberCount}+' Abonnent'">Keine
+                        Abonnenten</p>
+                    <p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
+                    <a th:href="'/topics/'+${topic.uuid}+'/register'" class="btn btn-primary">Abonnieren</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">
+                Abonnierte Topics
+            </h4>
+            <span th:if="${#lists.size(subscribedQuery)==0}">Keine Treffer!</span>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 bg-light">
+        <div class="col mb-4" th:each="topic : ${subscribedQuery}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${topic.title}">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-muted"
+                        th:text="'Von '+${topic.creator.displayName}">Card subtitle</h6>
+                    <p class="card-text" th:if="${topic.subscriberCount!=1}" th:text="${topic.subscriberCount}+' Abonnenten'">Keine
+                        Abonnenten</p>
+                    <p class="card-text" th:if="${topic.subscriberCount==1}" th:text="${topic.subscriberCount}+' Abonnent'">Keine
+                        Abonnenten</p>
+                    <p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
+                    <a th:href="'/topics/'+${topic.uuid}" class="btn btn-primary">Öffnen</a>
+                    <a th:href="'/topics/'+${topic.uuid}+'/unsubscription'" class="btn btn-danger">Teilnahme beenden</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:replace="fragments :: scripts">
+</body>
+</html>

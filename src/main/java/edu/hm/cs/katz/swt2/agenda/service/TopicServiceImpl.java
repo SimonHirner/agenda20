@@ -229,6 +229,24 @@ public class TopicServiceImpl implements TopicService {
             && !t.getShortDescription().toLowerCase().contains(search.toLowerCase()));
     return result;
   }
+
+  @Override
+  public List<SubscriberTopicDto> getPublicTopics (String login, String search) {
+    LOG.info("Rufe Topics für Suchbegriff {} auf.", search);
+
+    User subscriber = userRepository.findById(login).orElse(null);
+    Collection<Topic> subscriptions = topicRepository.findAllBySubscribers(subscriber,
+            Sort.by(Sort.Order.asc("title").ignoreCase()));
+    Collection<Topic> publicTopics = topicRepository.findAllByVisibilityPublic();
+    List<SubscriberTopicDto> result = new ArrayList<>();
+    for (Topic topic : publicTopics) {
+      result.add(mapper.createDto(topic));
+    }
+    result.removeIf(t -> subscriptions.contains(t) || (!t.getTitle().toLowerCase().contains(search.toLowerCase())
+                                 && !t.getShortDescription().toLowerCase().contains(search.toLowerCase())));
+    System.out.println(result);
+    return result;
+  }
   
   @Override
   public String getTopicUuid(String key, String login) {

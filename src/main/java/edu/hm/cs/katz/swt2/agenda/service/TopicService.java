@@ -62,4 +62,9 @@ public interface TopicService {
   String getTopicUuid(String key, String login);
   
   void unsubscribe(String topicUuid, String login);
+
+  /**
+   * Suchzugriff auf alle öffentlichen Topics.
+   */
+  List<SubscriberTopicDto> getPublicTopics(String login, String search);
 }

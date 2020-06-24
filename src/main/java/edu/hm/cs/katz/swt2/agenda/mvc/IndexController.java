@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -23,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class IndexController extends AbstractController {
   @Autowired
   TopicService topicService;
-  
+
   /**
    * Erstellt die Landing-Page.
    */
@@ -32,22 +33,4 @@ public class IndexController extends AbstractController {
     model.addAttribute("registration", new Registration());
     return "index";
   }
-  
-  /**
-   * Behandelt die Eingabe eines Aboschlüssels für ein Topic.
-   */
-  @PostMapping("/register")
-  public String handleRegistrationKey(@ModelAttribute("registration") Registration registration,
-      Authentication auth, RedirectAttributes redirectAttributes) {
-    String uuid = "";
-    String key = registration.getKey();
-    try {
-      uuid = topicService.getTopicUuid(key, auth.getName());
-    } catch (ValidationException e) {
-      redirectAttributes.addFlashAttribute("error", e.getMessage());
-      return "redirect:/";
-    }
-    return "redirect:/topics/" + uuid + "/register";
-  }
-  
 }

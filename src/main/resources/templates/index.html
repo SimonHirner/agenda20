@@ -15,13 +15,6 @@
 			ein. Teilnehmer*innen abonnieren das Topic und haben so ständig eine 
 			Übersicht über alle noch offenen Aufgaben.
 		</p>
-		<form class="form-inline" th:object="${registration}" th:if="${user}" th:action="@{/register}" method="post">
-		<div class="form-group">
-			<input th:field="*{key}" class="form-control" placeholder="Anmeldeschlüssel" minlength="8"/>
-		</div>
-			<button type="submit" class="btn btn-success">Suchen</button>
-		</form>
-		<small th:if="${user}" class="form-text text-muted">Sie erhalten einen Schlüssel vom Kursleiter</small>
 	</div>
 
 	<th:block th:replace="fragments :: scripts">
