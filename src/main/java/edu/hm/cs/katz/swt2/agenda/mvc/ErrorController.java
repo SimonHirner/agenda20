@@ -43,7 +43,6 @@ public class ErrorController extends AbstractController implements org.springfra
     model.addAttribute("message", request.getAttribute("javax.servlet.error.exception"));
     model.addAttribute("path", request.getAttribute("javax.servlet.forward.request_uri"));
 
-    System.out.println(model);
     return "error";
   }
 
