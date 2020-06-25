@@ -45,7 +45,6 @@ public class DemoData {
    * Erstellt die Demo-Daten.
    */
   @PostConstruct
-  @SuppressWarnings("unused")
   public void addData() {
     SecurityHelper.escalate(); // admin rights
     LOG.debug("Erzeuge Demo-Daten.");
