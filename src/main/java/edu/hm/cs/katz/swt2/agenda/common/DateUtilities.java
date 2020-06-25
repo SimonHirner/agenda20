@@ -10,8 +10,7 @@ import java.util.Date;
  */
 public final class DateUtilities {
   
-  private DateUtilities() {
-  }
+  private DateUtilities() {}
   
   /**
    * Gibt das heutige Datum zurück.

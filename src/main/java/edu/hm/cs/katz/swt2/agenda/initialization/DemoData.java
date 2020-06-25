@@ -72,7 +72,7 @@ public class DemoData {
         "Diese Einheit behandelt die Erstellung einer neuen HTML Datei.",
             "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE,
               deadlineHtmlKurs, DateUtilities.getCurrentDate());
-    String cssKursUuid = topicService.createTopic("CSS für Fortgeschrittene", VisibilityEnum.PUBLIC,
+    topicService.createTopic("CSS für Fortgeschrittene", VisibilityEnum.PUBLIC,
             "Dieser Kurs richtet sich an Fortgeschrittene und behandelt CSS.",
               "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
                   + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"

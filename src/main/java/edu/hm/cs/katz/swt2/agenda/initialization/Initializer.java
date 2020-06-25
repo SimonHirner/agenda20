@@ -36,8 +36,6 @@ public class Initializer {
     if (adminAccounts.isEmpty()) {
       LOG.debug("No admins found. Creating configured admin account.");
 
-      // TODO: Erzeugung verschieben!
-      // TODO: Überprüfung, ob Account schon existiert.
       anwenderService.legeAn(adminLogin, "Administrator", adminPassword, true);
     }
   }

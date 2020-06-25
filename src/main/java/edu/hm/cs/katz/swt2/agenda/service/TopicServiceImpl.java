@@ -53,7 +53,7 @@ public class TopicServiceImpl implements TopicService {
       throw new AccessDeniedException("Zugriff verweigert.");
     }
 
-    if (topic.getSubscribers().size() != 0) {
+    if (!topic.getSubscribers().isEmpty()) {
       LOG.debug("Topic {} wurde bereits abonniert und kann nicht gelöscht werden!", topicUuid);
       throw new ValidationException("Das Topic kann nicht gelöscht werden, da es bereits " 
         + "abonniert wurde!");

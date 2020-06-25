@@ -83,7 +83,7 @@ public class DtoMapper {
             topic.getVisibility(), topic.getShortDescription(), topic.getLongDescription());
     topicDto.setSubscriberCount(topic.getSubscribers().size());   
     
-    List<UserDisplayDto> subscribers = new ArrayList<UserDisplayDto>();
+    List<UserDisplayDto> subscribers = new ArrayList<>();
     for (User user : topic.getSubscribers()) {
       subscribers.add(createDto(user));
     }
@@ -100,9 +100,9 @@ public class DtoMapper {
         task.getShortDescription(), task.getLongDescription(), task.getDeadline(), 
         createDto(task.getTopic()));
        
-    List<StatusDto> statusesWithComment = new ArrayList<StatusDto>();
-    List<StatusDto> doneStatuses = new ArrayList<StatusDto>();
-    List<StatusDto> statuses = new ArrayList<StatusDto>();
+    List<StatusDto> statusesWithComment = new ArrayList<>();
+    List<StatusDto> doneStatuses = new ArrayList<>();
+    List<StatusDto> statuses = new ArrayList<>();
     for (Status status : task.getStatuses()) {
       statuses.add(createDto(status));
       if (!status.getComment().equals("")) {

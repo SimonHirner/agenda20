@@ -33,8 +33,7 @@ public abstract class AbstractController {
   @ModelAttribute("user")
   private UserDisplayDto user(Authentication auth) {
     if (auth != null) {
-      UserDisplayDto anwenderInfo = userService.getUserInfo(auth.getName());
-      return anwenderInfo;
+      return userService.getUserInfo(auth.getName());
     }
     return null;
   }
@@ -42,8 +41,7 @@ public abstract class AbstractController {
   @ModelAttribute("search")
   private Search search(Authentication auth) {
     if (auth != null) {
-      Search s = new Search();
-      return s;
+      return new Search();
     }
     return null;
   }

@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Bastian Katz (mailto: bastian.katz@hm.edu)
  */
 public final class SecurityHelper {
+  private SecurityHelper() {}
 
   public static final String ADMIN_ROLE = "ROLE_ADMIN";
   public static final GrantedAuthority ADMIN_AUTHORITY = new SimpleGrantedAuthority(ADMIN_ROLE);

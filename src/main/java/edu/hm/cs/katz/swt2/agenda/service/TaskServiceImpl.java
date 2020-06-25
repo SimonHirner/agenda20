@@ -111,7 +111,7 @@ public class TaskServiceImpl implements TaskService {
 
   private void validateTaskName(String title) {
     if (title.length() < 1) {
-      LOG.debug("Der Name ist leer, Task kann nicht angelegt werden.", title);
+      LOG.debug("Der Name ist leer, Task kann nicht angelegt werden.");
       throw new ValidationException("Bitte gib einen Namen für den Task an.");
     }
     if (title.length() < 8) {
@@ -487,7 +487,7 @@ public class TaskServiceImpl implements TaskService {
     LOG.debug("Status wird von {} aufgerufen.", login);
     
     Task task = taskRepository.getOne(taskId);
-    List<StatusDto> statuses = new ArrayList<StatusDto>();
+    List<StatusDto> statuses = new ArrayList<>();
     
     for (User user : task.getTopic().getSubscribers()) {
       Status status = getOrCreateStatus(taskId, user.getLogin());
@@ -509,7 +509,7 @@ public class TaskServiceImpl implements TaskService {
     LOG.debug("Erledigte Status werden von {} aufgerufen.", login);
     
     Topic topic = topicRepository.getOne(uuid);
-    Map<String, Integer> doneStatusesCountForUser = new LinkedHashMap<String, Integer>();
+    Map<String, Integer> doneStatusesCountForUser = new LinkedHashMap<>();
     
     for (Task task : topic.getTasks()) {
       for (StatusDto status : getStatuses(task.getId(), login)) {

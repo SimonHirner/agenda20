@@ -46,10 +46,10 @@ public class Topic {
   private User creator;
 
   @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-  private Collection<Task> tasks = new ArrayList<Task>();
+  private Collection<Task> tasks = new ArrayList<>();
 
   @ManyToMany
-  private Collection<User> subscribers = new ArrayList<User>();
+  private Collection<User> subscribers = new ArrayList<>();
 
   /**
    * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
