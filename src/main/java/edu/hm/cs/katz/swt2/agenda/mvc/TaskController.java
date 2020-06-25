@@ -185,4 +185,48 @@ public class TaskController extends AbstractController {
     model.addAttribute("currentDate", DateUtilities.getCurrentDate());
     return "task-listview";
   }
+  
+  /**
+   * Erstellt Übersicht über die Bewertungen eines Tasks.
+   */
+  @GetMapping("tasks/{id}/statuses")
+  public String createRatingsListView(Model model, Authentication auth,
+      @PathVariable("id") Long id) {
+    OwnerTaskDto task = taskService.getManagedTask(id, auth.getName());
+    List<StatusDto> statuses = taskService.getStatuses(id, auth.getName());
+    model.addAttribute("task", task);
+    model.addAttribute("statuses", statuses);
+    return "status-listview";
+  }
+  
+  /**
+   * Erstellt Übersicht über die Bewertungen eines Tasks.
+   */
+  @GetMapping("tasks/{id}/{login}/rating")
+  public String createRatingView(Model model, Authentication auth,
+      @PathVariable("id") Long id, @PathVariable("login") String login) {
+    OwnerTaskDto task = taskService.getManagedTask(id, auth.getName());
+    StatusDto status = taskService.getStatus(id, login);
+    model.addAttribute("task", task);
+    model.addAttribute("status", status);
+    return "task-rating";
+  }
+  
+  /**
+   * Verarbeitet die Bewertung eines Tasks.
+   */
+  @PostMapping("tasks/{id}/{login}/rating")
+  public String handleRating(Model model, Authentication auth, @PathVariable("id") Long id, 
+      @ModelAttribute("status") StatusDto status, @PathVariable("login") String login,
+      @RequestHeader(value = "referer", required = true) String referer,
+      RedirectAttributes redirectAttributes) {    
+    try {
+      taskService.updateRating(id, auth.getName(), login, status.getRating());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:" + referer;
+    }
+    redirectAttributes.addFlashAttribute("success", "Bewertung aktualisiert.");  
+    return "redirect:" + referer; 
+  }
 }

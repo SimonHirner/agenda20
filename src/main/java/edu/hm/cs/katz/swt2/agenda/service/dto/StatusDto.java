@@ -19,14 +19,17 @@ public class StatusDto {
   private UserDisplayDto user;
   
   private String comment;
+  
+  private String rating;
 
   /**
    * Konstruktor.
    */
-  public StatusDto(StatusEnum status, UserDisplayDto user, String comment) {
+  public StatusDto(StatusEnum status, UserDisplayDto user, String comment, String rating) {
     this.status = status;
     this.user = user;
     this.comment = comment;
+    this.rating = rating;
   }
 
   public StatusEnum getStatus() {
@@ -51,5 +54,13 @@ public class StatusDto {
 
   public void setUser(UserDisplayDto user) {
     this.user = user;
+  }
+
+  public String getRating() {
+    return rating;
+  }
+
+  public void setRating(String rating) {
+    this.rating = rating;
   }
 }

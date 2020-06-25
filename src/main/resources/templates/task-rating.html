@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head" />
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+	<div class="row justify-content-center bg-light">
+		<div class="col-12">
+			<h4 class="display-4">
+				Bewertung
+			</h4>
+			<form th:action="@{/tasks/{id}/{login}/rating(id=${task.id}, login=${status.user.login})}" th:object="${status}"
+				method="post">
+				<div class="form-group">
+					<textarea th:field="*{rating}" class="form-control" placeholder="Bewertung"
+							  maxlength="500"></textarea>
+					<small class="form-text text-muted">Sie können dem Kursmitglied hier Feedback zum erledigten Task geben.</small>
+				</div>
+				<button type="submit" class="btn btn-primary">Speichern!</button>
+				<a th:href="'/tasks/'+${task.id}+'/statuses'" class="btn btn-danger">Zurück</a>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<th:block th:replace="fragments :: scripts">
+</body>
+</html>

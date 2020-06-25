@@ -13,9 +13,7 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,17 +41,6 @@ public class DtoMapper {
     UserDisplayDto dto = mapper.map(user, UserDisplayDto.class);
     dto.setTopicCount(topicRepository.countByCreator(user));
     dto.setSubscriptionCount(user.getSubscriptions().size());  
-    Map<String, Integer> doneTasksCountForTopicUuid = new LinkedHashMap<String, Integer>();
-    for (Status status : user.getStatuses()) {
-      String topicUuid = status.getTask().getTopic().getUuid();
-      if (doneTasksCountForTopicUuid.get(topicUuid) == null) {
-        doneTasksCountForTopicUuid.put(topicUuid, 0);
-      }
-      if (status.getStatus().equals(StatusEnum.FERTIG)) {
-        doneTasksCountForTopicUuid.put(topicUuid, doneTasksCountForTopicUuid.get(topicUuid) + 1);
-      }
-    }
-    dto.setDoneTasksCountForTopicUuid(doneTasksCountForTopicUuid);
     return dto;
   }
 
@@ -73,7 +60,8 @@ public class DtoMapper {
    * Erstellt ein {@link StatusDto} aus einem {@link Status}.
    */
   public StatusDto createDto(Status status) {
-    return new StatusDto(status.getStatus(), createDto(status.getUser()), status.getComment());
+    return new StatusDto(status.getStatus(), createDto(status.getUser()), status.getComment(),
+        status.getRating());
   }
 
   /**
@@ -111,21 +99,22 @@ public class DtoMapper {
     OwnerTaskDto ownerTaskDto = new OwnerTaskDto(task.getId(), task.getTitle(),
         task.getShortDescription(), task.getLongDescription(), task.getDeadline(), 
         createDto(task.getTopic()));
-    
-    int doneStatusesCount = 0;
+       
     List<StatusDto> statusesWithComment = new ArrayList<StatusDto>();
+    List<StatusDto> doneStatuses = new ArrayList<StatusDto>();
+    List<StatusDto> statuses = new ArrayList<StatusDto>();
     for (Status status : task.getStatuses()) {
+      statuses.add(createDto(status));
       if (!status.getComment().equals("")) {
         statusesWithComment.add(createDto(status));
       }
       if (status.getStatus().equals(StatusEnum.FERTIG)) {
-        doneStatusesCount++;
+        doneStatuses.add(createDto(status));
       }
     }
-    ownerTaskDto.setDoneStatusesCount(doneStatusesCount);
+    ownerTaskDto.setDoneStatuses(doneStatuses);
     ownerTaskDto.setStatusesWithComment(statusesWithComment);
     
     return ownerTaskDto;
   }
-
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -304,7 +305,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getTasksForTopic(String topicUuid, String login) {
+  public List<SubscriberTaskDto> getTasksOfTopic(String topicUuid, String login) {
     LOG.info("Rufe Tasks für Topic {} auf.", topicUuid);
     LOG.debug("Tasks von {} werden aufgerufen.", login);
 
@@ -320,7 +321,7 @@ public class TaskServiceImpl implements TaskService {
   
   @Override
   @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
-  public List<SubscriberTaskDto> getTasksForTopicForStatus(String topicUuid, String login,
+  public List<SubscriberTaskDto> getTasksOfTopicWithStatus(String topicUuid, String login,
       StatusEnum statusEnum) {
     LOG.info("Rufe Tasks für Topic {} mit Status {} auf.", topicUuid, statusEnum);
     LOG.debug("Tasks von {} werden aufgerufen.", login);
@@ -372,7 +373,7 @@ public class TaskServiceImpl implements TaskService {
     LOG.info("Setze Status von allen Tasks des Topic {} zurück.", uuid);
     LOG.debug("Status der Tasks wird für ein Topic von {} zurückgesetzt.", login);
     
-    List<SubscriberTaskDto> tasks = getTasksForTopic(uuid, login);
+    List<SubscriberTaskDto> tasks = getTasksOfTopic(uuid, login);
     for (SubscriberTaskDto task : tasks) {
       Status status = getOrCreateStatus(task.getId(), login);
       status.setStatus(StatusEnum.OFFEN);
@@ -444,21 +445,90 @@ public class TaskServiceImpl implements TaskService {
   }
   
   @Override
-  @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+  public void updateRating(Long taskId, String loginTopicOwner, String loginSubscriber,
+      String rating) {
+    LOG.info("Aktualisiere Bewertung von Task {}.", taskId);
+    LOG.debug("Bewertung wird von {} aktualisiert.", loginTopicOwner);
+    
+    Task task = taskRepository.getOne(taskId);
+    User userTopicOwner = userRepository.getOne(loginTopicOwner);
+    User userSubscriber = userRepository.getOne(loginSubscriber);
+    Status status = statusRepository.findByUserAndTask(userSubscriber, task);
+    
+    if (!userTopicOwner.equals(status.getTask().getTopic().getCreator())) {
+      LOG.warn("Anwender {} ist nicht berechtigt Task {} zu bewerten!", loginTopicOwner, taskId);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    status.setRating(rating);
+  }
+  
+  @Override
   public StatusDto getStatus(Long taskId, String login) {
     LOG.info("Rufe Status von Task {} auf.", taskId);
     LOG.debug("Status wird von {} aufgerufen.", login);
     
     Task task = taskRepository.getOne(taskId);
-    User user = userRepository.getOne(login);
-    Status status = statusRepository.findByUserAndTask(user, task);
+    Status status = getOrCreateStatus(taskId, login);
     
-    if (!user.equals(status.getUser()) && !user.equals(status.getTask().getTopic().getCreator())) {
+    if (!login.equals(status.getUser().getLogin())
+        && !login.equals(task.getTopic().getCreator().getLogin())) {
       LOG.warn("Anwender {} ist nicht berechtigt den Status von Task {} einzusehen!", login,
           taskId);
       throw new AccessDeniedException("Zugriff verweigert.");
     }
     
     return mapper.createDto(status);
+  }
+  
+  @Override
+  public List<StatusDto> getStatuses(Long taskId, String login) {
+    LOG.info("Rufe Status von Task {} auf.", taskId);
+    LOG.debug("Status wird von {} aufgerufen.", login);
+    
+    Task task = taskRepository.getOne(taskId);
+    List<StatusDto> statuses = new ArrayList<StatusDto>();
+    
+    for (User user : task.getTopic().getSubscribers()) {
+      Status status = getOrCreateStatus(taskId, user.getLogin());
+      statuses.add(mapper.createDto(status));
+    }
+    
+    if (!login.equals(task.getTopic().getCreator().getLogin())) {
+      LOG.warn("Anwender {} ist nicht berechtigt die Status von Task {} einzusehen!", login,
+          taskId);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+    
+    return statuses;
+  }
+  
+  @Override
+  public Map<String, Integer> getDoneStatusesCountForUser(String uuid, String login) {
+    LOG.info("Rufe erledigte Status von Topic {} auf.", uuid);
+    LOG.debug("Erledigte Status werden von {} aufgerufen.");
+    
+    Topic topic = topicRepository.getOne(uuid);
+    Map<String, Integer> doneStatusesCountForUser = new LinkedHashMap<String, Integer>();
+    
+    for (Task task : topic.getTasks()) {
+      for (StatusDto status : getStatuses(task.getId(), login)) {
+        if (doneStatusesCountForUser.get(status.getUser().getLogin()) == null) {
+          doneStatusesCountForUser.put(status.getUser().getLogin(), 0);
+        }
+        if (status.getStatus().equals(StatusEnum.FERTIG)) {
+          doneStatusesCountForUser.put(status.getUser().getLogin(),
+              doneStatusesCountForUser.get(status.getUser().getLogin()) + 1);
+        }
+      }
+    }
+    
+    if (!login.equals(topic.getCreator().getLogin())) {
+      LOG.warn("Anwender {} ist nicht berechtigt die erledigten Status von Topic {} einzusehen!",
+          login, uuid);
+      throw new AccessDeniedException("Zugriff verweigert.");
+    }
+        
+    return doneStatusesCountForUser;
   }
 }

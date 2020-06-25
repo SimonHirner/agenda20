@@ -14,8 +14,8 @@ import java.util.List;
  * @author Bastian Katz (mailto: bastian.katz@hm.edu)
  */
 public class OwnerTaskDto extends TaskDto {
-  
-  private int doneStatusesCount;
+    
+  private List<StatusDto> doneStatuses;
   
   private List<StatusDto> statusesWithComment;
   
@@ -24,19 +24,19 @@ public class OwnerTaskDto extends TaskDto {
     super(id, title, shortDescription, longDescription, deadline, topicDto);
   }
 
-  public int getDoneStatusesCount() {
-    return doneStatusesCount;
-  }
-
-  public void setDoneStatusesCount(int doneStatusCount) {
-    this.doneStatusesCount = doneStatusCount;
-  }
-
   public List<StatusDto> getStatusesWithComment() {
     return statusesWithComment;
   }
 
   public void setStatusesWithComment(List<StatusDto> statusesWithComment) {
     this.statusesWithComment = statusesWithComment;
+  }
+
+  public List<StatusDto> getDoneStatuses() {
+    return doneStatuses;
+  }
+
+  public void setDoneStatuses(List<StatusDto> doneStatuses) {
+    this.doneStatuses = doneStatuses;
   }
 }

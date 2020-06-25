@@ -8,12 +8,10 @@ import edu.hm.cs.katz.swt2.agenda.persistence.User;
 import edu.hm.cs.katz.swt2.agenda.persistence.UserRepository;
 import edu.hm.cs.katz.swt2.agenda.service.dto.OwnerTopicDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTopicDto;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.validation.ValidationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
