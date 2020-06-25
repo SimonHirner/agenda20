@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Controller-Klasse für die Error-Page.
@@ -22,7 +22,7 @@ public class ErrorController extends AbstractController
   /**
    * Erstellt die Error Seite.
    */
-  @RequestMapping("/error")
+  @GetMapping("/error")
   public String handleError(HttpServletRequest request, Model model, Authentication auth) {
     Object errorCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
     Integer code = Integer.valueOf(errorCode.toString());

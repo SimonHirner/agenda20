@@ -506,7 +506,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public Map<String, Integer> getDoneStatusesCountForUser(String uuid, String login) {
     LOG.info("Rufe erledigte Status von Topic {} auf.", uuid);
-    LOG.debug("Erledigte Status werden von {} aufgerufen.");
+    LOG.debug("Erledigte Status werden von {} aufgerufen.", login);
     
     Topic topic = topicRepository.getOne(uuid);
     Map<String, Integer> doneStatusesCountForUser = new LinkedHashMap<String, Integer>();
