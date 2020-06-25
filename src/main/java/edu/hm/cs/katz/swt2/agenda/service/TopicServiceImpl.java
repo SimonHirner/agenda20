@@ -249,7 +249,6 @@ public class TopicServiceImpl implements TopicService {
     result.removeIf(t -> !t.getTitle().toLowerCase().contains(search.toLowerCase())
         && !t.getShortDescription().toLowerCase().contains(search.toLowerCase()));
 
-    System.out.println(result);
     return result;
   }
 
