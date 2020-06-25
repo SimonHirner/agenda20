@@ -6,11 +6,10 @@ import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.UserService;
 import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.UserDisplayDto;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.List;
 
 /**
  * Abstrakte Basisklasse für alle Controller, sorgt dafür, dass einige Verwaltungsattribute immer an
@@ -50,12 +49,13 @@ public abstract class AbstractController {
   }
 
   @ModelAttribute("numberOfOpenTasks")
-  private Integer openTasks(Authentication auth){
+  private Integer openTasks(Authentication auth) {
     try {
-      List<SubscriberTaskDto> openTasks = taskService.getAllTasksForStatus(auth.getName(), StatusEnum.OFFEN, "");
+      List<SubscriberTaskDto> openTasks = taskService.getAllTasksForStatus(auth.getName(),
+          StatusEnum.OFFEN, "");
       openTasks.addAll(taskService.getAllTasksForStatus(auth.getName(), StatusEnum.NEU, ""));
       return openTasks.size();
-    } catch (Exception e){
+    } catch (Exception e) {
       return 0;
     }
   }

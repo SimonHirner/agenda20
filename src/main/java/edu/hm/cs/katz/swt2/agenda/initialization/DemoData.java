@@ -77,7 +77,7 @@ public class DemoData {
               "Cascading Style Sheets, kurz CSS genannt, ist eine Stylesheet-Sprache für"
                   + " elektronische Dokumente und zusammen mit HTML und DOM eine der Kernsprachen"
                     + " des World Wide Webs.", LOGIN_FINE);
-    String erniesKursUuid = topicService.createTopic("Ernies Backkurs", VisibilityEnum.PUBLIC,
+    String erniesKursUuid = topicService.createTopic("Ernies Backkurs", VisibilityEnum.PRIVATE,
             "Lernen Sie Backen mit Ernie.",
               "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
                   + " Wir werden uns gemeinsam viele verschiedene Rezepte anschauen.",

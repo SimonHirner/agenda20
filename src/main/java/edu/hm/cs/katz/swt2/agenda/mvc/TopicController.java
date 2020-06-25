@@ -106,8 +106,8 @@ public class TopicController extends AbstractController {
       @RequestHeader(value = "referer", required = true) String referer,
       RedirectAttributes redirectAttributes) {
     try {
-      topicService.updateTopic(uuid, auth.getName(), topic.getVisibility(), topic.getShortDescription(),
-                topic.getLongDescription());
+      topicService.updateTopic(uuid, auth.getName(), topic.getVisibility(),
+          topic.getShortDescription(), topic.getLongDescription());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:" + referer;
@@ -227,11 +227,12 @@ public class TopicController extends AbstractController {
     Collections.sort(subscribers, new Comparator<UserDisplayDto>() {
       @Override
       public int compare(UserDisplayDto o1, UserDisplayDto o2) {
-          return doneStatusesCountForSubscriber.get(o1.getLogin()).compareTo(
-              doneStatusesCountForSubscriber.get(o2.getLogin()));
+          return doneStatusesCountForSubscriber.get(o2.getLogin()).compareTo(
+              doneStatusesCountForSubscriber.get(o1.getLogin()));
           }
       });
 
+    model.addAttribute("topic", topic);
     model.addAttribute("doneStatusesCountForSubscriber", doneStatusesCountForSubscriber);
     model.addAttribute("subscribers", subscribers);
     return "subscriber-listview";

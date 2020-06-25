@@ -29,7 +29,9 @@ class Status [[java:edu.hm.cs.katz.swt2.agenda.persistence.Status]] {
 	+void setStatus(StatusEnum status)
 	+Task getTask()
 	+String getComment()
-	+String setComment()
+	+void setComment(String comment)
+	+String getRating()
+	+void setRating(String rating)
 }
 
 class Task [[java:edu.hm.cs.katz.swt2.agenda.persistence.Task]] {
@@ -96,11 +98,12 @@ enum StatusEnum [[java:edu.hm.cs.katz.swt2.agenda.common.StatusEnum]] {
  	OFFEN
  	FERTIG
  	ABGELAUFEN
+ 	+String getDisplayValue()
  }
 
 enum VisibilityEnum [[java:edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum]] {
-    PRIVATE ("Privat")
-    PUBLIC ("Öffentlich")
+    PRIVATE
+    PUBLIC
     +String getDisplayValue()
  }
 

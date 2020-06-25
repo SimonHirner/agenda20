@@ -8,7 +8,7 @@
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
 			<h4 class="display-4">
-				Bewertung
+				Bewertung für Abonnent <i th:text="${status.user.name}"></i> und Task <i th:text="${task.title}"></i>
 			</h4>
 			<form th:action="@{/tasks/{id}/{login}/rating(id=${task.id}, login=${status.user.login})}" th:object="${status}"
 				method="post">

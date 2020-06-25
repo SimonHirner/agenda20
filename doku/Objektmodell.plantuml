@@ -67,7 +67,7 @@ object "<u>CSSKurs: Topic</u>" as CSSKurs{
 object "<u>BackKurs: Topic</u>" as BackKurs{
 	uuid = "85b55409-d34d-4985-9da5-8c8acd06fe23"
     title = "Ernies Backkurs"
-    visibility = PUBLIC
+    visibility = PRIVATE
     shortDescription = "Lernen Sie Backen mit Ernie."
     longDescription = "Hier lernen Sie innerhalb kürzester Zeit das Backen wie ein Konditor."
     creator = ernie
@@ -120,6 +120,7 @@ object "<u>2: Status</u>" as 2{
 	task = 1
 	status = StatusEnum.FERTIG
 	comment = ""
+	rating = "Sie haben diese Aufgabe fehlerfrei bestanden."
 }
 
 object "<u>6: Status</u>" as 6{
@@ -128,6 +129,7 @@ object "<u>6: Status</u>" as 6{
 	task = 5
 	status = StatusEnum.FERTIG
 	comment = "Diese Aufgabe war sehr spannend!"
+	rating = ""
 }
 
 'Assoziationen

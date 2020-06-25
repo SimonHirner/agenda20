@@ -51,6 +51,27 @@
 			</form>
 		</div>
 	</div>
+	
+	<div class="row justify-content-center bg-light">
+		<div class="col-12">
+			<h4 class="display-4">
+				Bewertung
+			</h4>
+			<div class="row row-cols-1 row-cols-md-3 bg-light">
+				<div class="col mb-4">
+				<p th:if="${status.rating == ''}">Sie haben noch kein Feedback vom Kursleiter erhalten.</p>
+					<div class="card" th:unless="${status.rating == ''}">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${task.topic.creator.name}">Bewerter</h5>
+	
+							<p class="card-text" th:text="${status.rating}">Bewertung</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
 </div>	
 	<th:block th:replace="fragments :: scripts">
 </body>
