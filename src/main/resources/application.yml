@@ -1,0 +1,8 @@
+server:
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: '#Agenda2020'
+    key-store-type: pkcs12
+    key-alias: tomcat
+    key-password: '#Agenda2020'
+  port: 8443
