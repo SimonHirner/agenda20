@@ -232,7 +232,6 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    @PreAuthorize("login != null")
     public List<SubscriberTopicDto> getPublicTopics(String login, String search) {
         LOG.info("Rufe Topics für Suchbegriff {} auf.", search);
 
