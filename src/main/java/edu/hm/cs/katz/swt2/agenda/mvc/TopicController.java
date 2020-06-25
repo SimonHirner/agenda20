@@ -105,7 +105,7 @@ public class TopicController extends AbstractController {
       @RequestHeader(value = "referer", required = true) String referer,
       RedirectAttributes redirectAttributes) {
     try {
-      topicService.updateTopic(uuid, auth.getName(), topic.getShortDescription(),
+      topicService.updateTopic(uuid, auth.getName(), topic.getVisibility(), topic.getShortDescription(),
                 topic.getLongDescription());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());

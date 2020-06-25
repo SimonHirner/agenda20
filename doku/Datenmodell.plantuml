@@ -92,10 +92,16 @@ class Topic [[java:edu.hm.cs.katz.swt2.agenda.persistence.Topic]] {
 }
 
 enum StatusEnum [[java:edu.hm.cs.katz.swt2.agenda.common.StatusEnum]] {
-	NEU
-	OFFEN
-	FERTIG
-	ABGELAUFEN
-}
+ 	NEU
+ 	OFFEN
+ 	FERTIG
+ 	ABGELAUFEN
+ }
+
+enum VisibilityEnum [[java:edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum]] {
+    PRIVATE ("Privat")
+    PUBLIC ("Öffentlich")
+    +String getDisplayValue()
+ }
 
 @enduml

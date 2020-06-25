@@ -66,7 +66,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     @PreAuthorize("#login==authentication.name OR hasRole('ROLE_ADMIN')")
-    public void updateTopic(String uuid, String login, String shortDescription,
+    public void updateTopic(String uuid, String login, VisibilityEnum visibility, String shortDescription,
                             String longDescription) {
         LOG.info("Aktualisiere Topic {}.", uuid);
         LOG.debug("Topic wird von {} aktualisiert.", login);
@@ -83,6 +83,7 @@ public class TopicServiceImpl implements TopicService {
 
         topic.setLongDescription(longDescription);
         topic.setShortDescription(shortDescription);
+        topic.setVisibility(visibility);
     }
 
     private void validateTopicShortDescription(String shortDescription) {

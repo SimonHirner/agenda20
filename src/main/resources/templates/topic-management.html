@@ -14,7 +14,16 @@
 				</h4>
 				<form th:action="@{/topics/{uuid}/manage(uuid=${topic.uuid})}" th:object="${topic}"
 					method="post">
-
+					<div class="form-group">
+						<select class="form-control" id="visibility" th:field="*{visibility}">
+							<option th:each="option: ${T(edu.hm.cs.katz.swt2.agenda.common.VisibilityEnum).values()}"
+									th:value="${option}" th:text="${option.DisplayValue}"></option>
+						</select>
+						<small class="form-text text-muted">
+							Öffentliche Topics, sind für alle registrierten Nutzer sichtbar. Private Topics können nur
+							über den Abo Code gefunden werden.
+						</small>
+					</div>
 					<div class="form-group">
 						<input th:field="*{shortDescription}" class="form-control"
 							placeholder="Kurzbeschreibung" minlength="10" maxlength="120"/> <small class="form-text text-muted">

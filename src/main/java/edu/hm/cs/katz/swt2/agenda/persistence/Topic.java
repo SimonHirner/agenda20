@@ -158,4 +158,8 @@ public class Topic {
     subscribers.remove(anwender);
     anwender.removeSubscription(this);
   }
+
+  public void setVisibility(VisibilityEnum visibility) {
+    this.visibility = visibility;
+  }
 }
