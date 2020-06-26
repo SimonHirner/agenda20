@@ -12,7 +12,7 @@
 					Offene Aufgaben
 				</h4>
 				<span th:if="${#lists.size(openTasks)==0}">
-					Keine offenen Aufgaben gefunden!
+					Keine offenen Aufgaben gefunden!<br>
 				</span>
 			</div>
 			<div class="col-4">
@@ -29,7 +29,7 @@
 
 					<div class="card">
 						<div class=" card-body">
-							<h5 class="card-title" th:text="${t.title}">Card title</h5>
+							<h5 class="card-title text-primary" th:text="${t.title}">Card title</h5>
 							<h6 class="card-subtitle mb-2 text-muted"
 								th:text="'In '+${t.topic.title}">Card subtitle</h6>
 							<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
@@ -52,7 +52,7 @@
 					Erledigte Aufgaben
 				</h4>
 				<span th:if="${#lists.size(finishedTasks)==0}">
-					Keine erledigten Aufgaben gefunden!
+					Keine erledigten Aufgaben gefunden!<br>
 				</span>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 			<div class="col mb-4" th:each="t : ${finishedTasks}">
 				<div class="card">
 					<div class=" card-body">
-						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h5 class="card-title text-secondary" th:text="${t.title}">Card title</h5>
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
@@ -82,7 +82,7 @@
 					Abgelaufene Aufgaben
 				</h4>
 				<span th:if="${#lists.size(expiredTasks)==0}">
-					Keine abgelaufenen Aufgaben gefunden!
+					Keine abgelaufenen Aufgaben gefunden!<br>
 				</span>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 			<div class="col mb-4" th:each="t : ${expiredTasks}">
 				<div class="card">
 					<div class=" card-body">
-						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h5 class="card-title text-secondary" th:text="${t.title}">Card title</h5>
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>

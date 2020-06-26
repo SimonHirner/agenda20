@@ -26,7 +26,7 @@ public class AgendaApplication {
   }
   
   /**
-   * Aktivierung von SSL Traffic und Hinzufügen von HTTP zu HTTPS Umleitung.
+   * Aktivierung von SSL Traffic und Umleitung von HTTP zu HTTPS.
    */
   @Bean
   public ServletWebServerFactory servletContainer() {

@@ -11,7 +11,7 @@
                 Eigene Topics <a href="/topics/create" class="btn btn-primary">Topic
                 erstellen</a>
             </h4>
-            <span th:if="${#lists.size(managedTopics)==0}">Keine eigenen Topics gefunden!</span>
+            <span th:if="${#lists.size(managedTopics)==0}">Keine eigenen Topics gefunden! <br><br></span>
         </div>
         <div class="col-4">
             <form class="form-inline" th:object="${search}" th:action="@{/topics}" method="get">
@@ -35,10 +35,9 @@
                     <a class="card-text" th:href="'/topics/'+${topic.uuid}+'/subscribers'"
                        th:if="${topic.subscriberCount==1}" th:text="${topic.subscriberCount}+' Abonnent'">Keine
                         Abonnenten</a>
-
+					<br>
                     <a th:href="'/topics/'+${topic.uuid}+'/manage'"
                        class="btn btn-primary">Verwalten</a>
-
                     <form th:if="${topic.subscriberCount==0}" th:action="'/topics/'+${topic.uuid}+'/delete'"
                           method="post">
                         <button class="btn btn-danger" type="submit">Löschen</button>
@@ -51,7 +50,7 @@
     <div class="row justify-content-center bg-light">
         <div class="col-12">
             <h4 class="display-4">Abonnierte Topics</h4>
-            <span th:if="${#lists.size(topics)==0}">Keine abonnierten Topics gefunden!</span>
+            <span th:if="${#lists.size(topics)==0}">Keine abonnierten Topics gefunden!<br><br></span>
         </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3 bg-light">
@@ -63,7 +62,7 @@
                         th:text="'Von '+${topic.creator.displayName}">Card subtitle</h6>
                     <p class="card-text" th:text="${topic.shortDescription}">Keine Beschreibung</p>
                     <a th:href="'/topics/'+${topic.uuid}" class="btn btn-primary">Öffnen</a>
-                    <a th:href="'/topics/'+${topic.uuid}+'/unsubscription'" class="btn btn-danger">Teilnahme beenden</a>
+                    <a th:href="'/topics/'+${topic.uuid}+'/unsubscription'" class="btn btn-danger">Deabonnieren</a>
                     <p class="form-text text-muted" th:text="'Abo Code: '+${topic.key}">Abo Schlüssel </p>
                 </div>
             </div>

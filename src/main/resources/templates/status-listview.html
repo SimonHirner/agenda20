@@ -8,13 +8,14 @@
 	<div class="row justify-content-left bg-light">
 		<div class="col-12">
 			<h4 class="display-4">
-				Statusübersicht für Ihren Task <i th:text="${task.title}"></i>
+				Status-Übersicht für Ihren Task <i th:text="${task.title}"></i>
 			</h4>
 			<table class="table table-striped">
 				<thead>
 				<tr>
 					<th scope="col">Name</th>
 					<th scope="col">Status</th>
+					<th scope="col"></th>
 				</tr>
 				</thead>
 				<tr th:each="status : ${statuses}">

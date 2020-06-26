@@ -7,12 +7,13 @@
 <div class="container-fluid">
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
-			<h4 class="display-4" th:text="${task.title}"
-				th:classappend="${task.status.status.toString()=='FERTIG' or task.status.status.toString()=='ABGELAUFEN'} ? text-secondary : text-primary">Task</h4>
+			<h4 class="display-4"
+				th:classappend="${task.status.status.toString()=='FERTIG' or task.status.status.toString()=='ABGELAUFEN'} ? text-secondary : text-primary">
+				Task <i th:text="${task.title}"></i></h4>				
 			<form th:unless="${task.status.status.toString()=='FERTIG' or task.status.status.toString()=='ABGELAUFEN'}"
 				  id="formName" th:action="@{/tasks/{id}/check(id=${task.id})}"
 				  th:object="${task}" method="post">
-				<button type="submit" class="btn btn-success">Done!</button>
+				<button type="submit" class="btn btn-success">Erledigt</button>
 			</form>
 			<form th:unless="${task.status.status.toString()!='FERTIG' or task.status.status.toString()=='ABGELAUFEN'}"
 				  id="formName" th:action="@{/tasks/{id}/reset(id=${task.id})}"
@@ -21,14 +22,15 @@
 			</form>
 		</div>
 	</div>
+	<br>
 	<div class="row row-cols-1 bg-light">
 		<div class="col mb-4">
 			<div class="card">
 				<div class="card-body">
 					<p class="card-text" th:text="${task.shortDescription}">Keine Kurzbeschreibung verfügbar</p>
+					<p class="card-text" th:text="${task.longDescription}">Keine Langeschreibung verfügbar</p>
 					<p class="card-text" th:if="${task.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(task.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin</p>
 					<p class="card-text" th:if="${task.deadline==null}">Kein Abgabetermin</p>
-					<p class="card-text" th:text="${task.longDescription}">Keine Langeschreibung verfügbar</p>
 				</div>
 			</div>
 		</div>
@@ -51,13 +53,13 @@
 			</form>
 		</div>
 	</div>
-	
+	<br>
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
 			<h4 class="display-4">
 				Bewertung
 			</h4>
-			<div class="row row-cols-1 row-cols-md-3 bg-light">
+			<div class="row row-cols-1 bg-light">
 				<div class="col mb-4">
 				<p th:if="${status.rating == ''}">Sie haben noch kein Feedback vom Kursleiter erhalten.</p>
 					<div class="card" th:unless="${status.rating == ''}">

@@ -10,7 +10,7 @@
             <h4 class="display-4">
                 Öffentliche Topics
             </h4>
-            <span th:if="${#lists.size(publicQuery)==0}">Keine Treffer!</span>
+            <span th:if="${#lists.size(publicQuery)==0}">Keine Treffer!<br></span>
         </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3 bg-light">
@@ -35,7 +35,7 @@
             <h4 class="display-4">
                 Abonnierte Topics
             </h4>
-            <span th:if="${#lists.size(subscribedQuery)==0}">Keine Treffer!</span>
+            <span th:if="${#lists.size(subscribedQuery)==0}">Keine Treffer!<br></span>
         </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3 bg-light">

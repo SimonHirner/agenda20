@@ -10,7 +10,7 @@
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">
 				<h4 class="display-4">
-					Beschreibung für Ihr Topic <i th:text="${topic.title}"></i>
+					Ihr Topic <i th:text="${topic.title}"></i>
 				</h4>
 				<form th:action="@{/topics/{uuid}/manage(uuid=${topic.uuid})}" th:object="${topic}"
 					method="post">
@@ -41,11 +41,11 @@
 				</form>
 			</div>
 		</div>
-
+		<br>
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">
 				<h4 class="display-4">
-					Aufgaben-Übersicht für Ihr Topic <i th:text="${topic.title}"></i> <a
+					Task-Übersicht <a
 						th:href="'/topics/'+${topic.uuid}+'/createTask'"
 						class="btn btn-primary">Task erstellen</a>
 				</h4>
@@ -65,6 +65,7 @@
 						<a class="card-text" th:href="'/tasks/'+${t.id}+'/statuses'" th:if="${#lists.size(t.doneStatuses)==1}"
 						   th:text="${#lists.size(t.doneStatuses)}+' Abonnent hat den Task erledigt'">Keine Abonnenten
 							haben den Task abgeschlossen</a>
+						<br>
 						<form th:action="'/tasks/'+${t.id}+'/delete'" method="post">
 							<a th:href="'/tasks/'+${t.id}+'/manage'"
 							   class="btn btn-primary">Verwalten</a>

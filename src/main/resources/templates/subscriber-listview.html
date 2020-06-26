@@ -8,7 +8,7 @@
 	<div class="row justify-content-left bg-light">
 		<div class="col-12">
 			<h4 class="display-4">
-					Abonnenten von Ihrem Topic <i th:text="${topic.title}"></i>
+					Abonnenten-Übersicht von Ihrem Topic <i th:text="${topic.title}"></i>
 			</h4>
 			<p th:if="${#lists.size(subscribers)==0}">Dieses Topic hat keine Abonnenten!</p>
 			<table class="table table-striped" th:unless="${#lists.size(subscribers)==0}">

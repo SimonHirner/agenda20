@@ -9,7 +9,7 @@
 		<div class="row justify-content-center bg-light">
 			<div class="col-12">
 				<h4 class="display-4">
-					Beschreibung für das Topic <i th:text="${topic.title}"></i>
+					Topic <i th:text="${topic.title}"></i>
 				</h4>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 					Offene Aufgaben
 				</h4>
 				<span th:if="${#lists.size(openTasks)==0}">
-					Sie haben keine offenen Aufgaben!
+					Sie haben keine offenen Aufgaben!<br>
 				</span>
 			</div>
 		</div>
@@ -37,7 +37,7 @@
 			<div class="col mb-4" th:each="t : ${openTasks}">
 				<div class="card">
 					<div class=" card-body">
-						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h5 class="card-title text-primary" th:text="${t.title}">Card title</h5>
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
@@ -61,7 +61,7 @@
 					Erledigte Aufgaben
 				</h4>
 				<span th:if="${#lists.size(finishedTasks)==0}">
-					Sie haben keine Aufgaben erledigt!
+					Sie haben keine Aufgaben erledigt!<br>
 				</span>
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 			<div class="col mb-4" th:each="t : ${finishedTasks}">
 				<div class="card">
 					<div class=" card-body">
-						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h5 class="card-title text-secondary" th:text="${t.title}">Card title</h5>
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
@@ -91,7 +91,7 @@
 					Abgelaufene Aufgaben
 				</h4>
 				<span th:if="${#lists.size(expiredTasks)==0}">
-					Sie haben keine abgelaufenen Aufgaben!
+					Sie haben keine abgelaufenen Aufgaben!<br>
 				</span>
 			</div>
 		</div>
@@ -99,7 +99,7 @@
 			<div class="col mb-4" th:each="t : ${expiredTasks}">
 				<div class="card">
 					<div class=" card-body">
-						<h5 class="card-title" th:text="${t.title}">Card title</h5>
+						<h5 class="card-title text-secondary" th:text="${t.title}">Card title</h5>
 						<h6 class="card-subtitle mb-2 text-muted"
 							th:text="'In '+${t.topic.title}">Card subtitle</h6>
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
