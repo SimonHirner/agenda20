@@ -35,7 +35,30 @@
 			</div>
 		</div>
 	</div>
-	
+	<br>
+	<div class="row justify-content-center bg-light">
+		<div class="col-12">
+			<h4 class="display-4">Übungsmaterial</h4>
+		</div>
+		<div class="col-12">
+			<div class="col-8">
+				<table class="table table-striped">
+					<thead>
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Name</th>
+					</tr>
+					</thead>
+					<tr th:each="file, rowStat: ${files}">
+						<td th:text="${rowStat.count}"/>
+						<td th:text="${file.filename}"/>
+						<td><a th:href="${file.url}">Herunterladen</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<br>
 	<div class="row justify-content-center bg-light">
 		<div class="col-12">
 			<h4 class="display-4">

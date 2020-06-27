@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">Datei Hochladen</h4>
+            <form method="POST" enctype="multipart/form-data" id="fileUploadForm" >
+                <p>Bitte wählen Sie eine Datei für den Upload aus!</p>
+                <div class="form-group">
+                    <input type="file" class="form-control-file" id="uploadfile" placeholder="Upload File"
+                           name="uploadfile"></input>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Hochladen</button>
+            </form>
+        </div>
+    </div>
+    <br>
+
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">Hochgeladene Dateien</h4>
+        </div>
+        <div class="col-12">
+            <div class="col-8">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="file, rowStat: ${files}">
+                        <td th:text="${rowStat.count}"/>
+                        <td th:text="${file.filename}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragments :: scripts">
+</body>
+</html>
