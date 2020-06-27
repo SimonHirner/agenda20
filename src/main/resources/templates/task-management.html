@@ -1,58 +1,87 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head" />
+<head th:replace="fragments :: head"/>
 <body>
 <nav th:replace="fragments :: navigation"></nav>
 <div class="container-fluid">
-	<div class="row justify-content-center bg-light">
-		<div class="col-12">
-			<h4 class="display-4">Task ändern für <i th:text="${task.title}">Titel</i></h4>
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">Task ändern für <i th:text="${task.title}">Titel</i></h4>
 
-			<form th:action="@{/tasks/{id}/manage(id=${task.id})}" th:object="${task}"
-					method="post">
+            <form th:action="@{/tasks/{id}/manage(id=${task.id})}" th:object="${task}"
+                  method="post">
 
-				<div class="form-group">
-					<input th:field="*{shortDescription}" class="form-control"
-						   placeholder="Kurzbeschreibung" minlength="8" maxlength="120"/> <small class="form-text text-muted">
-					Beschreiben Sie den Task kurz.</small>
-				</div>
+                <div class="form-group">
+                    <input th:field="*{shortDescription}" class="form-control"
+                           placeholder="Kurzbeschreibung" minlength="8" maxlength="120"/> <small
+                        class="form-text text-muted">
+                    Beschreiben Sie den Task kurz.</small>
+                </div>
 
-				<div class="form-group">
-					<textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung" maxlength="1000"></textarea> 
-					<small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung hinzufügen.</small>
-				</div>
-				
-				<div class="form-group">
-					<input type="date" th:field="*{deadline}" class="form-control"
-							   placeholder="jjjj-mm-tt"/>
-					<small class="form-text text-muted">Sie können einen letztmöglichen Abgabetermin festlegen.</small>
-				</div>
+                <div class="form-group">
+                    <textarea th:field="*{longDescription}" class="form-control" placeholder="Langbeschreibung"
+                              maxlength="1000"></textarea>
+                    <small class="form-text text-muted">Sie können auch eine ausführliche Beschreibung
+                        hinzufügen.</small>
+                </div>
 
-				<button type="submit" class="btn btn-primary">Speichern!</button>
-				<a th:href="'/topics/'+${task.topic.uuid}+'/manage'" class="btn btn-danger">Zurück</a>
-			</form>
-		</div>
-	</div>
-	<br>
-	<div class="row justify-content-center bg-light">
-		<div class="col-12">
-			<h4 class="display-4">Kommentare</h4>
-			<span th:if="${#lists.size(statusesWithComment)==0}">Keine Kommentare gefunden!</span>
-		</div>
-	</div>
-	<div class="row row-cols-1 row-cols-md-3 bg-light">
-		<div class="col mb-4" th:each="status : ${statusesWithComment}">
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title" th:text="${status.user.name}">Kommentator</h5>
+                <div class="form-group">
+                    <input type="date" th:field="*{deadline}" class="form-control"
+                           placeholder="jjjj-mm-tt"/>
+                    <small class="form-text text-muted">Sie können einen letztmöglichen Abgabetermin festlegen.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Speichern!</button>
+                <a th:href="'/topics/'+${task.topic.uuid}+'/manage'" class="btn btn-danger">Zurück</a>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">
+                Eigene Topics <a th:href="'/tasks/'+${task.id}+'/manage/upload'" class="btn btn-primary">Dateien
+                Hochladen</a>
+            </h4>
+        </div>
+        <div class="col-12">
+            <div class="col-8">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Download</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="file, rowStat: ${files}">
+                        <td th:text="${rowStat.count}"/>
+                        <td th:text="${file.filename}"/>
+                        <td><a th:href="${file.url}">Herunterladen</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">Kommentare</h4>
+            <span th:if="${#lists.size(statusesWithComment)==0}">Keine Kommentare gefunden!</span>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 bg-light">
+        <div class="col mb-4" th:each="status : ${statusesWithComment}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${status.user.name}">Kommentator</h5>
 
-					<p class="card-text" th:text="${status.comment}">Kommentar</p>
-				</div>
-			</div>
-		</div>
-	</div>
-		
-	<th:block th:replace="fragments :: scripts">
+                    <p class="card-text" th:text="${status.comment}">Kommentar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments :: scripts">
 </body>
 </html>
