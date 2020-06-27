@@ -2,6 +2,7 @@ package edu.hm.cs.katz.swt2.agenda.mvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import edu.hm.cs.katz.swt2.agenda.service.FileService;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.UserService;
@@ -31,6 +32,9 @@ public class TopicControllerTest {
   
   @MockBean
   UserService userService;
+
+  @MockBean
+  FileService fileService;
   
   @Test
   @WithMockUser(username = "finn", password = "user", roles = "USER")

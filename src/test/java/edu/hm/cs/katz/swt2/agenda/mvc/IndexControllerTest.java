@@ -2,6 +2,7 @@ package edu.hm.cs.katz.swt2.agenda.mvc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import edu.hm.cs.katz.swt2.agenda.service.FileService;
 import edu.hm.cs.katz.swt2.agenda.service.TaskService;
 import edu.hm.cs.katz.swt2.agenda.service.TopicService;
 import edu.hm.cs.katz.swt2.agenda.service.UserService;
@@ -28,6 +29,9 @@ public class IndexControllerTest {
   
   @MockBean
   UserService userService;
+
+  @MockBean
+  FileService fileService;
   
   @Test
   public void testGetIndex() throws Exception {
