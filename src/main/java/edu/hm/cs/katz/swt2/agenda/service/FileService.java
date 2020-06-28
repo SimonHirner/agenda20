@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
-    public void store(MultipartFile file);
+    public void store(MultipartFile file, String login);
 
     public Resource loadFile(String filename);
 

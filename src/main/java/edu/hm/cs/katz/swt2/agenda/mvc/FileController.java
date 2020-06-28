@@ -2,6 +2,7 @@ package edu.hm.cs.katz.swt2.agenda.mvc;
 
 import edu.hm.cs.katz.swt2.agenda.common.FileInfo;
 import edu.hm.cs.katz.swt2.agenda.service.FileService;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.List;
@@ -29,12 +31,11 @@ public class FileController extends AbstractController{
     }
 
     @PostMapping("tasks/{id}/manage/upload")
-    public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file, Model model) {
+    public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file, Model model, RedirectAttributes redirectAttributes, Authentication auth) {
         try {
-            fileService.store(file);
-            model.addAttribute("message", "File uploaded successfully! -> filename = " + file.getOriginalFilename());
+            fileService.store(file, auth.getName());
         } catch (Exception e) {
-            model.addAttribute("message", "Fail! -> uploaded filename: " + file.getOriginalFilename() + e.getMessage());
+            redirectAttributes.addFlashAttribute("failure", "Die Datei " + file.getName() + " konnte nicht geladen werden!");
         }
         return "redirect:/tasks/{id}/manage/upload";
     }

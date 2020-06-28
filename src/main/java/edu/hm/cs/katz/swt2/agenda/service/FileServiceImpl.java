@@ -1,4 +1,5 @@
 package edu.hm.cs.katz.swt2.agenda.service;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -10,37 +11,46 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class FileServiceImpl implements FileService{
+public class FileServiceImpl implements FileService {
 
-    Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private static final Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
+
     private final Path rootLocation = Paths.get("uploads");
 
     @Override
-    public void store(MultipartFile file){
+    @PreAuthorize("#login == authentication.name or hasRole('ROLE_ADMIN')")
+    public void store(MultipartFile file, String login) {
+        LOG.info("Datei {} wird gespeichert.", file.getName());
+        LOG.debug("Datei wird von von {} gespeichert.", login);
         try {
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
         } catch (Exception e) {
-            throw new RuntimeException("Failure while Storing! -> message = " + e.getMessage());
+            LOG.error("Datei {} konnte nicht gespeichert werden.", file.getName());
+            throw new RuntimeException("Datei konnte nicht gespeichert werden! " + e.getMessage());
         }
     }
 
     @Override
     public Resource loadFile(String filename) {
+        LOG.info("Datei {} wird geladen.", filename);
         try {
             Path file = rootLocation.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() || resource.isReadable()) {
+            if (resource.exists() || resource.isReadable()) {
                 return resource;
-            }else{
-                throw new RuntimeException("FAIL!");
+            } else {
+                LOG.error("Datei {} konnte nicht geladen werden.", filename);
+                throw new RuntimeException("Datei konnte nicht geladen werden!");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error! -> message = " + e.getMessage());
+            LOG.error("Datei {} konnte nicht geladen werden.", filename);
+            throw new RuntimeException("Fehler beim Laden der Datei! " + e.getMessage());
         }
     }
 
@@ -54,7 +64,7 @@ public class FileServiceImpl implements FileService{
         try {
             Files.createDirectory(rootLocation);
         } catch (IOException e) {
-            throw new RuntimeException("Could not initialize storage!");
+            throw new RuntimeException("Speicherplatz konnte nicht initialisiert werden!");
         }
     }
 
@@ -64,9 +74,8 @@ public class FileServiceImpl implements FileService{
             return Files.walk(this.rootLocation, 1)
                            .filter(path -> !path.equals(this.rootLocation))
                            .map(this.rootLocation::relativize);
-        }
-        catch (IOException e) {
-            throw new RuntimeException("\"Failed to read stored file");
+        } catch (IOException e) {
+            throw new RuntimeException("\"Fehler beim Lesen der gespeichterten Dateien!");
         }
     }
 }
