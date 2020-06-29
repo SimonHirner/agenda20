@@ -17,33 +17,33 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class TopicServiceTest {
-  @Mock
-  TopicRepository topicRepository;
+    @Mock
+    TopicRepository topicRepository;
 
-  @Mock
-  UuidProviderImpl uuidProvider;
+    @Mock
+    UuidProviderImpl uuidProvider;
 
-  @Mock
-  UserRepository userRepository;
-    
-  @InjectMocks
-  TopicService topicService = new TopicServiceImpl();
-    
-  @Test
-  void createTopicSuccess() {
-    ArgumentCaptor<Topic> topicCaptor = ArgumentCaptor.forClass(Topic.class);
-    topicService.createTopic("Topic12345", VisibilityEnum.PUBLIC, "This is the Short Description",
-        "", "ernie");
-    Mockito.verify(topicRepository).save(topicCaptor.capture());
-    assertEquals("Topic12345", topicCaptor.getValue().getTitle());
-  }
+    @Mock
+    UserRepository userRepository;
 
-  @Test
-  void getPublicTopicListSuccess() {
-    ArgumentCaptor<Topic> topicCaptor = ArgumentCaptor.forClass(Topic.class);
-    topicService.createTopic("Topic12345", VisibilityEnum.PUBLIC, "This is the Short Description",
-        "", "ernie");
-    topicService.getPublicTopics("ernie", "");
-    Mockito.verify(topicRepository).findAllByVisibilityPublic();
-  }
+    @InjectMocks
+    TopicService topicService = new TopicServiceImpl();
+
+    @Test
+    void createTopicSuccess() {
+        ArgumentCaptor<Topic> topicCaptor = ArgumentCaptor.forClass(Topic.class);
+        topicService.createTopic("Topic12345", VisibilityEnum.PUBLIC, "This is the Short Description",
+                "", "ernie");
+        Mockito.verify(topicRepository).save(topicCaptor.capture());
+        assertEquals("Topic12345", topicCaptor.getValue().getTitle());
+    }
+
+    @Test
+    void getPublicTopicListSuccess() {
+      ArgumentCaptor<Topic> topicCaptor = ArgumentCaptor.forClass(Topic.class);
+      topicService.createTopic("Topic12345", VisibilityEnum.PUBLIC, "This is the Short Description",
+              "", "ernie");
+      Mockito.verify(topicRepository).save(topicCaptor.capture());
+      assertEquals(VisibilityEnum.PUBLIC, topicCaptor.getValue().getVisibility());
+    }
 }
