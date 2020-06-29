@@ -59,16 +59,17 @@
 						<p class="card-text" th:text="${t.shortDescription}">Keine Beschreibung</p>
 						<p class="card-text" th:if="${t.deadline!=null}" th:text="'Abgabetermin: '+${#dates.format(t.deadline, 'dd.MM.yyyy')}">Kein Abgabetermin</p>
 						<p class="card-text" th:if="${t.deadline==null}">Kein Abgabetermin</p>
-						<a class="card-text" th:href="'/tasks/'+${t.id}+'/statuses'" th:if="${#lists.size(t.doneStatuses)!=1}"
+						<p class="card-text" th:if="${#lists.size(t.doneStatuses)!=1}"
 						   th:text="${#lists.size(t.doneStatuses)}+' Abonnenten haben den Task erledigt'">Keine Abonnenten
-							haben den Task abgeschlossen</a>
-						<a class="card-text" th:href="'/tasks/'+${t.id}+'/statuses'" th:if="${#lists.size(t.doneStatuses)==1}"
+							haben den Task abgeschlossen</p>
+						<p class="card-text" th:if="${#lists.size(t.doneStatuses)==1}"
 						   th:text="${#lists.size(t.doneStatuses)}+' Abonnent hat den Task erledigt'">Keine Abonnenten
-							haben den Task abgeschlossen</a>
-						<br>
+							haben den Task abgeschlossen</p>
 						<form th:action="'/tasks/'+${t.id}+'/delete'" method="post">
 							<a th:href="'/tasks/'+${t.id}+'/manage'"
-							   class="btn btn-primary">Verwalten</a>
+							   class="btn btn-info">Verwalten</a>
+							<a th:href="'/tasks/'+${t.id}+'/statuses'"
+							   class="btn btn-primary">Bewertungen</a>
 							<button class="btn btn-danger" type="submit">Löschen</button>
 						</form>
 					</div>

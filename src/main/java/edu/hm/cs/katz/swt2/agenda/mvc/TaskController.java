@@ -13,7 +13,6 @@ import edu.hm.cs.katz.swt2.agenda.service.dto.SubscriberTaskDto;
 import edu.hm.cs.katz.swt2.agenda.service.dto.TaskDto;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -81,12 +79,12 @@ public class TaskController extends AbstractController {
     TaskDto task = taskService.getTask(taskId, auth.getName());
     StatusDto status = taskService.getStatus(taskId, auth.getName());
     List<FileInfo> fileInfos = fileService.loadFiles().map(
-            path -> {
-              String filename = path.getFileName().toString();
-              String url = MvcUriComponentsBuilder.fromMethodName(FileController.class,
-                      "downloadFile", path.getFileName().toString()).build().toString();
-              return new FileInfo(filename, url);
-            }
+        path -> {
+          String filename = path.getFileName().toString();
+          String url = MvcUriComponentsBuilder.fromMethodName(FileController.class,
+                  "downloadFile", path.getFileName().toString()).build().toString();
+          return new FileInfo(filename, url);
+        }
     )
                                        .collect(Collectors.toList());
     model.addAttribute("task", task);
@@ -122,12 +120,12 @@ public class TaskController extends AbstractController {
     OwnerTaskDto task = taskService.getManagedTask(id, auth.getName());
     List<StatusDto> statusesWithComment = task.getStatusesWithComment();
     List<FileInfo> fileInfos = fileService.loadFiles().map(
-            path -> {
-              String filename = path.getFileName().toString();
-              String url = MvcUriComponentsBuilder.fromMethodName(FileController.class,
-                      "downloadFile", path.getFileName().toString()).build().toString();
-              return new FileInfo(filename, url);
-            }
+        path -> {
+          String filename = path.getFileName().toString();
+          String url = MvcUriComponentsBuilder.fromMethodName(FileController.class,
+                  "downloadFile", path.getFileName().toString()).build().toString();
+          return new FileInfo(filename, url);
+        }
     )
                                        .collect(Collectors.toList());
     model.addAttribute("task", task);
