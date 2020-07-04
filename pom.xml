@@ -19,7 +19,7 @@
 		<java.version>11</java.version>
 		<sonar.host.url>http://217.160.212.83</sonar.host.url>
 		<sonar.projectName>GRP34</sonar.projectName>
-		<sonar.login>52482a6a76d3f983cef822966ab27304741643d9</sonar.login>
+		<sonar.login>4600d256a992558005cdc4c8c890e25fd268522c</sonar.login>
 		<sonar.projectKey>GRP34</sonar.projectKey>
 	</properties>
 

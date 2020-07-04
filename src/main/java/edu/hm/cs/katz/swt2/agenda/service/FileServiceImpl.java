@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileServiceImpl implements FileService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
 
   private final Path rootLocation = Paths.get("uploads");
 
