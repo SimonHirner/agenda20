@@ -60,13 +60,13 @@ public class DemoData {
                     + " Bildern und anderen Inhalten.", LOGIN_FINE);
     topicService.subscribe(htmlKursUuid, LOGIN_ERNIE);
     topicService.subscribe(htmlKursUuid, LOGIN_BERT);
-    Date deadlineLinkErstellen = DateUtilities.getDate(15, 4, 2020);
+    Date deadlineLinkErstellen = DateUtilities.getDate(15, 4, 2024);
     Long linkErstellenTask = taskService.createTask(htmlKursUuid, "Link erstellen",
         "In dieser Einheit wird gezeigt, wie in HTML ein Link erstellt wird.",
             "Denn HTML Links sind wichtig um auf Websites navigieren zu können.", LOGIN_FINE,
               deadlineLinkErstellen, deadlineLinkErstellen);
     taskService.checkTask(linkErstellenTask, LOGIN_ERNIE);
-    Date deadlineHtmlKurs = DateUtilities.getDate(25, 10, 2020);
+    Date deadlineHtmlKurs = DateUtilities.getDate(25, 10, 2025);
     taskService.createTask(htmlKursUuid, "Leeres HTML-Template erstellen",
         "Diese Einheit behandelt die Erstellung einer neuen HTML Datei.",
             "HTML Dateien sind die Basis einer jeden Website.", LOGIN_FINE,
